@@ -28,6 +28,19 @@
             overflow-x: hidden;
         }
 
+        /* ===== CSS-ПЕРЕМЕННЫЕ ДЛЯ ДИНАМИЧЕСКИХ ЦВЕТОВ ===== */
+        :root {
+            --carousel-accent-r: 255;
+            --carousel-accent-g: 107;
+            --carousel-accent-b: 0;
+            --carousel-gradient-from: rgba(255, 107, 0, 0.12);
+            --carousel-gradient-to: rgba(255, 255, 255, 0);
+            --carousel-radial-opacity: 0.06;
+            --carousel-glow-opacity: 0.3;
+            --carousel-left-gradient-from: rgba(255, 107, 0, 0.06);
+            --carousel-left-gradient-to: rgba(255, 255, 255, 0);
+        }
+
         /* ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ (ГЛОБАЛЬНЫЙ КЛАСС) ===== */
         .hanzi-decor {
             position: absolute;
@@ -35,39 +48,18 @@
             user-select: none;
             font-family: 'Noto Serif SC', 'SimSun', serif;
             font-weight: 900;
-            color: #FF6B00;
-            opacity: 0.02;
+            color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
             line-height: 1;
             z-index: 0;
+            transition: color 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .hanzi-decor.light {
-            opacity: 0.025;
-        }
-
-        .hanzi-decor.dark {
-            opacity: 0.07;
-        }
-
-        .hanzi-decor.xl {
-            font-size: 140px;
-        }
-
-        .hanzi-decor.lg {
-            font-size: 100px;
-        }
-
-        .hanzi-decor.md {
-            font-size: 70px;
-        }
-
-        .hanzi-decor.sm {
-            font-size: 45px;
-        }
-
-        .hanzi-decor.xs {
-            font-size: 28px;
-        }
+        .hanzi-decor.xl { font-size: 140px; }
+        .hanzi-decor.lg { font-size: 100px; }
+        .hanzi-decor.md { font-size: 70px; }
+        .hanzi-decor.sm { font-size: 45px; }
+        .hanzi-decor.xs { font-size: 28px; }
 
         .hanzi-decor.rotate-5 { transform: rotate(5deg); }
         .hanzi-decor.rotate-8 { transform: rotate(8deg); }
@@ -84,6 +76,22 @@
             overflow: visible !important;
         }
 
+        @media(max-width:768px){
+            .hanzi-decor.xl{font-size:100px;opacity:.12!important}
+            .hanzi-decor.lg{font-size:70px;opacity:.10!important}
+            .hanzi-decor.md{font-size:50px;opacity:.08!important}
+            .hanzi-decor.sm{font-size:35px;opacity:.06!important}
+            .hanzi-decor.xs{font-size:22px;opacity:.05!important}
+        }
+
+        @media(max-width:480px){
+            .hanzi-decor.xl{font-size:80px;opacity:.08!important}
+            .hanzi-decor.lg{font-size:55px;opacity:.06!important}
+            .hanzi-decor.md{font-size:40px;opacity:.05!important}
+            .hanzi-decor.sm{font-size:28px;opacity:.04!important}
+            .hanzi-decor.xs{font-size:18px;opacity:.03!important}
+        }
+
         /* ===== HERO ===== */
         .hero-section {
             display: grid;
@@ -95,6 +103,26 @@
             position: relative;
             overflow: visible !important;
             padding-top: 64px;
+            border-bottom: none !important;
+        }
+
+        /* ===== ЕДИНЫЙ ГРАДИЕНТНЫЙ ОВЕРЛЕЙ НА ВСЮ HERO-СЕКЦИЮ ===== */
+        /* Идёт от правого края, размывается к левому, и выходит вниз с затуханием */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 -50px 0;
+            z-index: 3;
+            pointer-events: none;
+            background: linear-gradient(
+                225deg,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.10) 0%,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.06) 20%,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.02) 40%,
+                transparent 55%
+            );
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: background;
         }
 
         @media (max-width: 1024px) {
@@ -104,9 +132,19 @@
                 max-height: none;
                 padding-top: 80px;
             }
+
+            .hero-section::before {
+                inset: 0 0 -40px 0;
+                background: linear-gradient(
+                    180deg,
+                    rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.08) 0%,
+                    rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.03) 30%,
+                    transparent 40%
+                );
+            }
         }
 
-        /* Левая колонка — компактная */
+        /* Левая колонка */
         .hero-left {
             padding: 40px 60px 40px 80px;
             display: flex;
@@ -115,26 +153,43 @@
             background: #FFFFFF;
             position: relative;
             z-index: 2;
-            overflow: visible !important;
+            overflow: hidden !important;
+        }
+
+        /* Радиальный акцент в левой колонке (сохраняем для глубины) */
+        .hero-left::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                circle at 30% 50%,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.04) 0%,
+                transparent 70%
+            );
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+            pointer-events: none;
+            will-change: background;
+        }
+
+
+
+        /* Весь контент левой колонки должен быть над градиентами */
+        .hero-left > * {
+            position: relative;
+            z-index: 1;
         }
 
         @media (max-width: 1200px) {
-            .hero-left {
-                padding: 40px 40px 40px 48px;
-            }
+            .hero-left { padding: 40px 40px 40px 48px; }
         }
 
         @media (max-width: 1024px) {
-            .hero-left {
-                padding: 40px 32px 32px;
-                order: 1;
-            }
+            .hero-left { padding: 40px 32px 32px; order: 1; }
         }
 
         @media (max-width: 640px) {
-            .hero-left {
-                padding: 24px 20px 24px;
-            }
+            .hero-left { padding: 24px 20px 24px; }
         }
 
         .hero-badge {
@@ -146,6 +201,8 @@
             text-transform: uppercase;
             color: rgba(0, 0, 0, 0.3);
             margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-badge-dot {
@@ -169,6 +226,8 @@
             color: #000000;
             letter-spacing: -2.5px;
             margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-title-outline {
@@ -207,6 +266,8 @@
             max-width: 380px;
             margin-bottom: 36px;
             font-weight: 350;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-desc strong {
@@ -219,6 +280,8 @@
             flex-wrap: wrap;
             gap: 12px;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .btn-primary {
@@ -282,20 +345,14 @@
             display: inline-block;
         }
 
-        .btn-ghost:hover::after {
-            transform: translateX(4px);
-        }
-
-        .btn-ghost:hover {
-            color: #111827;
-            border-bottom-color: #111827;
-        }
+        .btn-ghost:hover::after { transform: translateX(4px); }
+        .btn-ghost:hover { color: #111827; border-bottom-color: #111827; }
 
         /* ===== ПРАВАЯ КОЛОНКА — КАРУСЕЛЬ ===== */
         .hero-right {
             background: #FFFFFF;
             position: relative;
-            overflow: visible !important;
+            overflow: hidden !important;
             min-height: 100%;
             max-height: 100vh;
         }
@@ -310,19 +367,21 @@
             border-radius: 50%;
             filter: blur(100px);
             opacity: 0;
-            transition: opacity 0.6s ease;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+            background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             z-index: 0;
+            background: radial-gradient(
+                circle,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.3) 0%,
+                transparent 70%
+            );
+            will-change: background, opacity;
         }
 
         .hero-right-glow.visible {
-            opacity: 0.25;
+            opacity: 0.3;
         }
-
-        .hero-right-glow.glow-1 { background: radial-gradient(circle, rgba(255, 107, 53, 0.3), transparent 70%); }
-        .hero-right-glow.glow-2 { background: radial-gradient(circle, rgba(255, 193, 7, 0.3), transparent 70%); }
-        .hero-right-glow.glow-3 { background: radial-gradient(circle, rgba(76, 175, 80, 0.3), transparent 70%); }
-        .hero-right-glow.glow-4 { background: radial-gradient(circle, rgba(33, 150, 243, 0.3), transparent 70%); }
 
         @media (max-width: 1024px) {
             .hero-right {
@@ -346,18 +405,20 @@
             height: 100%;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .carousel-track-wrapper {
+            flex: 1;
             width: 100%;
-            height: 100%;
             overflow: hidden;
         }
 
         .carousel-track {
             display: flex;
             height: 100%;
-            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
             will-change: transform;
         }
 
@@ -374,9 +435,7 @@
         }
 
         @media (max-width: 640px) {
-            .carousel-slide {
-                padding: 16px 20px 70px;
-            }
+            .carousel-slide { padding: 16px 20px 70px; }
         }
 
         .product-card-visual {
@@ -401,15 +460,11 @@
         }
 
         @media (max-width: 1024px) {
-            .product-card-visual img {
-                max-height: 40vh;
-            }
+            .product-card-visual img { max-height: 40vh; }
         }
 
         @media (max-width: 640px) {
-            .product-card-visual img {
-                max-height: 30vh;
-            }
+            .product-card-visual img { max-height: 30vh; }
         }
 
         .carousel-slide:hover .product-card-visual img {
@@ -439,14 +494,8 @@
         }
 
         @keyframes infoReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(12px) scale(0.97);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .carousel-slide:not(.active-slide) .product-card-visual img,
@@ -509,11 +558,7 @@
             letter-spacing: -0.3px;
         }
 
-        @media (max-width: 640px) {
-            .product-card-name {
-                font-size: 17px;
-            }
-        }
+        @media (max-width: 640px) { .product-card-name { font-size: 17px; } }
 
         .product-card-desc {
             font-size: 12px;
@@ -612,33 +657,15 @@
             transform: translateY(-50%) scale(1.06);
         }
 
-        .carousel-arrow:active {
-            transform: translateY(-50%) scale(0.92);
-        }
-
-        .carousel-arrow.prev {
-            left: 16px;
-        }
-
-        .carousel-arrow.next {
-            right: 16px;
-        }
+        .carousel-arrow:active { transform: translateY(-50%) scale(0.92); }
+        .carousel-arrow.prev { left: 16px; }
+        .carousel-arrow.next { right: 16px; }
 
         @media (max-width: 640px) {
-            .carousel-arrow {
-                width: 32px;
-                height: 32px;
-                font-size: 13px;
-            }
-            .carousel-arrow.prev {
-                left: 8px;
-            }
-            .carousel-arrow.next {
-                right: 8px;
-            }
-            .carousel-nav {
-                bottom: 14px;
-            }
+            .carousel-arrow { width: 32px; height: 32px; font-size: 13px; }
+            .carousel-arrow.prev { left: 8px; }
+            .carousel-arrow.next { right: 8px; }
+            .carousel-nav { bottom: 14px; }
         }
 
         .carousel-counter {
@@ -654,21 +681,17 @@
         }
 
         @media (max-width: 640px) {
-            .carousel-counter {
-                bottom: 52px;
-                font-size: 8px;
-            }
+            .carousel-counter { bottom: 52px; font-size: 8px; }
         }
 
-        /* ===== ДОРОЖНАЯ РАЗМЕТКА ===== */
-        .road-dash {
-            background: repeating-linear-gradient(
-                90deg,
-                rgba(0,0,0,0.04) 0px,
-                rgba(0,0,0,0.04) 30px,
-                transparent 30px,
-                transparent 60px
-            );
+        /* ===== БЕГУЩАЯ СТРОКА ===== */
+        .marquee-section {
+            background: #FFFFFF;
+            overflow: hidden;
+            position: relative;
+            height: 60px;
+            border-top: none !important;
+            border-bottom: none !important;
         }
 
         /* ===== ПОИСК ===== */
@@ -681,17 +704,81 @@
         .stats-grid {
             position: relative;
             overflow: visible !important;
+            border-top: none !important;
+            border-bottom: none !important;
+            background: #FFFFFF;
         }
 
-        /* ===== ДОРОГА ===== */
-        .road-wrapper {
-            position: relative;
-            overflow: visible !important;
+        .stats-grid .border-r {
+            border-color: rgba(0, 0, 0, 0.04) !important;
+        }
+
+        /* ===== СЕКЦИИ БЕЗ ГРАНИЦ ===== */
+        #why {
+            background: #FFFFFF;
+        }
+
+        #products {
+            background: #FFFFFF;
+            border-top: none !important;
+            border-bottom: none !important;
+        }
+
+        #products .grid {
+            border-top: none !important;
+        }
+
+        #products .border-r,
+        #products .border-b {
+            border-color: rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .cta-section {
+            border-bottom: none !important;
+            background: #FFFFFF;
+        }
+
+        #contacts {
+            background: #FFFFFF;
+        }
+
+        /* ===== ГРАДИЕНТНЫЕ ПЕРЕХОДЫ МЕЖДУ СЕКЦИЯМИ ===== */
+        .section-divider {
+            height: 40px;
+            background: linear-gradient(
+                to bottom,
+                #FFFFFF 0%,
+                rgba(0, 0, 0, 0.01) 50%,
+                #FFFFFF 100%
+            );
+            pointer-events: none;
         }
 
         /* ===== AOS ===== */
         [data-aos] {
             transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ===== БЕГУЩАЯ СТРОКА С ДИНАМИЧЕСКИМ ЦВЕТОМ ===== */
+        .marquee-char {
+            font-family: 'Noto Serif SC', 'SimSun', serif;
+            font-weight: 900;
+            font-size: 32px;
+            color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
+            opacity: 0.15;
+            letter-spacing: 6px;
+            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: color;
+        }
+
+        .marquee-separator {
+            color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
+            opacity: 0.5;
+            font-size: 20px;
+            font-weight: 300;
+            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: color;
         }
 
         /* ===== REDUCED MOTION ===== */
@@ -701,71 +788,41 @@
                 transform: none !important;
                 transition: none !important;
             }
-            .truck-animation {
-                display: none !important;
-            }
-            .carousel-track {
-                transition: none !important;
-            }
+            .carousel-track { transition: none !important; }
             .carousel-slide:hover .product-card-visual img,
-            .carousel-slide:hover .product-card-emoji {
-                transform: none !important;
-            }
+            .carousel-slide:hover .product-card-emoji { transform: none !important; }
             .carousel-slide .product-card-visual img,
             .carousel-slide .product-card-info {
                 animation: none !important;
                 opacity: 1 !important;
                 transform: none !important;
             }
-            .carousel-arrow:hover {
-                transform: translateY(-50%) !important;
-            }
+            .carousel-arrow:hover { transform: translateY(-50%) !important; }
             .hero-title-underline::after {
                 animation: none !important;
                 transform: scaleX(1) !important;
             }
-            .hero-right-glow {
-                display: none !important;
-            }
-            .hero-section {
-                min-height: auto !important;
-                max-height: none !important;
-            }
-            .hero-right {
-                max-height: none !important;
-                min-height: 500px !important;
-            }
-            .hanzi-decor {
-                display: none !important;
-            }
+            .hero-right-glow { display: none !important; }
+            .hero-section::before,
+            .hero-left::after { transition: none !important; }
+            .hero-section { min-height: auto !important; max-height: none !important; }
+            .hero-right { max-height: none !important; min-height: 500px !important; }
+            .hanzi-decor { display: none !important; }
+            .marquee-track { animation: none !important; }
+            .marquee-char,
+            .marquee-separator { transition: none !important; }
         }
 
         /* ===== СКРОЛЛБАР ===== */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #FFFFFF;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #E5E7EB;
-            border-radius: 2px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D1D5DB;
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #FFFFFF; }
+        ::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
 
         /* ===== БЕГУЩАЯ СТРОКА ===== */
         @keyframes marqueeScroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         .marquee-track {
@@ -776,14 +833,54 @@
             will-change: transform;
         }
 
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
+        .marquee-track:hover { animation-play-state: paused; }
 
         @media (prefers-reduced-motion: reduce) {
-            .marquee-track {
-                animation: none !important;
-            }
+            .marquee-track { animation: none !important; }
+        }
+
+        /* ===== СТИЛИ ДЛЯ FLEX-ЭЛЕМЕНТОВ В HERO-LEFT ===== */
+        .hero-left .flex {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-left a {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HARDWARE ACCELERATION ===== */
+        .hero-right,
+        .hero-left {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .hero-section::before,
+        .hero-left::after,
+        .hero-right-glow {
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: background, opacity;
+        }
+
+        /* Явно указываем transition для gradient в hero-section::before */
+        .hero-section::before {
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-left::after {
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Добавляем transition для иероглифов во всех секциях */
+        .hanzi-decor {
+            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: color;
         }
     </style>
 @endpush
@@ -791,7 +888,7 @@
 @section('content')
     <!-- ===== HERO ===== -->
     <section class="hero-section">
-        <!-- Левая колонка — детализированная -->
+        <!-- Левая колонка -->
         <div class="hero-left">
             <div class="hero-badge" data-aos="fade-up" data-aos-duration="600">
                 <span class="hero-badge-dot"></span>
@@ -801,7 +898,7 @@
             <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
                 Экспорт<br>
                 <span class="hero-title-outline hero-title-underline">Импорт</span><br>
-                Инь Ян
+                Инь Янь
             </h1>
 
             <p class="hero-desc" data-aos="fade-up" data-aos-delay="200">
@@ -810,7 +907,6 @@
                 <strong>Минимальный заказ 100 000 ₽</strong>
             </p>
 
-            <!-- Мини-статистика в hero -->
             <div class="flex gap-6 mb-6" data-aos="fade-up" data-aos-delay="250">
                 <div>
                     <div class="text-[20px] font-black text-black leading-none">10+</div>
@@ -828,7 +924,6 @@
                 </div>
             </div>
 
-            <!-- Список преимуществ -->
             <div class="flex flex-wrap gap-x-6 gap-y-2 mb-6" data-aos="fade-up" data-aos-delay="300">
                 <div class="flex items-center gap-2">
                     <svg class="w-3 h-3 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -848,7 +943,6 @@
                 </div>
             </div>
 
-            <!-- Партнёры -->
             <div class="flex items-center gap-4 mb-8" data-aos="fade-up" data-aos-delay="350">
                 <span class="text-[7px] tracking-[2px] uppercase text-black/20">С нами работают</span>
                 <div class="flex gap-3">
@@ -863,7 +957,7 @@
                 <a href="#products" class="btn-ghost">Каталог</a>
             </div>
 
-            <!-- ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ (HERO LEFT) ===== -->
+            <!-- Иероглифы -->
             <div class="absolute inset-0 pointer-events-none select-none overflow-visible z-0">
                 <span class="hanzi-decor xl rotate-n8" style="bottom: 20px; right: 20px; opacity: 0.28;" data-aos="fade-up" data-aos-delay="400">和</span>
                 <span class="hanzi-decor lg rotate-n10" style="top: 30px; left: 30px; opacity: 0.22;" data-aos="fade-down" data-aos-delay="200">福</span>
@@ -876,7 +970,7 @@
 
         <!-- Правая колонка — карусель -->
         <div class="hero-right" data-aos="fade-in" data-aos-delay="200" data-aos-duration="700">
-            <div class="hero-right-glow glow-1 visible" id="heroGlow"></div>
+            <div class="hero-right-glow visible" id="heroGlow"></div>
             <div class="carousel-container">
                 <div class="carousel-track-wrapper">
                     <div class="carousel-track" id="carouselTrack">
@@ -889,7 +983,7 @@
                                     'name' => 'Лапша в стакане',
                                     'desc' => 'Говядина, курица. Удобный формат.',
                                     'price' => 'от 45 ₽ / шт',
-                                    'glow' => 'glow-1',
+                                    'accent' => '#83BF32',
                                 ],
                                 [
                                     'image' => 'images/product-2.png',
@@ -898,7 +992,7 @@
                                     'name' => 'Лапша с вонтонами',
                                     'desc' => 'Фирменный продукт. Мало конкурентов.',
                                     'price' => 'от 85 ₽ / шт',
-                                    'glow' => 'glow-2',
+                                    'accent' => '#DD7210',
                                 ],
                                 [
                                     'image' => 'images/product-3.png',
@@ -907,7 +1001,7 @@
                                     'name' => 'Сублимированная лапша',
                                     'desc' => 'Говядина, курица, морепродукты.',
                                     'price' => 'от 55 ₽ / шт',
-                                    'glow' => 'glow-3',
+                                    'accent' => '#970D62',
                                 ],
                                 [
                                     'image' => 'images/product-1.png',
@@ -916,20 +1010,18 @@
                                     'name' => 'Рис быстрого приготовления',
                                     'desc' => 'Бекон, говядина, курица, тушёное мясо.',
                                     'price' => 'от 65 ₽ / шт',
-                                    'glow' => 'glow-4',
+                                    'accent' => '#83BF32',
                                 ],
                             ];
                         @endphp
 
                         @foreach($slides as $index => $slide)
-                            <div class="carousel-slide {{ $index === 0 ? 'active-slide' : '' }}" data-index="{{ $index }}" data-glow="{{ $slide['glow'] }}">
+                            <div class="carousel-slide {{ $index === 0 ? 'active-slide' : '' }}"
+                                 data-index="{{ $index }}"
+                                 data-accent="{{ $slide['accent'] }}">
                                 <div class="product-card-visual">
                                     @if($slide['image'])
-                                        <img
-                                            src="{{ asset($slide['image']) }}"
-                                            alt="{{ $slide['name'] }}"
-                                            loading="lazy"
-                                        >
+                                        <img src="{{ asset($slide['image']) }}" alt="{{ $slide['name'] }}" loading="lazy">
                                     @else
                                         <span class="product-card-emoji">{{ $slide['emoji'] }}</span>
                                     @endif
@@ -953,11 +1045,7 @@
 
                 <div class="carousel-nav">
                     @foreach($slides as $index => $slide)
-                        <button
-                            class="carousel-dot {{ $index === 0 ? 'active' : '' }}"
-                            data-index="{{ $index }}"
-                            aria-label="Слайд {{ $index + 1 }}"
-                        ></button>
+                        <button class="carousel-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}" aria-label="Слайд {{ $index + 1 }}"></button>
                     @endforeach
                 </div>
             </div>
@@ -968,29 +1056,17 @@
     <div class="px-6 md:px-12 lg:px-16 pb-6 relative z-10 -mt-4 pt-4 search-wrapper section-with-hanzi" data-aos="fade-up" data-aos-delay="150">
         <div class="max-w-[560px] mx-auto relative">
             <form action="{{ route('search') }}" method="GET" class="flex items-center bg-white border border-black/10 rounded-full overflow-hidden transition-all duration-300 focus-within:border-black/30 focus-within:shadow-[0_0_0_3px_rgba(0,0,0,0.02)]">
-                <input
-                    type="text"
-                    name="query"
-                    id="searchInput"
-                    class="flex-1 bg-transparent border-none px-5 py-3 text-black text-sm placeholder-black/20 focus:outline-none"
-                    placeholder="Поиск товаров..."
-                    value="{{ request('query') }}"
-                    autocomplete="off"
-                >
-                <button type="submit" class="bg-black text-white border-none py-2.5 px-5 m-1 rounded-full text-xs font-medium tracking-[1px] uppercase transition-all duration-300 hover:bg-black/80">
-                    Найти
-                </button>
+                <input type="text" name="query" id="searchInput" class="flex-1 bg-transparent border-none px-5 py-3 text-black text-sm placeholder-black/20 focus:outline-none" placeholder="Поиск товаров..." value="{{ request('query') }}" autocomplete="off">
+                <button type="submit" class="bg-black text-white border-none py-2.5 px-5 m-1 rounded-full text-xs font-medium tracking-[1px] uppercase transition-all duration-300 hover:bg-black/80">Найти</button>
             </form>
-
             <div id="autocompleteDropdown" class="absolute top-[calc(100%+6px)] left-0 right-0 bg-white border border-black/10 rounded-xl max-h-[260px] overflow-y-auto hidden z-[100] shadow-[0_20px_40px_rgba(0,0,0,0.06)]"></div>
         </div>
-        <!-- Иероглифы для секции поиска -->
         <span class="hanzi-decor xs rotate-10" style="bottom: -10px; right: 5%; opacity: 0.08;">寻</span>
         <span class="hanzi-decor xs rotate-n8" style="top: -10px; left: 8%; opacity: 0.08;">品</span>
     </div>
 
     <!-- ===== СТАТИСТИКА ===== -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 border-t border-b border-black/5 stats-grid section-with-hanzi">
+    <div class="grid grid-cols-2 lg:grid-cols-4 stats-grid section-with-hanzi">
         @php
             $stats = [
                 ['number' => '10 000+', 'label' => 'Тонн импортировано'],
@@ -999,108 +1075,28 @@
                 ['number' => '10+', 'label' => 'Лет на рынке'],
             ];
         @endphp
-
         @foreach($stats as $index => $stat)
-            <div class="px-6 py-8 lg:p-10 text-center border-r border-black/5 {{ $loop->last ? 'border-r-0' : '' }} {{ $loop->index === 1 ? 'max-lg:border-r-0' : '' }} transition-colors duration-300 hover:bg-black/5 stat-item" data-aos="fade-up" data-aos-delay="{{ 100 + $index * 100 }}" data-target="{{ preg_replace('/[^0-9]/', '', $stat['number']) }}">
-                <div class="font-black text-[32px] lg:text-[40px] text-black tracking-[-1px] leading-none stat-number">
-                    {{ $stat['number'] }}
-                </div>
-                <div class="text-[9px] tracking-[2px] uppercase text-black/30 mt-2">
-                    {{ $stat['label'] }}
-                </div>
+            <div class="px-6 py-8 lg:p-10 text-center border-r {{ $loop->last ? 'border-r-0' : '' }} {{ $loop->index === 1 ? 'max-lg:border-r-0' : '' }} transition-colors duration-300 hover:bg-black/5 stat-item" data-aos="fade-up" data-aos-delay="{{ 100 + $index * 100 }}" data-target="{{ preg_replace('/[^0-9]/', '', $stat['number']) }}">
+                <div class="font-black text-[32px] lg:text-[40px] text-black tracking-[-1px] leading-none stat-number">{{ $stat['number'] }}</div>
+                <div class="text-[9px] tracking-[2px] uppercase text-black/30 mt-2">{{ $stat['label'] }}</div>
             </div>
         @endforeach
-
-        <!-- Иероглифы для статистики -->
         <span class="hanzi-decor md rotate-10" style="top: 50%; left: 8%; transform: translateY(-50%) rotate(10deg); opacity: 0.02;">数</span>
         <span class="hanzi-decor md rotate-n8" style="top: 50%; right: 8%; transform: translateY(-50%) rotate(-8deg); opacity: 0.02;">据</span>
     </div>
 
-    <!-- ===== БЕГУЩАЯ СТРОКА С ИЕРОГЛИФАМИ ===== -->
-    <div class="bg-white border-b border-black/5 overflow-hidden" style="position: relative; height: 60px;">
-        <!-- Фоновая дорожка -->
-        <div class="absolute top-1/2 left-0 right-0 h-[1px] bg-black/5"></div>
-        <div class="absolute top-1/2 left-0 right-0 h-[1px] mt-3 road-dash"></div>
-
-        <!-- БЕГУЩАЯ СТРОКА -->
+    <!-- ===== БЕГУЩАЯ СТРОКА ===== -->
+    <div class="marquee-section">
         <div class="absolute top-0 left-0 w-full h-full flex items-center overflow-hidden">
-            <div class="marquee-track">
-                <!-- Первый набор -->
-                <span style="display: inline-flex; align-items: center; gap: 48px; padding-right: 48px; font-family: 'Noto Serif SC', 'SimSun', serif; font-weight: 900; font-size: 32px; color: #FF6B00; opacity: 0.15; letter-spacing: 6px;">
-                <span>信</span>
-                <span>誉</span>
-                <span>第</span>
-                <span>一</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>品</span>
-                <span>质</span>
-                <span>为</span>
-                <span>本</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>诚</span>
-                <span>信</span>
-                <span>合</span>
-                <span>作</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>共</span>
-                <span>赢</span>
-                <span>未</span>
-                <span>来</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>中</span>
-                <span>俄</span>
-                <span>贸</span>
-                <span>易</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>直</span>
-                <span>接</span>
-                <span>进</span>
-                <span>口</span>
-            </span>
-                <!-- Дубликат для бесшовной анимации -->
-                <span style="display: inline-flex; align-items: center; gap: 48px; padding-right: 48px; font-family: 'Noto Serif SC', 'SimSun', serif; font-weight: 900; font-size: 32px; color: #FF6B00; opacity: 0.15; letter-spacing: 6px;">
-                <span>信</span>
-                <span>誉</span>
-                <span>第</span>
-                <span>一</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>品</span>
-                <span>质</span>
-                <span>为</span>
-                <span>本</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>诚</span>
-                <span>信</span>
-                <span>合</span>
-                <span>作</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>共</span>
-                <span>赢</span>
-                <span>未</span>
-                <span>来</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>中</span>
-                <span>俄</span>
-                <span>贸</span>
-                <span>易</span>
-                <span style="color: #FF6B00; opacity: 0.5; font-size: 20px; font-weight: 300;">|</span>
-                <span>直</span>
-                <span>接</span>
-                <span>进</span>
-                <span>口</span>
-            </span>
-            </div>
+            <div class="marquee-track" id="marqueeTrack"></div>
         </div>
     </div>
 
     <!-- ===== ПОЧЕМУ МЫ ===== -->
     <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] section-with-hanzi" id="why">
         <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">О нас</p>
-        <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px]" data-aos="fade-up" data-aos-delay="100">
-            Партнёры доверяют нам
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-black/5">
+        <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px]" data-aos="fade-up" data-aos-delay="100">Партнёры доверяют нам</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-transparent">
             @php
                 $reasons = [
                     ['num' => '01', 'title' => 'Выгода', 'desc' => 'Прямой импорт без посредников. Никаких наценок в цепочке поставок.'],
@@ -1108,17 +1104,14 @@
                     ['num' => '03', 'title' => 'Оперативность', 'desc' => 'Собственный склад. Отгрузка на следующий день после оплаты.'],
                 ];
             @endphp
-
             @foreach($reasons as $index => $reason)
-                <div class="bg-white p-8 lg:p-10 transition-all duration-300 hover:bg-black/5" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
+                <div class="bg-white p-8 lg:p-10 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
                     <div class="font-black text-3xl text-black/5 leading-none mb-4">{{ $reason['num'] }}</div>
                     <div class="font-bold text-[10px] tracking-[3px] uppercase text-black mb-3">{{ $reason['title'] }}</div>
                     <p class="text-sm text-black/40 leading-relaxed font-light">{{ $reason['desc'] }}</p>
                 </div>
             @endforeach
         </div>
-
-        <!-- Иероглифы для секции "Почему мы" -->
         <span class="hanzi-decor lg rotate-n10" style="top: 10%; right: 3%; opacity: 0.025;">信</span>
         <span class="hanzi-decor md rotate-12" style="bottom: 10%; left: 3%; opacity: 0.025;">德</span>
         <span class="hanzi-decor sm rotate-n8" style="top: 30%; left: 8%; opacity: 0.02;">诚</span>
@@ -1126,13 +1119,12 @@
     </section>
 
     <!-- ===== КАТАЛОГ ===== -->
-    <section class="bg-white py-[60px] lg:py-[80px] border-t border-b border-black/5 section-with-hanzi" id="products">
+    <section class="bg-white py-[60px] lg:py-[80px] section-with-hanzi" id="products">
         <div class="px-6 md:px-12 lg:px-16 pb-10">
             <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">Ассортимент</p>
             <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px]" data-aos="fade-up" data-aos-delay="100">Наша продукция</h2>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-black/5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             @php
                 $products = [
                     ['icon' => '🍜', 'tag' => 'Лапша · Стакан', 'name' => 'Лапша быстрого приготовления в стакане', 'desc' => 'Говядина или курица. Удобная упаковка.'],
@@ -1141,9 +1133,8 @@
                     ['icon' => '🍚', 'tag' => 'Рис', 'name' => 'Рис быстрого приготовления', 'desc' => 'Бекон, говядина с перцем, курица, тушёное мясо.'],
                 ];
             @endphp
-
             @foreach($products as $index => $product)
-                <div class="p-6 lg:p-8 border-r border-b border-black/5 {{ $loop->last ? 'lg:border-r-0' : '' }} {{ $loop->index % 2 === 1 ? 'max-lg:border-r-0' : '' }} max-sm:border-r-0 transition-all duration-300 hover:bg-black/5" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
+                <div class="p-6 lg:p-8 border-r border-b {{ $loop->last ? 'lg:border-r-0' : '' }} {{ $loop->index % 2 === 1 ? 'max-lg:border-r-0' : '' }} max-sm:border-r-0 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
                     <span class="text-2xl mb-4 block transition-transform duration-300 hover:scale-110">{{ $product['icon'] }}</span>
                     <div class="text-[8px] tracking-[3px] uppercase text-black/30 mb-2">{{ $product['tag'] }}</div>
                     <div class="font-bold text-[13px] leading-tight text-black mb-2">{{ $product['name'] }}</div>
@@ -1151,14 +1142,9 @@
                 </div>
             @endforeach
         </div>
-
         <div class="px-6 md:px-12 lg:px-16 pt-10 text-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">
-                Полный прайс
-            </a>
+            <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный прайс</a>
         </div>
-
-        <!-- Иероглифы для каталога -->
         <span class="hanzi-decor lg rotate-10" style="top: 5%; left: 2%; opacity: 0.025;">品</span>
         <span class="hanzi-decor md rotate-n12" style="bottom: 5%; right: 2%; opacity: 0.025;">类</span>
         <span class="hanzi-decor sm rotate-8" style="top: 20%; right: 5%; opacity: 0.02;">丰</span>
@@ -1166,15 +1152,9 @@
     </section>
 
     <!-- ===== CTA ===== -->
-    <div class="px-6 md:px-12 lg:px-16 py-14 lg:py-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-black/5 bg-white section-with-hanzi">
-        <h2 class="font-black text-[clamp(24px,2.8vw,38px)] uppercase tracking-[-1px] leading-none" data-aos="fade-right">
-            Готовы начать<br>
-            <span class="text-black/20">сотрудничество?</span>
-        </h2>
-        <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">
-            Связаться
-        </a>
-        <!-- Иероглифы для CTA -->
+    <div class="px-6 md:px-12 lg:px-16 py-14 lg:py-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cta-section section-with-hanzi">
+        <h2 class="font-black text-[clamp(24px,2.8vw,38px)] uppercase tracking-[-1px] leading-none" data-aos="fade-right">Готовы начать<br><span class="text-black/20">сотрудничество?</span></h2>
+        <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">Связаться</a>
         <span class="hanzi-decor sm rotate-10" style="top: 10%; right: 30%; opacity: 0.025;">赢</span>
         <span class="hanzi-decor xs rotate-n5" style="bottom: 10%; left: 10%; opacity: 0.02;">合</span>
         <span class="hanzi-decor xs rotate-8" style="bottom: 10%; right: 25%; opacity: 0.02;">作</span>
@@ -1186,7 +1166,6 @@
             <div>
                 <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">Контакты</p>
                 <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[500px] mb-10" data-aos="fade-up" data-aos-delay="100">Свяжитесь с нами</h2>
-
                 @php
                     $contacts = [
                         ['label' => 'Коммерческий директор', 'value' => 'Алексей Ерышев', 'type' => 'text'],
@@ -1195,47 +1174,30 @@
                         ['label' => 'Адрес', 'value' => '692771, Приморский край, г. Артём, ул. Постникова, д. 2а, каб. 21', 'type' => 'text'],
                     ];
                 @endphp
-
                 @foreach($contacts as $index => $contact)
                     <div class="mb-6" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
                         <div class="text-[9px] tracking-[3px] uppercase text-black/30 mb-1">{{ $contact['label'] }}</div>
                         @if($contact['type'] === 'tel' || $contact['type'] === 'email')
-                            <a href="{{ $contact['href'] }}" class="font-semibold text-[16px] text-black no-underline transition-colors duration-300 hover:text-black/60">
-                                {{ $contact['value'] }}
-                            </a>
+                            <a href="{{ $contact['href'] }}" class="font-semibold text-[16px] text-black no-underline transition-colors duration-300 hover:text-black/60">{{ $contact['value'] }}</a>
                         @else
                             <span class="font-semibold text-[16px] text-black">{{ $contact['value'] }}</span>
                         @endif
                     </div>
                 @endforeach
             </div>
-
             <div data-aos="fade-up" data-aos-delay="300">
                 <div class="border border-black/10 p-6 bg-white">
                     <div class="text-[12px] text-black/50 space-y-3">
-                        <div>
-                            <strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">Организация</strong>
-                            ООО «Экспорт-Импорт Инь-Ян»
-                        </div>
-                        <div>
-                            <strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ОГРН</strong>
-                            1232500004846
-                        </div>
-                        <div>
-                            <strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ИНН / КПП</strong>
-                            2502071087 / 250201001
-                        </div>
+                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">Организация</strong>ООО «Экспорт-Импорт Инь-Ян»</div>
+                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ОГРН</strong>1232500004846</div>
+                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ИНН / КПП</strong>2502071087 / 250201001</div>
                     </div>
                 </div>
                 <div class="mt-4 p-6 border border-black/10 border-t-0 bg-white">
-                    <p class="text-[12px] text-black/30 leading-relaxed font-light">
-                        Стабильные поставки, конкурентные цены и широкий ассортимент продуктов из Китая.
-                    </p>
+                    <p class="text-[12px] text-black/30 leading-relaxed font-light">Стабильные поставки, конкурентные цены и широкий ассортимент продуктов из Китая.</p>
                 </div>
             </div>
         </div>
-
-        <!-- Иероглифы для контактов -->
         <span class="hanzi-decor lg rotate-n8" style="top: 5%; right: 5%; opacity: 0.025;">联</span>
         <span class="hanzi-decor md rotate-10" style="bottom: 5%; left: 5%; opacity: 0.025;">系</span>
         <span class="hanzi-decor sm rotate-n12" style="top: 40%; left: 2%; opacity: 0.02;">友</span>
@@ -1253,6 +1215,36 @@
             offset: 30,
             easing: 'ease-out'
         });
+
+        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ БЕГУЩЕЙ СТРОКИ =====
+        const marqueeChars = ['信', '誉', '第', '一', '品', '质', '为', '本', '诚', '信', '合', '作', '共', '赢', '未', '来', '中', '俄', '贸', '易', '直', '接', '进', '口'];
+
+        // ===== ФУНКЦИЯ ОБНОВЛЕНИЯ БЕГУЩЕЙ СТРОКИ =====
+        function updateMarqueeColors() {
+            const track = document.getElementById('marqueeTrack');
+            if (!track) return;
+
+            let html = '';
+            html += '<span style="display: inline-flex; align-items: center; gap: 48px; padding-right: 48px;">';
+            marqueeChars.forEach((char, i) => {
+                if (i > 0 && i % 4 === 0) {
+                    html += `<span class="marquee-separator">|</span>`;
+                }
+                html += `<span class="marquee-char">${char}</span>`;
+            });
+            html += '</span>';
+
+            html += '<span style="display: inline-flex; align-items: center; gap: 48px; padding-right: 48px;">';
+            marqueeChars.forEach((char, i) => {
+                if (i > 0 && i % 4 === 0) {
+                    html += `<span class="marquee-separator">|</span>`;
+                }
+                html += `<span class="marquee-char">${char}</span>`;
+            });
+            html += '</span>';
+
+            track.innerHTML = html;
+        }
 
         // ===== АНИМАЦИЯ СТАТИСТИКИ =====
         (function() {
@@ -1295,7 +1287,7 @@
             if (statItems.length) observer.observe(statItems[0]);
         })();
 
-        // ===== КАРУСЕЛЬ =====
+        // ===== КАРУСЕЛЬ С ПЛАВНЫМИ ПЕРЕХОДАМИ =====
         (function() {
             const track = document.getElementById('carouselTrack');
             const slides = document.querySelectorAll('.carousel-slide');
@@ -1304,6 +1296,7 @@
             const nextBtn = document.getElementById('carouselNext');
             const glow = document.getElementById('heroGlow');
             const counter = document.getElementById('carouselCounter');
+            const root = document.documentElement;
 
             if (!track || !slides.length) return;
 
@@ -1313,18 +1306,47 @@
             let isInteracting = false;
             let isTransitioning = false;
 
-            function updateGlow(index) {
-                if (!glow) return;
+            function updateAccentColor(index) {
                 const slide = slides[index];
                 if (!slide) return;
 
-                glow.className = 'hero-right-glow';
-                const glowClass = slide.dataset.glow || 'glow-1';
-                glow.classList.add(glowClass);
+                const accent = slide.dataset.accent || '#FF6B00';
+                const hex = accent.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
 
                 requestAnimationFrame(() => {
-                    glow.classList.add('visible');
+                    root.style.setProperty('--carousel-accent-r', r);
+                    root.style.setProperty('--carousel-accent-g', g);
+                    root.style.setProperty('--carousel-accent-b', b);
+
+                    if (glow) {
+                        glow.style.background = `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.3) 0%, transparent 70%)`;
+                    }
+
+                    document.querySelectorAll('.hanzi-decor').forEach(el => {
+                        el.style.color = `rgb(${r}, ${g}, ${b})`;
+                    });
+
+                    document.querySelectorAll('.marquee-char').forEach(el => {
+                        el.style.color = `rgb(${r}, ${g}, ${b})`;
+                    });
+
+                    document.querySelectorAll('.marquee-separator').forEach(el => {
+                        el.style.color = `rgb(${r}, ${g}, ${b})`;
+                    });
                 });
+            }
+
+            function updateGlow(index) {
+                if (!glow) return;
+                glow.style.opacity = '0';
+                setTimeout(() => {
+                    glow.style.transition = 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                    glow.style.opacity = '0.3';
+                    glow.classList.add('visible');
+                }, 500);
             }
 
             function updateCounter(index) {
@@ -1340,10 +1362,19 @@
                 if (index >= totalSlides) index = 0;
 
                 isTransitioning = true;
+
+                // Сохраняем текущую позицию
+                const currentPosition = currentIndex * -100;
+
+                // Обновляем индекс
                 currentIndex = index;
 
-                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                // Применяем трансформацию
+                requestAnimationFrame(() => {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                });
 
+                // Обновляем UI
                 slides.forEach((slide, i) => {
                     slide.classList.toggle('active-slide', i === currentIndex);
                 });
@@ -1352,12 +1383,14 @@
                     dot.classList.toggle('active', i === currentIndex);
                 });
 
+                updateAccentColor(currentIndex);
                 updateGlow(currentIndex);
                 updateCounter(currentIndex);
 
+                // Сбрасываем флаг после анимации
                 setTimeout(() => {
                     isTransitioning = false;
-                }, 650);
+                }, 800);
             }
 
             function nextSlide() {
@@ -1372,7 +1405,7 @@
                 stopAutoPlay();
                 autoPlayInterval = setInterval(() => {
                     if (!isInteracting && !isTransitioning) nextSlide();
-                }, 4000);
+                }, 6000);
             }
 
             function stopAutoPlay() {
@@ -1423,6 +1456,8 @@
                 }
             }, { passive: true });
 
+            // Инициализация
+            updateMarqueeColors();
             goToSlide(0);
             startAutoPlay();
 
@@ -1478,40 +1513,6 @@
         const debouncedSearch = debounce(searchSuggestions, 300);
         searchInput?.addEventListener('input', e => debouncedSearch(e.target.value.trim()));
         document.addEventListener('click', e => { if (!searchInput?.contains(e.target) && !dropdown?.contains(e.target)) dropdown?.classList.add('hidden'); });
-
-        // ===== ГРУЗОВИК =====
-        const truck = document.getElementById('truck');
-        const road = document.getElementById('road');
-        let running = false;
-
-        function runTruck() {
-            if (running || !truck) return;
-            running = true;
-            let x = -340;
-            const target = window.innerWidth + 60;
-            function step() {
-                x += 3;
-                truck.style.left = x + 'px';
-                if (x < target) requestAnimationFrame(step);
-                else { truck.style.left = '-340px'; running = false; }
-            }
-            requestAnimationFrame(step);
-        }
-
-        if (road) {
-            new IntersectionObserver(entries => { if (entries[0].isIntersecting) runTruck(); }, { threshold: 0.3 }).observe(road);
-        }
-
-        let lastY = 0, cooldown = false;
-        window.addEventListener('scroll', () => {
-            const y = window.scrollY;
-            if (y > lastY && y > window.innerHeight * 0.5 && !cooldown) {
-                cooldown = true;
-                runTruck();
-                setTimeout(() => { cooldown = false; }, 4000);
-            }
-            lastY = y;
-        });
 
         // ===== ПЛАВНЫЙ СКРОЛЛ =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
