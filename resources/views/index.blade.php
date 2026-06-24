@@ -23,12 +23,12 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #FFFFFF;
-            color: #111827;
+            color: #1A1A1A;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
 
-        /* ===== CSS-ПЕРЕМЕННЫЕ ДЛЯ ДИНАМИЧЕСКИХ ЦВЕТОВ ===== */
+        /* ===== CSS-ПЕРЕМЕННЫЕ ===== */
         :root {
             --carousel-accent-r: 255;
             --carousel-accent-g: 107;
@@ -41,7 +41,7 @@
             --carousel-left-gradient-to: rgba(255, 255, 255, 0);
         }
 
-        /* ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ (ГЛОБАЛЬНЫЙ КЛАСС) ===== */
+        /* ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ ===== */
         .hanzi-decor {
             position: absolute;
             pointer-events: none;
@@ -70,7 +70,6 @@
         .hanzi-decor.rotate-n10 { transform: rotate(-10deg); }
         .hanzi-decor.rotate-n12 { transform: rotate(-12deg); }
 
-        /* ===== СЕКЦИИ С ПОЗИЦИЕЙ ДЛЯ ИЕРОГЛИФОВ ===== */
         .section-with-hanzi {
             position: relative;
             overflow: visible !important;
@@ -103,11 +102,10 @@
             position: relative;
             overflow: visible !important;
             padding-top: 64px;
+            padding-bottom: 80px;
             border-bottom: none !important;
         }
 
-        /* ===== ЕДИНЫЙ ГРАДИЕНТНЫЙ ОВЕРЛЕЙ НА ВСЮ HERO-СЕКЦИЮ ===== */
-        /* Идёт от правого края, размывается к левому, и выходит вниз с затуханием */
         .hero-section::before {
             content: '';
             position: absolute;
@@ -144,9 +142,9 @@
             }
         }
 
-        /* Левая колонка */
+        /* ===== ЛЕВАЯ КОЛОНКА ===== */
         .hero-left {
-            padding: 40px 60px 40px 80px;
+            padding: 85px 56px 48px 72px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -156,14 +154,13 @@
             overflow: hidden !important;
         }
 
-        /* Радиальный акцент в левой колонке (сохраняем для глубины) */
         .hero-left::after {
             content: '';
             position: absolute;
             inset: 0;
             background: radial-gradient(
                 circle at 30% 50%,
-                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.04) 0%,
+                rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.08) 0%,
                 transparent 70%
             );
             transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -172,16 +169,13 @@
             will-change: background;
         }
 
-
-
-        /* Весь контент левой колонки должен быть над градиентами */
         .hero-left > * {
             position: relative;
             z-index: 1;
         }
 
         @media (max-width: 1200px) {
-            .hero-left { padding: 40px 40px 40px 48px; }
+            .hero-left { padding: 40px 36px 40px 48px; }
         }
 
         @media (max-width: 1024px) {
@@ -192,24 +186,27 @@
             .hero-left { padding: 24px 20px 24px; }
         }
 
+        /* ===== БЕЙДЖ ===== */
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            font-size: 9px;
+            font-size: 10px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.3);
-            margin-bottom: 28px;
+            color: rgba(26, 26, 26, 0.4);
+            margin-bottom: 24px;
             position: relative;
             z-index: 1;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
         }
 
         .hero-badge-dot {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: #111827;
+            background: #1A1A1A;
             animation: pulse-dot 2s infinite;
         }
 
@@ -218,12 +215,14 @@
             50% { opacity: 0.3; transform: scale(1.8); }
         }
 
+        /* ===== ЗАГОЛОВОК ===== */
         .hero-title {
+            font-family: 'Inter', sans-serif;
             font-weight: 900;
-            font-size: clamp(38px, 5vw, 68px);
+            font-size: clamp(42px, 5.5vw, 72px);
             line-height: 0.9;
             text-transform: uppercase;
-            color: #000000;
+            color: #1A1A1A;
             letter-spacing: -2.5px;
             margin-bottom: 24px;
             position: relative;
@@ -231,65 +230,133 @@
         }
 
         .hero-title-outline {
-            -webkit-text-stroke: 1.5px #111827;
+            -webkit-text-stroke: 1.5px #1A1A1A;
             color: transparent;
-            margin-bottom: 4px;
         }
 
-        .hero-title-underline {
-            display: inline-block;
-            position: relative;
-        }
-
-        .hero-title-underline::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #111827;
-            transform: scaleX(0);
-            transform-origin: right;
-            animation: underlineReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards;
-        }
-
-        @keyframes underlineReveal {
-            0% { transform: scaleX(0); transform-origin: right; }
-            100% { transform: scaleX(1); transform-origin: left; }
-        }
-
+        /* ===== ОПИСАНИЕ ===== */
         .hero-desc {
-            font-size: 14px;
-            color: rgba(0, 0, 0, 0.4);
-            line-height: 1.6;
-            max-width: 380px;
-            margin-bottom: 36px;
-            font-weight: 350;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            color: #2A2A2A;
+            line-height: 1.7;
+            max-width: 460px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
 
-        .hero-desc strong {
-            color: rgba(0, 0, 0, 0.7);
-            font-weight: 500;
+        /* ===== МИНИМАЛЬНЫЙ ЗАКАЗ ===== */
+        .hero-min-order {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+            padding: 10px 16px;
+            background: rgba(26, 26, 26, 0.05);
+            max-width: 320px;
         }
 
+        .hero-min-order .min-order-line {
+            display: none;
+        }
+
+        .hero-min-order .min-order-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.4);
+        }
+
+        .hero-min-order .min-order-amount {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: #1A1A1A;
+            letter-spacing: 0;
+            margin-left: auto;
+        }
+
+        /* ===== ПРЕИМУЩЕСТВА ===== */
+        .hero-benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 28px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-benefit-item {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            color: #3A3A3A;
+            letter-spacing: 0.3px;
+        }
+
+        .hero-benefit-item::before {
+            content: '—';
+            margin-right: 6px;
+            color: #AAAAAA;
+        }
+
+        /* ===== ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ===== */
+        .hero-extra-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+            padding: 16px 0;
+            border-top: 1px solid rgba(26, 26, 26, 0.06);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+        }
+
+        .hero-extra-item {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-extra-item .label {
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.3);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .hero-extra-item .value {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1A1A1A;
+        }
+
+        /* ===== КНОПКИ ===== */
         .hero-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
             position: relative;
             z-index: 1;
+            margin-top: 4px;
         }
 
         .btn-primary {
             display: inline-flex;
             align-items: center;
-            padding: 14px 36px;
-            background: #111827;
+            padding: 16px 40px;
+            background: #1A1A1A;
             color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
             font-size: 10px;
             font-weight: 600;
             letter-spacing: 2px;
@@ -298,44 +365,25 @@
             transition: all 0.35s ease;
             border: none;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn-primary:hover::after {
-            width: 300px;
-            height: 300px;
         }
 
         .btn-primary:hover {
             background: #000000;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(26, 26, 26, 0.15);
         }
 
         .btn-ghost {
+            font-family: 'Inter', sans-serif;
             font-size: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.35);
+            color: rgba(26, 26, 26, 0.4);
             text-decoration: none;
-            padding-bottom: 4px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid rgba(26, 26, 26, 0.1);
             transition: all 0.35s ease;
-            position: relative;
+            font-weight: 500;
         }
 
         .btn-ghost::after {
@@ -346,9 +394,50 @@
         }
 
         .btn-ghost:hover::after { transform: translateX(4px); }
-        .btn-ghost:hover { color: #111827; border-bottom-color: #111827; }
+        .btn-ghost:hover { color: #1A1A1A; border-bottom-color: #1A1A1A; }
 
-        /* ===== ПРАВАЯ КОЛОНКА — КАРУСЕЛЬ ===== */
+        /* ===== КЛИЕНТЫ ===== */
+        .hero-clients {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            padding-top: 20px;
+            border-top: 1px solid rgba(26, 26, 26, 0.05);
+        }
+
+        .hero-clients-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 7px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.2);
+            font-weight: 500;
+        }
+
+        .hero-clients-logos {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .hero-clients-logos span {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            color: rgba(26, 26, 26, 0.15);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .hero-clients-logos span:hover {
+            color: rgba(26, 26, 26, 0.3);
+        }
+
+        /* ===== ПРАВАЯ КОЛОНКА ===== */
         .hero-right {
             background: #FFFFFF;
             position: relative;
@@ -398,8 +487,23 @@
                 min-height: auto;
                 max-height: 60vh;
             }
+            .hero-benefits {
+                gap: 4px 16px;
+            }
+            .hero-benefit-item {
+                font-size: 10px;
+            }
+            .hero-extra-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 16px;
+            }
+            .hero-clients {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
         }
 
+        /* ===== КАРУСЕЛЬ ===== */
         .carousel-container {
             width: 100%;
             height: 100%;
@@ -469,7 +573,7 @@
 
         .carousel-slide:hover .product-card-visual img {
             transform: scale(1.04) rotateY(1deg);
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.06));
+            filter: drop-shadow(0 15px 30px rgba(26, 26, 26, 0.04));
         }
 
         .carousel-slide.active-slide .product-card-visual img {
@@ -532,27 +636,28 @@
 
         .product-card-tag {
             display: inline-block;
-            background: #F5F5F5;
+            background: rgba(26, 26, 26, 0.06);
             padding: 4px 12px;
-            border-radius: 100px;
+            font-family: 'Inter', sans-serif;
             font-size: 8px;
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.4);
+            color: rgba(26, 26, 26, 0.4);
             margin-bottom: 10px;
             transition: all 0.3s ease;
         }
 
         .carousel-slide:hover .product-card-tag {
-            background: #111827;
+            background: #1A1A1A;
             color: #FFFFFF;
         }
 
         .product-card-name {
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 20px;
-            color: #111827;
+            color: #1A1A1A;
             margin-bottom: 4px;
             line-height: 1.2;
             letter-spacing: -0.3px;
@@ -561,8 +666,9 @@
         @media (max-width: 640px) { .product-card-name { font-size: 17px; } }
 
         .product-card-desc {
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
-            color: rgba(0, 0, 0, 0.35);
+            color: rgba(26, 26, 26, 0.4);
             line-height: 1.5;
             font-weight: 350;
             max-width: 300px;
@@ -571,18 +677,18 @@
 
         .product-card-price {
             margin-top: 12px;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 13px;
-            color: #111827;
-            background: #F5F5F5;
+            color: #1A1A1A;
+            background: rgba(26, 26, 26, 0.06);
             padding: 5px 16px;
-            border-radius: 100px;
             display: inline-block;
             transition: all 0.3s ease;
         }
 
         .carousel-slide:hover .product-card-price {
-            background: #111827;
+            background: #1A1A1A;
             color: #FFFFFF;
             transform: scale(1.04);
         }
@@ -603,7 +709,7 @@
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.12);
+            background: rgba(26, 26, 26, 0.12);
             border: none;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -612,19 +718,19 @@
         }
 
         .carousel-dot.active {
-            background: #111827;
+            background: #1A1A1A;
             width: 22px;
             border-radius: 3px;
         }
 
         .carousel-dot:hover {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(26, 26, 26, 0.3);
             transform: scale(1.3);
         }
 
         .carousel-dot.active:hover {
             transform: scale(1);
-            background: #111827;
+            background: #1A1A1A;
         }
 
         .carousel-arrow {
@@ -634,7 +740,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(26, 26, 26, 0.06);
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -643,17 +749,17 @@
             align-items: center;
             justify-content: center;
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            color: #111827;
+            color: #1A1A1A;
             font-size: 16px;
             z-index: 10;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 2px 10px rgba(26, 26, 26, 0.02);
         }
 
         .carousel-arrow:hover {
-            background: #111827;
+            background: #1A1A1A;
             color: #FFFFFF;
-            border-color: #111827;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-color: #1A1A1A;
+            box-shadow: 0 6px 20px rgba(26, 26, 26, 0.06);
             transform: translateY(-50%) scale(1.06);
         }
 
@@ -673,10 +779,11 @@
             bottom: 60px;
             left: 50%;
             transform: translateX(-50%);
+            font-family: 'Inter', sans-serif;
             font-size: 10px;
             font-weight: 300;
             letter-spacing: 2.5px;
-            color: rgba(0, 0, 0, 0.1);
+            color: rgba(26, 26, 26, 0.1);
             z-index: 5;
         }
 
@@ -694,12 +801,6 @@
             border-bottom: none !important;
         }
 
-        /* ===== ПОИСК ===== */
-        .search-wrapper {
-            position: relative;
-            overflow: visible !important;
-        }
-
         /* ===== СТАТИСТИКА ===== */
         .stats-grid {
             position: relative;
@@ -710,10 +811,10 @@
         }
 
         .stats-grid .border-r {
-            border-color: rgba(0, 0, 0, 0.04) !important;
+            border-color: rgba(26, 26, 26, 0.04) !important;
         }
 
-        /* ===== СЕКЦИИ БЕЗ ГРАНИЦ ===== */
+        /* ===== СЕКЦИИ ===== */
         #why {
             background: #FFFFFF;
         }
@@ -730,7 +831,7 @@
 
         #products .border-r,
         #products .border-b {
-            border-color: rgba(0, 0, 0, 0.04) !important;
+            border-color: rgba(26, 26, 26, 0.04) !important;
         }
 
         .cta-section {
@@ -742,24 +843,21 @@
             background: #FFFFFF;
         }
 
-        /* ===== ГРАДИЕНТНЫЕ ПЕРЕХОДЫ МЕЖДУ СЕКЦИЯМИ ===== */
         .section-divider {
             height: 40px;
             background: linear-gradient(
                 to bottom,
                 #FFFFFF 0%,
-                rgba(0, 0, 0, 0.01) 50%,
+                rgba(26, 26, 26, 0.01) 50%,
                 #FFFFFF 100%
             );
             pointer-events: none;
         }
 
-        /* ===== AOS ===== */
         [data-aos] {
             transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* ===== БЕГУЩАЯ СТРОКА С ДИНАМИЧЕСКИМ ЦВЕТОМ ===== */
         .marquee-char {
             font-family: 'Noto Serif SC', 'SimSun', serif;
             font-weight: 900;
@@ -781,7 +879,6 @@
             will-change: color;
         }
 
-        /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             [data-aos] {
                 opacity: 1 !important;
@@ -798,10 +895,6 @@
                 transform: none !important;
             }
             .carousel-arrow:hover { transform: translateY(-50%) !important; }
-            .hero-title-underline::after {
-                animation: none !important;
-                transform: scaleX(1) !important;
-            }
             .hero-right-glow { display: none !important; }
             .hero-section::before,
             .hero-left::after { transition: none !important; }
@@ -813,13 +906,11 @@
             .marquee-separator { transition: none !important; }
         }
 
-        /* ===== СКРОЛЛБАР ===== */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #FFFFFF; }
-        ::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
+        ::-webkit-scrollbar-thumb { background: rgba(26, 26, 26, 0.12); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(26, 26, 26, 0.2); }
 
-        /* ===== БЕГУЩАЯ СТРОКА ===== */
         @keyframes marqueeScroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
@@ -839,7 +930,6 @@
             .marquee-track { animation: none !important; }
         }
 
-        /* ===== СТИЛИ ДЛЯ FLEX-ЭЛЕМЕНТОВ В HERO-LEFT ===== */
         .hero-left .flex {
             position: relative;
             z-index: 1;
@@ -850,7 +940,6 @@
             z-index: 1;
         }
 
-        /* ===== HARDWARE ACCELERATION ===== */
         .hero-right,
         .hero-left {
             -webkit-transform: translateZ(0);
@@ -867,7 +956,6 @@
             will-change: background, opacity;
         }
 
-        /* Явно указываем transition для gradient в hero-section::before */
         .hero-section::before {
             transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -876,11 +964,15 @@
             transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Добавляем transition для иероглифов во всех секциях */
         .hanzi-decor {
             transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1),
             opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: color;
+        }
+
+        .hanzi-decor,
+        .marquee-char {
+            font-family: 'Noto Serif SC', 'SimSun', serif;
         }
     </style>
 @endpush
@@ -890,68 +982,62 @@
     <section class="hero-section">
         <!-- Левая колонка -->
         <div class="hero-left">
+            <!-- B2B-бейдж -->
             <div class="hero-badge" data-aos="fade-up" data-aos-duration="600">
                 <span class="hero-badge-dot"></span>
                 Прямой импортёр №1 в РФ
             </div>
 
+            <!-- Заголовок -->
             <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
                 Экспорт<br>
-                <span class="hero-title-outline hero-title-underline">Импорт</span><br>
+                <span class="hero-title-outline">Импорт</span><br>
                 Инь Янь
             </h1>
 
+            <!-- Описание -->
             <p class="hero-desc" data-aos="fade-up" data-aos-delay="200">
-                Оптовые поставки продуктов питания из Китая — лапша, вонтоны, рис.
-                <br>
-                <strong>Минимальный заказ 100 000 ₽</strong>
+                Оптовые поставки продуктов питания из Китая.<br>
+                Прямой импорт без посредников. Работаем с 2013 года.
             </p>
 
-            <div class="flex gap-6 mb-6" data-aos="fade-up" data-aos-delay="250">
-                <div>
-                    <div class="text-[20px] font-black text-black leading-none">10+</div>
-                    <div class="text-[8px] tracking-[1px] uppercase text-black/25">Лет на рынке</div>
+            <!-- Минимальный заказ -->
+            <div class="hero-min-order" data-aos="fade-up" data-aos-delay="150">
+                <span class="min-order-label">Минимальный заказ</span>
+                <span class="min-order-amount">100 000 ₽</span>
+            </div>
+
+            <!-- Преимущества -->
+            <div class="hero-benefits" data-aos="fade-up" data-aos-delay="250">
+                <span class="hero-benefit-item">Сертификаты ЕАС</span>
+                <span class="hero-benefit-item">Честный знак</span>
+                <span class="hero-benefit-item">Собственный склад</span>
+                <span class="hero-benefit-item">Отгрузка за 24 ч</span>
+                <span class="hero-benefit-item">Прямые контракты</span>
+                <span class="hero-benefit-item">10+ лет на рынке</span>
+            </div>
+
+            <!-- Дополнительная информация -->
+            <div class="hero-extra-info" data-aos="fade-up" data-aos-delay="200">
+                <div class="hero-extra-item">
+                    <span class="label">Склад в РФ</span>
+                    <span class="value">г. Артём, Приморский край</span>
                 </div>
-                <div class="w-px bg-black/10"></div>
-                <div>
-                    <div class="text-[20px] font-black text-black leading-none">100+</div>
-                    <div class="text-[8px] tracking-[1px] uppercase text-black/25">Клиентов</div>
+                <div class="hero-extra-item">
+                    <span class="label">Доставка</span>
+                    <span class="value">По всей России</span>
                 </div>
-                <div class="w-px bg-black/10"></div>
-                <div>
-                    <div class="text-[20px] font-black text-black leading-none">98%</div>
-                    <div class="text-[8px] tracking-[1px] uppercase text-black/25">Отгрузок вовремя</div>
+                <div class="hero-extra-item">
+                    <span class="label">Ассортимент</span>
+                    <span class="value">50+ позиций</span>
+                </div>
+                <div class="hero-extra-item">
+                    <span class="label">Гарантия</span>
+                    <span class="value">100% качество</span>
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-x-6 gap-y-2 mb-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="flex items-center gap-2">
-                    <svg class="w-3 h-3 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span class="text-[10px] text-black/40 font-light">Сертификаты ЕАС</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <svg class="w-3 h-3 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span class="text-[10px] text-black/40 font-light">Честный знак</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <svg class="w-3 h-3 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span class="text-[10px] text-black/40 font-light">Собственный склад</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <svg class="w-3 h-3 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span class="text-[10px] text-black/40 font-light">Отгрузка за 24 ч</span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4 mb-8" data-aos="fade-up" data-aos-delay="350">
-                <span class="text-[7px] tracking-[2px] uppercase text-black/20">С нами работают</span>
-                <div class="flex gap-3">
-                    <span class="text-[9px] font-bold text-black/10 tracking-wider">MAGNIT</span>
-                    <span class="text-[9px] font-bold text-black/10 tracking-wider">X5 GROUP</span>
-                    <span class="text-[9px] font-bold text-black/10 tracking-wider">LENTA</span>
-                </div>
-            </div>
-
+            <!-- Кнопки -->
             <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
                 <a href="#contacts" class="btn-primary">Запросить прайс</a>
                 <a href="#products" class="btn-ghost">Каталог</a>
@@ -959,12 +1045,12 @@
 
             <!-- Иероглифы -->
             <div class="absolute inset-0 pointer-events-none select-none overflow-visible z-0">
-                <span class="hanzi-decor xl rotate-n8" style="bottom: 20px; right: 20px; opacity: 0.28;" data-aos="fade-up" data-aos-delay="400">和</span>
-                <span class="hanzi-decor lg rotate-n10" style="top: 30px; left: 30px; opacity: 0.22;" data-aos="fade-down" data-aos-delay="200">福</span>
-                <span class="hanzi-decor md rotate-10" style="top: 60px; right: 40px; opacity: 0.25;" data-aos="fade-down" data-aos-delay="300">龙</span>
-                <span class="hanzi-decor lg rotate-12" style="bottom: 30%; right: 30px; opacity: 0.21;" data-aos="fade-left" data-aos-delay="350">宝</span>
-                <span class="hanzi-decor md rotate-10" style="bottom: 60%; right: 25%; opacity: 0.25;" data-aos="fade-up" data-aos-delay="400">祥</span>
-                <span class="hanzi-decor xl rotate-n5" style="top: 45%; left: 45%; opacity: 0.20;" data-aos="zoom-in" data-aos-delay="600">安</span>
+                <span class="hanzi-decor xl rotate-n8" style="bottom: 20px; right: 20px; opacity: 0.20;" data-aos="fade-up" data-aos-delay="400">和</span>
+                <span class="hanzi-decor lg rotate-n10" style="top: 30px; left: 30px; opacity: 0.15;" data-aos="fade-down" data-aos-delay="200">福</span>
+                <span class="hanzi-decor md rotate-10" style="top: 60px; right: 40px; opacity: 0.18;" data-aos="fade-down" data-aos-delay="300">龙</span>
+                <span class="hanzi-decor lg rotate-12" style="bottom: 30%; right: 30px; opacity: 0.15;" data-aos="fade-left" data-aos-delay="350">宝</span>
+                <span class="hanzi-decor md rotate-10" style="bottom: 60%; right: 25%; opacity: 0.18;" data-aos="fade-up" data-aos-delay="400">祥</span>
+                <span class="hanzi-decor xl rotate-n5" style="top: 45%; left: 45%; opacity: 0.14;" data-aos="zoom-in" data-aos-delay="600">安</span>
             </div>
         </div>
 
@@ -1052,19 +1138,6 @@
         </div>
     </section>
 
-    <!-- ===== ПОИСК ===== -->
-    <div class="px-6 md:px-12 lg:px-16 pb-6 relative z-10 -mt-4 pt-4 search-wrapper section-with-hanzi" data-aos="fade-up" data-aos-delay="150">
-        <div class="max-w-[560px] mx-auto relative">
-            <form action="{{ route('search') }}" method="GET" class="flex items-center bg-white border border-black/10 rounded-full overflow-hidden transition-all duration-300 focus-within:border-black/30 focus-within:shadow-[0_0_0_3px_rgba(0,0,0,0.02)]">
-                <input type="text" name="query" id="searchInput" class="flex-1 bg-transparent border-none px-5 py-3 text-black text-sm placeholder-black/20 focus:outline-none" placeholder="Поиск товаров..." value="{{ request('query') }}" autocomplete="off">
-                <button type="submit" class="bg-black text-white border-none py-2.5 px-5 m-1 rounded-full text-xs font-medium tracking-[1px] uppercase transition-all duration-300 hover:bg-black/80">Найти</button>
-            </form>
-            <div id="autocompleteDropdown" class="absolute top-[calc(100%+6px)] left-0 right-0 bg-white border border-black/10 rounded-xl max-h-[260px] overflow-y-auto hidden z-[100] shadow-[0_20px_40px_rgba(0,0,0,0.06)]"></div>
-        </div>
-        <span class="hanzi-decor xs rotate-10" style="bottom: -10px; right: 5%; opacity: 0.08;">寻</span>
-        <span class="hanzi-decor xs rotate-n8" style="top: -10px; left: 8%; opacity: 0.08;">品</span>
-    </div>
-
     <!-- ===== СТАТИСТИКА ===== -->
     <div class="grid grid-cols-2 lg:grid-cols-4 stats-grid section-with-hanzi">
         @php
@@ -1077,12 +1150,12 @@
         @endphp
         @foreach($stats as $index => $stat)
             <div class="px-6 py-8 lg:p-10 text-center border-r {{ $loop->last ? 'border-r-0' : '' }} {{ $loop->index === 1 ? 'max-lg:border-r-0' : '' }} transition-colors duration-300 hover:bg-black/5 stat-item" data-aos="fade-up" data-aos-delay="{{ 100 + $index * 100 }}" data-target="{{ preg_replace('/[^0-9]/', '', $stat['number']) }}">
-                <div class="font-black text-[32px] lg:text-[40px] text-black tracking-[-1px] leading-none stat-number">{{ $stat['number'] }}</div>
-                <div class="text-[9px] tracking-[2px] uppercase text-black/30 mt-2">{{ $stat['label'] }}</div>
+                <div class="font-black text-[32px] lg:text-[40px] text-[#1A1A1A] tracking-[-1px] leading-none stat-number">{{ $stat['number'] }}</div>
+                <div class="text-[9px] tracking-[2px] uppercase text-[#1A1A1A]/40 mt-2">{{ $stat['label'] }}</div>
             </div>
         @endforeach
-        <span class="hanzi-decor md rotate-10" style="top: 50%; left: 8%; transform: translateY(-50%) rotate(10deg); opacity: 0.02;">数</span>
-        <span class="hanzi-decor md rotate-n8" style="top: 50%; right: 8%; transform: translateY(-50%) rotate(-8deg); opacity: 0.02;">据</span>
+        <span class="hanzi-decor md rotate-10" style="top: 50%; left: 8%; transform: translateY(-50%) rotate(10deg); opacity: 0.015;">数</span>
+        <span class="hanzi-decor md rotate-n8" style="top: 50%; right: 8%; transform: translateY(-50%) rotate(-8deg); opacity: 0.015;">据</span>
     </div>
 
     <!-- ===== БЕГУЩАЯ СТРОКА ===== -->
@@ -1094,8 +1167,8 @@
 
     <!-- ===== ПОЧЕМУ МЫ ===== -->
     <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] section-with-hanzi" id="why">
-        <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">О нас</p>
-        <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px]" data-aos="fade-up" data-aos-delay="100">Партнёры доверяют нам</h2>
+        <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">О нас</p>
+        <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Партнёры доверяют нам</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-transparent">
             @php
                 $reasons = [
@@ -1106,23 +1179,23 @@
             @endphp
             @foreach($reasons as $index => $reason)
                 <div class="bg-white p-8 lg:p-10 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                    <div class="font-black text-3xl text-black/5 leading-none mb-4">{{ $reason['num'] }}</div>
-                    <div class="font-bold text-[10px] tracking-[3px] uppercase text-black mb-3">{{ $reason['title'] }}</div>
-                    <p class="text-sm text-black/40 leading-relaxed font-light">{{ $reason['desc'] }}</p>
+                    <div class="font-black text-3xl text-[#1A1A1A]/5 leading-none mb-4">{{ $reason['num'] }}</div>
+                    <div class="font-bold text-[10px] tracking-[3px] uppercase text-[#1A1A1A] mb-3">{{ $reason['title'] }}</div>
+                    <p class="text-sm text-[#1A1A1A]/40 leading-relaxed font-light">{{ $reason['desc'] }}</p>
                 </div>
             @endforeach
         </div>
-        <span class="hanzi-decor lg rotate-n10" style="top: 10%; right: 3%; opacity: 0.025;">信</span>
-        <span class="hanzi-decor md rotate-12" style="bottom: 10%; left: 3%; opacity: 0.025;">德</span>
-        <span class="hanzi-decor sm rotate-n8" style="top: 30%; left: 8%; opacity: 0.02;">诚</span>
-        <span class="hanzi-decor sm rotate-8" style="bottom: 30%; right: 8%; opacity: 0.02;">誉</span>
+        <span class="hanzi-decor lg rotate-n10" style="top: 10%; right: 3%; opacity: 0.015;">信</span>
+        <span class="hanzi-decor md rotate-12" style="bottom: 10%; left: 3%; opacity: 0.015;">德</span>
+        <span class="hanzi-decor sm rotate-n8" style="top: 30%; left: 8%; opacity: 0.01;">诚</span>
+        <span class="hanzi-decor sm rotate-8" style="bottom: 30%; right: 8%; opacity: 0.01;">誉</span>
     </section>
 
     <!-- ===== КАТАЛОГ ===== -->
     <section class="bg-white py-[60px] lg:py-[80px] section-with-hanzi" id="products">
         <div class="px-6 md:px-12 lg:px-16 pb-10">
-            <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">Ассортимент</p>
-            <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px]" data-aos="fade-up" data-aos-delay="100">Наша продукция</h2>
+            <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">Ассортимент</p>
+            <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Наша продукция</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             @php
@@ -1134,38 +1207,38 @@
                 ];
             @endphp
             @foreach($products as $index => $product)
-                <div class="p-6 lg:p-8 border-r border-b {{ $loop->last ? 'lg:border-r-0' : '' }} {{ $loop->index % 2 === 1 ? 'max-lg:border-r-0' : '' }} max-sm:border-r-0 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
+                <div class="p-6 lg:p-8 border-r border-b border-[#1A1A1A]/6 {{ $loop->last ? 'lg:border-r-0' : '' }} {{ $loop->index % 2 === 1 ? 'max-lg:border-r-0' : '' }} max-sm:border-r-0 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
                     <span class="text-2xl mb-4 block transition-transform duration-300 hover:scale-110">{{ $product['icon'] }}</span>
-                    <div class="text-[8px] tracking-[3px] uppercase text-black/30 mb-2">{{ $product['tag'] }}</div>
-                    <div class="font-bold text-[13px] leading-tight text-black mb-2">{{ $product['name'] }}</div>
-                    <p class="text-[11px] text-black/30 leading-relaxed font-light">{{ $product['desc'] }}</p>
+                    <div class="text-[8px] tracking-[3px] uppercase text-[#1A1A1A]/40 mb-2">{{ $product['tag'] }}</div>
+                    <div class="font-bold text-[13px] leading-tight text-[#1A1A1A] mb-2">{{ $product['name'] }}</div>
+                    <p class="text-[11px] text-[#1A1A1A]/40 leading-relaxed font-light">{{ $product['desc'] }}</p>
                 </div>
             @endforeach
         </div>
         <div class="px-6 md:px-12 lg:px-16 pt-10 text-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный прайс</a>
+            <a href="#contacts" class="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный прайс</a>
         </div>
-        <span class="hanzi-decor lg rotate-10" style="top: 5%; left: 2%; opacity: 0.025;">品</span>
-        <span class="hanzi-decor md rotate-n12" style="bottom: 5%; right: 2%; opacity: 0.025;">类</span>
-        <span class="hanzi-decor sm rotate-8" style="top: 20%; right: 5%; opacity: 0.02;">丰</span>
-        <span class="hanzi-decor xs rotate-n8" style="bottom: 15%; left: 5%; opacity: 0.02;">富</span>
+        <span class="hanzi-decor lg rotate-10" style="top: 5%; left: 2%; opacity: 0.015;">品</span>
+        <span class="hanzi-decor md rotate-n12" style="bottom: 5%; right: 2%; opacity: 0.015;">类</span>
+        <span class="hanzi-decor sm rotate-8" style="top: 20%; right: 5%; opacity: 0.01;">丰</span>
+        <span class="hanzi-decor xs rotate-n8" style="bottom: 15%; left: 5%; opacity: 0.01;">富</span>
     </section>
 
     <!-- ===== CTA ===== -->
     <div class="px-6 md:px-12 lg:px-16 py-14 lg:py-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cta-section section-with-hanzi">
-        <h2 class="font-black text-[clamp(24px,2.8vw,38px)] uppercase tracking-[-1px] leading-none" data-aos="fade-right">Готовы начать<br><span class="text-black/20">сотрудничество?</span></h2>
-        <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">Связаться</a>
-        <span class="hanzi-decor sm rotate-10" style="top: 10%; right: 30%; opacity: 0.025;">赢</span>
-        <span class="hanzi-decor xs rotate-n5" style="bottom: 10%; left: 10%; opacity: 0.02;">合</span>
-        <span class="hanzi-decor xs rotate-8" style="bottom: 10%; right: 25%; opacity: 0.02;">作</span>
+        <h2 class="font-black text-[clamp(24px,2.8vw,38px)] uppercase tracking-[-1px] leading-none text-[#1A1A1A]" data-aos="fade-right">Готовы начать<br><span class="text-[#1A1A1A]/40">сотрудничество?</span></h2>
+        <a href="#contacts" class="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">Связаться</a>
+        <span class="hanzi-decor sm rotate-10" style="top: 10%; right: 30%; opacity: 0.015;">赢</span>
+        <span class="hanzi-decor xs rotate-n5" style="bottom: 10%; left: 10%; opacity: 0.01;">合</span>
+        <span class="hanzi-decor xs rotate-8" style="bottom: 10%; right: 25%; opacity: 0.01;">作</span>
     </div>
 
     <!-- ===== КОНТАКТЫ ===== -->
     <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] section-with-hanzi" id="contacts">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <div>
-                <p class="text-[9px] tracking-[4px] uppercase text-black/30 mb-3" data-aos="fade-up">Контакты</p>
-                <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[500px] mb-10" data-aos="fade-up" data-aos-delay="100">Свяжитесь с нами</h2>
+                <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">Контакты</p>
+                <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[500px] mb-10 text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Свяжитесь с нами</h2>
                 @php
                     $contacts = [
                         ['label' => 'Коммерческий директор', 'value' => 'Алексей Ерышев', 'type' => 'text'],
@@ -1176,32 +1249,32 @@
                 @endphp
                 @foreach($contacts as $index => $contact)
                     <div class="mb-6" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                        <div class="text-[9px] tracking-[3px] uppercase text-black/30 mb-1">{{ $contact['label'] }}</div>
+                        <div class="text-[9px] tracking-[3px] uppercase text-[#1A1A1A]/40 mb-1">{{ $contact['label'] }}</div>
                         @if($contact['type'] === 'tel' || $contact['type'] === 'email')
-                            <a href="{{ $contact['href'] }}" class="font-semibold text-[16px] text-black no-underline transition-colors duration-300 hover:text-black/60">{{ $contact['value'] }}</a>
+                            <a href="{{ $contact['href'] }}" class="font-semibold text-[16px] text-[#1A1A1A] no-underline transition-colors duration-300 hover:text-[#1A1A1A]/60">{{ $contact['value'] }}</a>
                         @else
-                            <span class="font-semibold text-[16px] text-black">{{ $contact['value'] }}</span>
+                            <span class="font-semibold text-[16px] text-[#1A1A1A]">{{ $contact['value'] }}</span>
                         @endif
                     </div>
                 @endforeach
             </div>
             <div data-aos="fade-up" data-aos-delay="300">
-                <div class="border border-black/10 p-6 bg-white">
-                    <div class="text-[12px] text-black/50 space-y-3">
-                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">Организация</strong>ООО «Экспорт-Импорт Инь-Ян»</div>
-                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ОГРН</strong>1232500004846</div>
-                        <div><strong class="text-black/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ИНН / КПП</strong>2502071087 / 250201001</div>
+                <div class="border border-[#1A1A1A]/10 p-6 bg-white">
+                    <div class="text-[12px] text-[#1A1A1A]/50 space-y-3">
+                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">Организация</strong>ООО «Экспорт-Импорт Инь-Ян»</div>
+                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ОГРН</strong>1232500004846</div>
+                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ИНН / КПП</strong>2502071087 / 250201001</div>
                     </div>
                 </div>
-                <div class="mt-4 p-6 border border-black/10 border-t-0 bg-white">
-                    <p class="text-[12px] text-black/30 leading-relaxed font-light">Стабильные поставки, конкурентные цены и широкий ассортимент продуктов из Китая.</p>
+                <div class="mt-4 p-6 border border-[#1A1A1A]/10 border-t-0 bg-white">
+                    <p class="text-[12px] text-[#1A1A1A]/40 leading-relaxed font-light">Стабильные поставки, конкурентные цены и широкий ассортимент продуктов из Китая.</p>
                 </div>
             </div>
         </div>
-        <span class="hanzi-decor lg rotate-n8" style="top: 5%; right: 5%; opacity: 0.025;">联</span>
-        <span class="hanzi-decor md rotate-10" style="bottom: 5%; left: 5%; opacity: 0.025;">系</span>
-        <span class="hanzi-decor sm rotate-n12" style="top: 40%; left: 2%; opacity: 0.02;">友</span>
-        <span class="hanzi-decor sm rotate-8" style="bottom: 40%; right: 2%; opacity: 0.02;">好</span>
+        <span class="hanzi-decor lg rotate-n8" style="top: 5%; right: 5%; opacity: 0.015;">联</span>
+        <span class="hanzi-decor md rotate-10" style="bottom: 5%; left: 5%; opacity: 0.015;">系</span>
+        <span class="hanzi-decor sm rotate-n12" style="top: 40%; left: 2%; opacity: 0.01;">友</span>
+        <span class="hanzi-decor sm rotate-8" style="bottom: 40%; right: 2%; opacity: 0.01;">好</span>
     </section>
 @endsection
 
