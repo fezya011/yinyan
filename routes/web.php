@@ -5,7 +5,11 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Web\PageController;
 use Illuminate\Support\Facades\Route;
+
+// Главная страница
+Route::get('/', [PageController::class, 'home'])->name('home');
 
 // ===== АДМИНКА =====
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -43,10 +47,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-
-Route::get('/', function () {
-    return view('index');
-})->name('home');
 
 Route::get('/catalog', function () {
     return view('catalog'); // создайте при необходимости

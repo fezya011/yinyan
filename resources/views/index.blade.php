@@ -6,14 +6,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    {{-- amCharts 5 стили --}}
-    <style>
-        #ammapContainer {
-            width: 100%;
-            height: 500px;
-        }
-    </style>
-
     <style>
         /* ===== БАЗА ===== */
         * {
@@ -571,6 +563,13 @@
             filter: drop-shadow(0 0 0 rgba(0,0,0,0));
         }
 
+        .product-card-visual .fallback-emoji {
+            font-size: min(160px, 16vw);
+            line-height: 1;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+        }
+
         @media (max-width: 1024px) {
             .product-card-visual img { max-height: 40vh; }
         }
@@ -584,7 +583,8 @@
             filter: drop-shadow(0 15px 30px rgba(26, 26, 26, 0.04));
         }
 
-        .carousel-slide.active-slide .product-card-visual img {
+        .carousel-slide.active-slide .product-card-visual img,
+        .carousel-slide.active-slide .product-card-visual .fallback-emoji {
             animation: slideReveal 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
@@ -611,19 +611,9 @@
         }
 
         .carousel-slide:not(.active-slide) .product-card-visual img,
+        .carousel-slide:not(.active-slide) .product-card-visual .fallback-emoji,
         .carousel-slide:not(.active-slide) .product-card-info {
             animation: none;
-        }
-
-        .product-card-emoji {
-            font-size: min(160px, 16vw);
-            line-height: 1;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            user-select: none;
-        }
-
-        .carousel-slide:hover .product-card-emoji {
-            transform: scale(1.06) rotate(-2deg);
         }
 
         .product-card-info {
@@ -683,8 +673,15 @@
             margin: 0 auto;
         }
 
-        .product-card-price {
+        .product-card-price-wrap {
             margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .product-card-price {
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 13px;
@@ -695,10 +692,24 @@
             transition: all 0.3s ease;
         }
 
+        .product-card-price-note {
+            font-family: 'Inter', sans-serif;
+            font-size: 8px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.25);
+            transition: all 0.3s ease;
+        }
+
         .carousel-slide:hover .product-card-price {
             background: #1A1A1A;
             color: #FFFFFF;
             transform: scale(1.04);
+        }
+
+        .carousel-slide:hover .product-card-price-note {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         /* ===== НАВИГАЦИЯ КАРУСЕЛИ ===== */
@@ -895,8 +906,9 @@
             }
             .carousel-track { transition: none !important; }
             .carousel-slide:hover .product-card-visual img,
-            .carousel-slide:hover .product-card-emoji { transform: none !important; }
+            .carousel-slide:hover .product-card-visual .fallback-emoji { transform: none !important; }
             .carousel-slide .product-card-visual img,
+            .carousel-slide .product-card-visual .fallback-emoji,
             .carousel-slide .product-card-info {
                 animation: none !important;
                 opacity: 1 !important;
@@ -987,6 +999,9 @@
             width: 100%;
             height: 500px;
         }
+        .am5-legend {
+            display: none !important;
+        }
     </style>
 @endpush
 
@@ -1067,85 +1082,72 @@
             </div>
         </div>
 
-        <!-- Правая колонка — карусель -->
+        <!-- Правая колонка — карусель из БД -->
         <div class="hero-right" data-aos="fade-in" data-aos-delay="200" data-aos-duration="700">
             <div class="hero-right-glow visible" id="heroGlow"></div>
             <div class="carousel-container">
                 <div class="carousel-track-wrapper">
                     <div class="carousel-track" id="carouselTrack">
-                        @php
-                            $slides = [
-                                [
-                                    'image' => 'images/product-1.png',
-                                    'emoji' => '🍜',
-                                    'tag' => 'Хит продаж',
-                                    'name' => 'Лапша в стакане',
-                                    'desc' => 'Говядина, курица. Удобный формат.',
-                                    'price' => 'от 45 ₽ / шт',
-                                    'accent' => '#83BF32',
-                                ],
-                                [
-                                    'image' => 'images/product-2.png',
-                                    'emoji' => '🥟',
-                                    'tag' => 'Уникальная позиция',
-                                    'name' => 'Лапша с вонтонами',
-                                    'desc' => 'Фирменный продукт. Мало конкурентов.',
-                                    'price' => 'от 85 ₽ / шт',
-                                    'accent' => '#DD7210',
-                                ],
-                                [
-                                    'image' => 'images/product-3.png',
-                                    'emoji' => '🥣',
-                                    'tag' => 'Высокая маржа',
-                                    'name' => 'Сублимированная лапша',
-                                    'desc' => 'Говядина, курица, морепродукты.',
-                                    'price' => 'от 55 ₽ / шт',
-                                    'accent' => '#970D62',
-                                ],
-                                [
-                                    'image' => 'images/product-1.png',
-                                    'emoji' => '🍚',
-                                    'tag' => 'Новинка',
-                                    'name' => 'Рис быстрого приготовления',
-                                    'desc' => 'Бекон, говядина, курица, тушёное мясо.',
-                                    'price' => 'от 65 ₽ / шт',
-                                    'accent' => '#83BF32',
-                                ],
-                            ];
-                        @endphp
+                        @if($slides->count() > 0)
+                            @foreach($slides as $index => $slide)
+                                <div class="carousel-slide {{ $index === 0 ? 'active-slide' : '' }}"
+                                     data-index="{{ $index }}"
+                                     data-accent="{{ $slide['accent'] }}">
+                                    <div class="product-card-visual">
+                                        @if($slide['image'])
+                                            <img src="{{ $slide['image'] }}"
+                                                 alt="{{ $slide['name'] }}"
+                                                 loading="lazy"
+                                                 decoding="async"
+                                                 width="400"
+                                                 height="400">
+                                        @else
+                                            <span class="fallback-emoji">{{ $slide['emoji'] }}</span>
+                                        @endif
+                                    </div>
 
-                        @foreach($slides as $index => $slide)
-                            <div class="carousel-slide {{ $index === 0 ? 'active-slide' : '' }}"
-                                 data-index="{{ $index }}"
-                                 data-accent="{{ $slide['accent'] }}">
-                                <div class="product-card-visual">
-                                    @if($slide['image'])
-                                        <img src="{{ asset($slide['image']) }}" alt="{{ $slide['name'] }}" loading="lazy">
-                                    @else
-                                        <span class="product-card-emoji">{{ $slide['emoji'] }}</span>
-                                    @endif
+                                    <div class="product-card-info">
+                                        <span class="product-card-tag">{{ $slide['tag'] }}</span>
+                                        <div class="product-card-name">{{ $slide['name'] }}</div>
+                                        <div class="product-card-desc">{{ Str::limit($slide['desc'], 90) }}</div>
+
+                                        {{-- БЛОК ЦЕНЫ --}}
+                                        <div class="product-card-price-wrap">
+                                            <span class="product-card-price">{{ $slide['price'] }}</span>
+                                            <span class="product-card-price-note">{{ $slide['price_note'] }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-
+                            @endforeach
+                        @else
+                            {{-- Запасной вариант, если товаров нет --}}
+                            <div class="carousel-slide active-slide" data-index="0" data-accent="#FF6B00">
+                                <div class="product-card-visual">
+                                    <span class="fallback-emoji">📦</span>
+                                </div>
                                 <div class="product-card-info">
-                                    <span class="product-card-tag">{{ $slide['tag'] }}</span>
-                                    <div class="product-card-name">{{ $slide['name'] }}</div>
-                                    <div class="product-card-desc">{{ $slide['desc'] }}</div>
-                                    <span class="product-card-price">{{ $slide['price'] }}</span>
+                                    <span class="product-card-tag">Скоро</span>
+                                    <div class="product-card-name">Товары добавляются</div>
+                                    <div class="product-card-desc">Следите за обновлениями каталога</div>
+                                    <div class="product-card-price-wrap">
+                                        <span class="product-card-price">скоро</span>
+                                        <span class="product-card-price-note">ожидайте</span>
+                                    </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endif
                     </div>
                 </div>
 
                 <button class="carousel-arrow prev" id="carouselPrev" aria-label="Предыдущий">←</button>
                 <button class="carousel-arrow next" id="carouselNext" aria-label="Следующий">→</button>
 
-                <div class="carousel-counter" id="carouselCounter">01 / 04</div>
+                <div class="carousel-counter" id="carouselCounter">01 / {{ max($slides->count(), 1) }}</div>
 
                 <div class="carousel-nav">
-                    @foreach($slides as $index => $slide)
-                        <button class="carousel-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}" aria-label="Слайд {{ $index + 1 }}"></button>
-                    @endforeach
+                    @for($i = 0; $i < max($slides->count(), 1); $i++)
+                        <button class="carousel-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}" aria-label="Слайд {{ $i + 1 }}"></button>
+                    @endfor
                 </div>
             </div>
         </div>
@@ -1178,7 +1180,7 @@
         </div>
     </div>
 
-    <!-- ===== КАРТА ПОСТАВОК (AMMAP) ===== -->
+    <!-- ===== КАРТА ПОСТАВОК ===== -->
     <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] bg-white section-with-hanzi" id="map">
         <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">География</p>
         <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">
@@ -1188,28 +1190,6 @@
         <div class="relative" data-aos="fade-up" data-aos-delay="200">
             <div class="relative w-full border border-[#1A1A1A]/8 overflow-hidden bg-[#FAFAFA]">
                 <div id="ammapContainer"></div>
-
-                <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm border border-[#1A1A1A]/8 px-4 py-3 shadow-sm">
-                    <div class="text-[8px] tracking-[2px] uppercase text-[#1A1A1A]/40 mb-3 font-semibold">Легенда</div>
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-0.5 rounded-full" style="background: repeating-linear-gradient(90deg, #1A1A1A 0px, #1A1A1A 5px, transparent 5px, transparent 9px); opacity: 0.6;"></div>
-                            <span class="text-[9px] text-[#1A1A1A]/60 font-medium">Импорт из Китая</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-0.5 rounded-full" style="background: repeating-linear-gradient(90deg, #1A1A1A 0px, #1A1A1A 3px, transparent 3px, transparent 7px); opacity: 0.3;"></div>
-                            <span class="text-[9px] text-[#1A1A1A]/60 font-medium">Доставка по РФ</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-3 h-3 rounded-full bg-[#1A1A1A] opacity-80"></div>
-                            <span class="text-[9px] text-[#1A1A1A]/60 font-medium">Города-отправители</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-4 h-4 rounded-full bg-[#1A1A1A] border-2 border-[#1A1A1A]/20" style="box-shadow: 0 0 10px rgba(0,0,0,0.1);"></div>
-                            <span class="text-[9px] text-[#1A1A1A]/60 font-medium">Хаб (склад)</span>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap gap-3">
                     <div class="bg-white/90 backdrop-blur-sm border border-[#1A1A1A]/8 px-4 py-3 shadow-sm flex-1 min-w-[140px]">
@@ -1361,13 +1341,12 @@
 @endsection
 
 @push('scripts')
-    {{-- amCharts 5 библиотеки --}}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // ===== ИНИЦИАЛИЗАЦИЯ AOS =====
         AOS.init({
@@ -1380,7 +1359,6 @@
         // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ БЕГУЩЕЙ СТРОКИ =====
         const marqueeChars = ['信', '誉', '第', '一', '品', '质', '为', '本', '诚', '信', '合', '作', '共', '赢', '未', '来', '中', '俄', '贸', '易', '直', '接', '进', '口'];
 
-        // ===== ФУНКЦИЯ ОБНОВЛЕНИЯ БЕГУЩЕЙ СТРОКИ =====
         function updateMarqueeColors() {
             const track = document.getElementById('marqueeTrack');
             if (!track) return;
@@ -1405,6 +1383,218 @@
             html += '</span>';
 
             track.innerHTML = html;
+        }
+
+        updateMarqueeColors();
+
+        // ===== ИНИЦИАЛИЗАЦИЯ КАРТЫ =====
+        const mapContainer = document.getElementById('map');
+        if (mapContainer) {
+            const mapObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        am5.ready(function() {
+                            var root = am5.Root.new("ammapContainer");
+
+                            root.setThemes([
+                                am5themes_Animated.new(root)
+                            ]);
+
+                            var chart = root.container.children.push(
+                                am5map.MapChart.new(root, {
+                                    panX: "none",
+                                    panY: "none",
+                                    projection: am5map.geoMercator(),
+                                    minZoomLevel: 2,
+                                    maxZoomLevel: 2,
+                                    wheelable: false,
+                                    pinchZoom: false
+                                })
+                            );
+
+                            // Создаем серию полигонов (страны)
+                            var polygonSeries = chart.series.push(
+                                am5map.MapPolygonSeries.new(root, {
+                                    geoJSON: am5geodata_worldLow,
+                                    exclude: ["AQ"]
+                                })
+                            );
+
+                            polygonSeries.mapPolygons.template.setAll({
+                                fill: am5.color(0xf5f5f5),
+                                stroke: am5.color(0xffffff),
+                                strokeWidth: 0.5,
+                                tooltipText: "{name}"
+                            });
+
+                            // Подсветка России и Китая
+                            polygonSeries.mapPolygons.template.adapters.add("fill", function(fill, target) {
+                                if (target.dataItem.get("id") === "RU") {
+                                    return am5.color(0xeeeeee);
+                                }
+                                if (target.dataItem.get("id") === "CN") {
+                                    return am5.color(0xe8e8e8);
+                                }
+                                return fill;
+                            });
+
+                            // Добавляем точки (города)
+                            var pointSeries = chart.series.push(
+                                am5map.MapPointSeries.new(root, {})
+                            );
+
+                            // Города Китая
+                            var beijing = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [116.4074, 39.9042] },
+                                name: "Пекин",
+                                type: "china"
+                            });
+
+                            var shanghai = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [121.4737, 31.2304] },
+                                name: "Шанхай",
+                                type: "china"
+                            });
+
+                            var guangzhou = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [113.2644, 23.1291] },
+                                name: "Гуанчжоу",
+                                type: "china"
+                            });
+
+                            // Хаб во Владивостоке
+                            var vladivostok = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [131.8856, 43.1056] },
+                                name: "Владивосток (Артём)",
+                                type: "hub"
+                            });
+
+                            // Города России
+                            var moscow = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [37.6173, 55.7558] },
+                                name: "Москва",
+                                type: "russia"
+                            });
+
+                            var spb = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [30.3141, 59.9386] },
+                                name: "Санкт-Петербург",
+                                type: "russia"
+                            });
+
+                            var novosibirsk = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [82.9346, 55.0084] },
+                                name: "Новосибирск",
+                                type: "russia"
+                            });
+
+                            var ekaterinburg = pointSeries.pushDataItem({
+                                geometry: { type: "Point", coordinates: [60.6122, 56.8389] },
+                                name: "Екатеринбург",
+                                type: "russia"
+                            });
+
+                            // Стили для точек с подписями
+                            pointSeries.bullets.push(function(root, series, dataItem) {
+                                if (!dataItem || !dataItem.dataContext) {
+                                    return am5.Bullet.new(root, {
+                                        sprite: am5.Circle.new(root, {
+                                            radius: 5,
+                                            fill: am5.color(0x1A1A1A),
+                                            stroke: am5.color(0xffffff),
+                                            strokeWidth: 2
+                                        })
+                                    });
+                                }
+
+                                var type = dataItem.dataContext.type;
+                                var radius = (type === "hub") ? 8 : 5;
+                                var strokeWidth = (type === "hub") ? 3 : 2;
+
+                                var container = am5.Container.new(root, {});
+
+                                var circle = am5.Circle.new(root, {
+                                    radius: radius,
+                                    fill: am5.color(0x1A1A1A),
+                                    stroke: am5.color(0xffffff),
+                                    strokeWidth: strokeWidth,
+                                    tooltipText: "{name}"
+                                });
+
+                                var label = am5.Label.new(root, {
+                                    text: "{name}",
+                                    fontSize: 12,
+                                    fontWeight: "bold",
+                                    fill: am5.color(0x000000),
+                                    centerX: am5.p100,
+                                    centerY: am5.p0,
+                                    dx: 12,
+                                    dy: -8,
+                                    visible: true,
+                                    forceHidden: false
+                                });
+
+                                container.children.push(circle);
+                                container.children.push(label);
+
+                                return am5.Bullet.new(root, {
+                                    sprite: container
+                                });
+                            });
+
+                            // Добавляем линии маршрутов
+                            var lineSeries = chart.series.push(
+                                am5map.MapLineSeries.new(root, {})
+                            );
+
+                            // Линии из Китая во Владивосток (импорт)
+                            var chinaCities = [beijing, shanghai, guangzhou];
+
+                            chinaCities.forEach(function(city) {
+                                lineSeries.pushDataItem({
+                                    pointsToConnect: [city, vladivostok],
+                                    stroke: am5.color(0x1A1A1A),
+                                    strokeWidth: 1.5,
+                                    strokeDasharray: [8, 4],
+                                    strokeOpacity: 0.4
+                                });
+                            });
+
+                            // Линии из Владивостока в города России (доставка)
+                            var russiaCities = [moscow, spb, novosibirsk, ekaterinburg];
+
+                            russiaCities.forEach(function(city) {
+                                lineSeries.pushDataItem({
+                                    pointsToConnect: [vladivostok, city],
+                                    stroke: am5.color(0x1A1A1A),
+                                    strokeWidth: 1,
+                                    strokeDasharray: [4, 4],
+                                    strokeOpacity: 0.2
+                                });
+                            });
+
+                            // Анимация появления линий
+                            lineSeries.mapLines.template.setAll({
+                                animationDuration: 2000,
+                                animationEasing: am5.ease.out(am5.ease.cubic)
+                            });
+
+                            // ВАЖНО: Устанавливаем зум ПОСЛЕ создания всех слоёв
+                            setTimeout(function() {
+                                chart.zoomToGeoPoint(
+                                    { longitude: 90, latitude: 55 },  // Центр между РФ и КНР
+                                    3.5,  // Уровень зума
+                                    false,  // Без анимации
+                                    0  // Мгновенно
+                                );
+                            }, 300);  // Небольшая задержка для гарантии загрузки
+
+                        });
+                        mapObserver.disconnect();
+                    }
+                });
+            });
+            mapObserver.observe(mapContainer);
         }
 
         // ===== АНИМАЦИЯ СТАТИСТИКИ =====
@@ -1609,7 +1799,6 @@
                 }
             }, { passive: true });
 
-            updateMarqueeColors();
             goToSlide(0);
             startAutoPlay();
 
@@ -1618,337 +1807,6 @@
                 else startAutoPlay();
             });
         })();
-
-        // ===== AMMAP ИНИЦИАЛИЗАЦИЯ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
-        am5.ready(function() {
-            const mapContainer = document.getElementById('ammapContainer');
-            if (!mapContainer) return;
-
-            // Корневой элемент
-            const root = am5.Root.new('ammapContainer');
-            root.setThemes([am5themes_Animated.new(root)]);
-
-            // Создание карты
-            const chart = root.container.children.push(
-                am5map.MapChart.new(root, {
-                    panX: 'translateX',
-                    panY: 'translateY',
-                    projection: am5map.geoMercator(),
-                    homeGeoPoint: { latitude: 50, longitude: 95 },
-                    homeZoomLevel: 2.5,
-                    maxZoomLevel: 16
-                })
-            );
-
-            chart.chartContainer.get('background').setAll({
-                fill: am5.color('#FAFAFA')
-            });
-
-            // Серия полигонов (страны)
-            const polygonSeries = chart.series.push(
-                am5map.MapPolygonSeries.new(root, {
-                    geoJSON: am5geodata_worldLow,
-                    exclude: ['AQ']
-                })
-            );
-
-            polygonSeries.mapPolygons.template.setAll({
-                fill: am5.color('#F0F0F0'),
-                stroke: am5.color('#D0D0D0'),
-                strokeWidth: 0.5
-            });
-
-            // Подсветка России и Китая с градиентом
-            polygonSeries.mapPolygons.template.adapters.add('fill', (fill, target) => {
-                const id = target.dataItem.get('id');
-                if (id === 'RU') return am5.color('#E8E8E8');
-                if (id === 'CN') return am5.color('#E3E3E3');
-                return fill;
-            });
-
-            // Добавляем обводку для России и Китая
-            polygonSeries.mapPolygons.template.adapters.add('stroke', (stroke, target) => {
-                const id = target.dataItem.get('id');
-                if (id === 'RU' || id === 'CN') return am5.color('#BBBBBB');
-                return stroke;
-            });
-
-            // Координаты
-            const chinaCities = [
-                { name: 'Пекин', lat: 39.9, lon: 116.4 },
-                { name: 'Шанхай', lat: 31.2, lon: 121.5 },
-                { name: 'Гуанчжоу', lat: 23.1, lon: 113.3 }
-            ];
-
-            const vladivostok = { lat: 43.17, lon: 132.0 };
-
-            const russiaCities = [
-                { name: 'Москва', lat: 55.75, lon: 37.62 },
-                { name: 'Новосибирск', lat: 55.0, lon: 82.94 },
-                { name: 'Санкт-Петербург', lat: 59.93, lon: 30.34 },
-                { name: 'Екатеринбург', lat: 56.84, lon: 60.60 }
-            ];
-
-            // Серия линий Китай -> Владивосток
-            const lineSeriesChina = chart.series.push(
-                am5map.MapLineSeries.new(root, {
-                    lineType: 'curved' // Изогнутые линии для красоты
-                })
-            );
-
-            lineSeriesChina.mapLines.template.setAll({
-                stroke: am5.color('#1A1A1A'),
-                strokeWidth: 2.5,
-                strokeOpacity: 0.6,
-                strokeDasharray: [10, 8],
-                animationDuration: 2000
-            });
-
-            chinaCities.forEach(city => {
-                lineSeriesChina.data.push({
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                            [city.lon, city.lat],
-                            [vladivostok.lon, vladivostok.lat]
-                        ]
-                    }
-                });
-            });
-
-            // Серия линий Владивосток -> РФ
-            const lineSeriesRussia = chart.series.push(
-                am5map.MapLineSeries.new(root, {
-                    lineType: 'curved'
-                })
-            );
-
-            lineSeriesRussia.mapLines.template.setAll({
-                stroke: am5.color('#1A1A1A'),
-                strokeWidth: 1.8,
-                strokeOpacity: 0.35,
-                strokeDasharray: [6, 8],
-                animationDuration: 2500
-            });
-
-            russiaCities.forEach(city => {
-                lineSeriesRussia.data.push({
-                    geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                            [vladivostok.lon, vladivostok.lat],
-                            [city.lon, city.lat]
-                        ]
-                    }
-                });
-            });
-
-            // Серия точек
-            const pointSeries = chart.series.push(
-                am5map.MapPointSeries.new(root, {})
-            );
-
-            // Точки Китая
-            chinaCities.forEach(city => {
-                pointSeries.data.push({
-                    geometry: { type: 'Point', coordinates: [city.lon, city.lat] },
-                    name: city.name,
-                    category: 'china'
-                });
-            });
-
-            // Точка Владивосток
-            pointSeries.data.push({
-                geometry: { type: 'Point', coordinates: [vladivostok.lon, vladivostok.lat] },
-                name: 'Владивосток (Хаб)',
-                category: 'hub'
-            });
-
-            // Точки РФ
-            russiaCities.forEach(city => {
-                pointSeries.data.push({
-                    geometry: { type: 'Point', coordinates: [city.lon, city.lat] },
-                    name: city.name,
-                    category: 'russia'
-                });
-            });
-
-            // Настройка точек с красивыми метками
-            pointSeries.bullets.push(function(root, series, dataItem) {
-                const category = dataItem.dataContext.category;
-                const name = dataItem.dataContext.name;
-
-                const container = am5.Container.new(root, {});
-
-                if (category === 'hub') {
-                    // Внешнее свечение для хаба
-                    const glow = am5.Circle.new(root, {
-                        radius: 16,
-                        fill: am5.color('#1A1A1A'),
-                        fillOpacity: 0.08,
-                        centerX: am5.p50,
-                        centerY: am5.p50
-                    });
-
-                    // Основная точка
-                    const circle = am5.Circle.new(root, {
-                        radius: 8,
-                        fill: am5.color('#1A1A1A'),
-                        stroke: am5.color('#FFFFFF'),
-                        strokeWidth: 3,
-                        shadowColor: am5.color('#000000'),
-                        shadowBlur: 10,
-                        shadowOpacity: 0.2,
-                        tooltipText: name
-                    });
-
-                    // Подпись
-                    const label = am5.Label.new(root, {
-                        text: 'Владивосток',
-                        fontSize: 12,
-                        fontWeight: '700',
-                        fill: am5.color('#1A1A1A'),
-                        centerX: am5.p50,
-                        centerY: am5.p100,
-                        dy: 18,
-                        textAlign: 'center'
-                    });
-
-                    const subLabel = am5.Label.new(root, {
-                        text: 'Основной склад',
-                        fontSize: 9,
-                        fontWeight: '400',
-                        fill: am5.color('#666666'),
-                        centerX: am5.p50,
-                        centerY: am5.p100,
-                        dy: 33,
-                        textAlign: 'center'
-                    });
-
-                    container.children.push(glow, circle, label, subLabel);
-
-                    // Анимация пульсации
-                    const pulseAnimation = glow.animate({
-                        keyframes: [
-                            { scale: 1, fillOpacity: 0.08 },
-                            { scale: 1.8, fillOpacity: 0.02 },
-                            { scale: 1, fillOpacity: 0.08 }
-                        ],
-                        duration: 2000,
-                        iterations: Infinity,
-                        easing: am5.ease.inOut(am5.ease.cubic)
-                    });
-
-                } else if (category === 'china') {
-                    const circle = am5.Circle.new(root, {
-                        radius: 6,
-                        fill: am5.color('#1A1A1A'),
-                        stroke: am5.color('#FFFFFF'),
-                        strokeWidth: 2.5,
-                        tooltipText: name
-                    });
-
-                    const label = am5.Label.new(root, {
-                        text: name,
-                        fontSize: 11,
-                        fontWeight: '600',
-                        fill: am5.color('#1A1A1A'),
-                        centerX: am5.p50,
-                        centerY: am5.p100,
-                        dy: 14,
-                        textAlign: 'center'
-                    });
-
-                    container.children.push(circle, label);
-
-                } else if (category === 'russia') {
-                    const circle = am5.Circle.new(root, {
-                        radius: 5,
-                        fill: am5.color('#555555'),
-                        stroke: am5.color('#FFFFFF'),
-                        strokeWidth: 1.5,
-                        fillOpacity: 0.7,
-                        tooltipText: name
-                    });
-
-                    const label = am5.Label.new(root, {
-                        text: name,
-                        fontSize: 9,
-                        fontWeight: '500',
-                        fill: am5.color('#888888'),
-                        centerX: am5.p50,
-                        centerY: am5.p100,
-                        dy: 12,
-                        textAlign: 'center'
-                    });
-
-                    container.children.push(circle, label);
-                }
-
-                return am5.Bullet.new(root, {
-                    sprite: container
-                });
-            });
-
-            // Добавляем анимированные стрелки на линиях (опционально)
-            // Можно добавить серию с иконками для большей наглядности
-
-            // Перерисовка при изменении размера
-            const resizeObserver = new ResizeObserver(() => {
-                chart.appear(0);
-            });
-            resizeObserver.observe(mapContainer);
-
-            // Анимация появления карты
-            chart.appear(1000, 100);
-        });
-
-        // ===== ПОИСК =====
-        const searchInput = document.getElementById('searchInput');
-        const dropdown = document.getElementById('autocompleteDropdown');
-        let debounceTimer, abortController = null;
-
-        function debounce(fn, delay) {
-            return (...args) => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => fn(...args), delay); };
-        }
-
-        async function searchSuggestions(query) {
-            if (!query || query.length < 2) { dropdown.innerHTML = ''; dropdown.classList.add('hidden'); return; }
-            if (abortController) abortController.abort();
-            abortController = new AbortController();
-            dropdown.innerHTML = '<div class="px-5 py-3 text-black/40 text-sm">Поиск...</div>';
-            dropdown.classList.remove('hidden');
-
-            try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=6&accept-language=ru&featureType=city`, {
-                    signal: abortController.signal,
-                    headers: { 'User-Agent': 'InYanLanding/1.0' }
-                });
-                let data = res.ok ? await res.json() : [];
-                if (!data.length) { dropdown.innerHTML = '<div class="px-5 py-3 text-black/40 text-sm">Ничего не найдено</div>'; return; }
-
-                dropdown.innerHTML = data.map(item => {
-                    const addr = item.address || {};
-                    const city = addr.city || addr.town || addr.village || '';
-                    const country = addr.country || '';
-                    return `<div class="autocomplete-item px-5 py-3 cursor-pointer border-b border-black/5 last:border-b-0 flex justify-between items-center hover:bg-black/5 transition-colors" data-value="${city}"><span class="font-medium text-black text-sm">${city}</span>${country ? `<span class="text-xs text-black/30">${country}</span>` : ''}</div>`;
-                }).join('');
-
-                dropdown.querySelectorAll('.autocomplete-item').forEach(el => {
-                    el.addEventListener('click', function() {
-                        searchInput.value = this.dataset.value;
-                        dropdown.classList.add('hidden');
-                        searchInput.closest('form').submit();
-                    });
-                });
-            } catch (e) {
-                if (e.name !== 'AbortError') dropdown.innerHTML = '<div class="px-5 py-3 text-black/40 text-sm">Ошибка</div>';
-            }
-        }
-
-        const debouncedSearch = debounce(searchSuggestions, 300);
-        searchInput?.addEventListener('input', e => debouncedSearch(e.target.value.trim()));
-        document.addEventListener('click', e => { if (!searchInput?.contains(e.target) && !dropdown?.contains(e.target)) dropdown?.classList.add('hidden'); });
 
         // ===== ПЛАВНЫЙ СКРОЛЛ =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
