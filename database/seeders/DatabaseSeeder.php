@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +17,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // ===== Обычные пользователи =====
+        User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // ===== Администратор =====
+        Admin::create([
+            'name' => 'Администратор',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('admin123'),
+            'is_active' => true,
         ]);
+
+        // Дополнительный админ (опционально)
+        Admin::create([
+            'name' => 'Менеджер',
+            'email' => 'manager@example.com',
+            'password' => Hash::make('manager123'),
+            'is_active' => true,
+        ]);
+
+        $this->command->info('✅ База данных заполнена!');
+        $this->command->info('📧 Админ: admin@example.com');
+        $this->command->info('🔑 Пароль: admin123');
+        $this->command->info('📧 Тестовый пользователь: test@example.com');
+        $this->command->info('🔑 Пароль: password123');
     }
 }
