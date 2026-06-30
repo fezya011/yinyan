@@ -1,3 +1,4 @@
+{{-- resources/views/catalog.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Каталог товаров – Инь Ян Экспорт и импорт из Китая')
@@ -16,53 +17,55 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #FFFFFF;
-            color: #111827;
+            color: #1A1A1A;
             -webkit-font-smoothing: antialiased;
         }
 
         :root {
-            --accent-r: 255;
-            --accent-g: 107;
-            --accent-b: 0;
             --header-height: 80px;
         }
 
-        /* ===== ОТСТУП ПОД ХЕДЕР ===== */
         .catalog-wrapper {
             padding-top: var(--header-height);
+            overflow-x: hidden;
         }
 
-        /* ===== ХЛЕБНЫЕ КРОШКИ ===== */
+        /* ХЛЕБНЫЕ КРОШКИ */
         .breadcrumbs {
             padding: 20px 0 10px;
-            font-size: 12px;
-            color: rgba(0,0,0,0.3);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.3);
+            font-weight: 500;
         }
 
         .breadcrumbs a {
-            color: rgba(0,0,0,0.5);
+            color: rgba(26, 26, 26, 0.4);
             text-decoration: none;
             transition: color 0.3s;
+            font-weight: 500;
         }
 
         .breadcrumbs a:hover {
-            color: #111827;
+            color: #1A1A1A;
         }
 
         .breadcrumbs .separator {
             margin: 0 8px;
-            color: rgba(0,0,0,0.15);
+            color: rgba(26, 26, 26, 0.12);
         }
 
         .breadcrumbs .current {
-            color: rgba(0,0,0,0.6);
-            font-weight: 500;
+            color: rgba(26, 26, 26, 0.5);
         }
 
-        /* ===== ЗАГОЛОВОК КАТАЛОГА ===== */
+        /* ЗАГОЛОВОК */
         .catalog-header {
             padding: 20px 0 40px;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.04);
+            position: relative;
+            z-index: 2;
         }
 
         .catalog-header h1 {
@@ -70,24 +73,99 @@
             font-size: clamp(32px, 4vw, 52px);
             letter-spacing: -1.5px;
             text-transform: uppercase;
-            color: #000;
-            line-height: 1.1;
+            color: #1A1A1A;
+            line-height: 1.05;
         }
 
         .catalog-header .subtitle {
             font-size: 14px;
-            color: rgba(0,0,0,0.35);
+            color: rgba(26, 26, 26, 0.35);
             margin-top: 8px;
             max-width: 500px;
+            font-weight: 400;
+            line-height: 1.6;
         }
 
-        /* ===== ФИЛЬТРЫ ===== */
+        /* ПОИСК */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 14px 48px 14px 20px;
+            border: 1px solid rgba(26, 26, 26, 0.08);
+            background: #FAFAFA;
+            font-size: 14px;
+            color: #1A1A1A;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-bar input:focus {
+            border-color: rgba(26, 26, 26, 0.2);
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(26, 26, 26, 0.03);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(26, 26, 26, 0.2);
+        }
+
+        .search-bar .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(26, 26, 26, 0.3);
+            pointer-events: none;
+        }
+
+        .search-bar .clear-search {
+            position: absolute;
+            right: 44px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(26, 26, 26, 0.3);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            display: none;
+            transition: color 0.3s;
+        }
+
+        .search-bar .clear-search:hover {
+            color: #1A1A1A;
+        }
+
+        /* РЕЗУЛЬТАТЫ ПОИСКА */
+        .search-results-count {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.3);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        /* ФИЛЬТРЫ */
+        .filters-wrapper {
+            border-bottom: 1px solid rgba(26, 26, 26, 0.04);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
         .filters-bar {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
+            padding: 0;
+            position: relative;
+            z-index: 2;
         }
 
         .filter-group {
@@ -101,196 +179,353 @@
             font-size: 9px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(0,0,0,0.25);
+            color: rgba(26, 26, 26, 0.25);
             margin-right: 4px;
             font-weight: 600;
         }
 
         .filter-btn {
-            padding: 6px 16px;
-            border: 1px solid rgba(0,0,0,0.06);
+            padding: 8px 18px;
+            border: 1px solid rgba(26, 26, 26, 0.08);
             border-radius: 100px;
             background: transparent;
             font-size: 11px;
             font-weight: 500;
-            color: rgba(0,0,0,0.4);
+            color: rgba(26, 26, 26, 0.5);
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .filter-btn:hover {
-            border-color: rgba(0,0,0,0.15);
-            color: #111827;
+            border-color: rgba(26, 26, 26, 0.2);
+            color: #1A1A1A;
         }
 
         .filter-btn.active {
-            background: #111827;
+            background: #1A1A1A;
             color: #FFFFFF;
-            border-color: #111827;
+            border-color: #1A1A1A;
+        }
+
+        select.filter-btn {
+            padding-right: 32px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="rgba(26,26,26,0.4)" d="M6 8L1 3h10z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            cursor: pointer;
         }
 
         .filter-divider {
             width: 1px;
             height: 28px;
-            background: rgba(0,0,0,0.06);
+            background: rgba(26, 26, 26, 0.06);
             margin: 0 4px;
         }
 
-        /* ===== СЕТКА ТОВАРОВ ===== */
+        /* ПРОДВИНУТЫЕ ФИЛЬТРЫ */
+        .advanced-filters {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(26, 26, 26, 0.04);
+        }
+
+        .advanced-filters.visible {
+            display: block;
+        }
+
+        .filter-range {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-range input {
+            width: 100px;
+            padding: 6px 10px;
+            border: 1px solid rgba(26, 26, 26, 0.08);
+            background: #FAFAFA;
+            font-size: 12px;
+            color: #1A1A1A;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .filter-range input:focus {
+            border-color: rgba(26, 26, 26, 0.2);
+        }
+
+        .filter-range span {
+            font-size: 12px;
+            color: rgba(26, 26, 26, 0.3);
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            color: rgba(26, 26, 26, 0.5);
+        }
+
+        .filter-checkbox input {
+            accent-color: #1A1A1A;
+        }
+
+        .toggle-advanced {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.4);
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 0;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-advanced:hover {
+            color: #1A1A1A;
+        }
+
+        .toggle-advanced .arrow {
+            transition: transform 0.3s;
+            font-size: 8px;
+        }
+
+        .toggle-advanced.expanded .arrow {
+            transform: rotate(180deg);
+        }
+
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .active-filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(26, 26, 26, 0.03);
+            font-size: 10px;
+            color: rgba(26, 26, 26, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 450;
+        }
+
+        .active-filter-tag:hover {
+            background: rgba(26, 26, 26, 0.06);
+            color: #1A1A1A;
+        }
+
+        .active-filter-tag .remove {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .reset-filters {
+            font-size: 10px;
+            color: rgba(26, 26, 26, 0.3);
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .reset-filters:hover {
+            color: #1A1A1A;
+        }
+
+        /* СЕТКА ТОВАРОВ */
         .catalog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2px;
-            padding: 32px 0 60px;
-            background: rgba(0,0,0,0.02);
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            padding: 0;
+            background: rgba(26, 26, 26, 0.04);
         }
 
         .product-card {
             background: #FFFFFF;
-            padding: 28px 24px 32px;
+            padding: 24px 32px 32px;
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             display: flex;
             flex-direction: column;
-            border: 1px solid transparent;
+            border: none;
+            z-index: 1;
         }
 
         .product-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0,0,0,0.04);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.04);
-            z-index: 2;
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(26, 26, 26, 0.06);
+            z-index: 10;
+        }
+
+        /* ИСПРАВЛЕННЫЙ БЕЙДЖ */
+        .product-card .image-wrap {
+            width: 100%;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            background: #FAFAFA;
+            overflow: hidden;
+            position: relative;
         }
 
         .product-card .badge {
             position: absolute;
             top: 16px;
             right: 16px;
-            font-size: 7px;
+            font-size: 8px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            padding: 4px 12px;
-            border-radius: 100px;
+            padding: 5px 12px;
             font-weight: 600;
-            background: #F5F5F5;
-            color: rgba(0,0,0,0.3);
-        }
-
-        .product-card .badge.hit {
-            background: #111827;
+            background: #1A1A1A;
             color: #FFFFFF;
-        }
-
-        .product-card .badge.new {
-            background: rgb(var(--accent-r), var(--accent-g), var(--accent-b));
-            color: #FFFFFF;
-        }
-
-        .product-card .image-wrap {
-            width: 100%;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            background: #FAFAFA;
-            border-radius: 8px;
-            overflow: hidden;
+            z-index: 2;
         }
 
         .product-card .image-wrap img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            padding: 12px;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 24px;
+            position: relative;
+            z-index: 1;
         }
 
         .product-card:hover .image-wrap img {
-            transform: scale(1.04);
+            transform: scale(1.06);
         }
 
-        .product-card .emoji-big {
-            font-size: 64px;
-            line-height: 1;
+        .product-card .image-wrap .no-image {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: rgba(26, 26, 26, 0.15);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         .product-card .category-tag {
-            font-size: 8px;
-            letter-spacing: 2px;
+            font-size: 9px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            color: rgba(0,0,0,0.2);
-            margin-bottom: 6px;
-            font-weight: 500;
+            color: rgba(26, 26, 26, 0.25);
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .product-card .product-name {
             font-weight: 700;
-            font-size: 16px;
-            color: #111827;
+            font-size: 18px;
+            color: #1A1A1A;
             line-height: 1.3;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
         }
 
         .product-card .product-desc {
-            font-size: 12px;
-            color: rgba(0,0,0,0.3);
-            line-height: 1.5;
+            font-size: 13px;
+            color: rgba(26, 26, 26, 0.4);
+            line-height: 1.6;
             flex-grow: 1;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            font-weight: 400;
         }
 
         .product-card .product-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 8px 16px;
-            margin-bottom: 12px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(26, 26, 26, 0.04);
         }
 
         .product-card .product-meta .meta-item {
             font-size: 10px;
-            color: rgba(0,0,0,0.25);
+            color: rgba(26, 26, 26, 0.3);
             display: flex;
             align-items: center;
             gap: 4px;
-        }
-
-        .product-card .product-meta .meta-item .meta-icon {
-            font-size: 11px;
-            line-height: 1;
+            font-weight: 450;
         }
 
         .product-card .product-meta .meta-item strong {
-            color: rgba(0,0,0,0.5);
+            color: rgba(26, 26, 26, 0.5);
             font-weight: 500;
+        }
+
+        .product-card .certificates {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .product-card .cert-badge {
+            font-size: 7px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            background: rgba(26, 26, 26, 0.03);
+            color: rgba(26, 26, 26, 0.3);
+            font-weight: 500;
+        }
+
+        .product-card .cert-badge.has {
+            background: #1A1A1A;
+            color: #FFFFFF;
         }
 
         .product-card .product-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 4px;
+            margin-top: auto;
         }
 
         .product-card .price {
             font-weight: 700;
-            font-size: 18px;
-            color: #111827;
-            letter-spacing: -0.3px;
+            font-size: 20px;
+            color: #1A1A1A;
+            letter-spacing: -0.5px;
         }
 
         .product-card .price .from {
             font-weight: 400;
             font-size: 11px;
-            color: rgba(0,0,0,0.25);
+            color: rgba(26, 26, 26, 0.3);
+            margin-right: 2px;
         }
 
         .product-card .btn-order {
-            padding: 8px 20px;
-            background: #111827;
+            padding: 10px 24px;
+            background: #1A1A1A;
             color: #FFFFFF;
             border: none;
             font-size: 9px;
@@ -300,70 +535,116 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
-            border-radius: 4px;
         }
 
         .product-card .btn-order:hover {
             background: #000000;
-            transform: scale(1.02);
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(26, 26, 26, 0.1);
         }
 
-        /* ===== ПАГИНАЦИЯ ===== */
+        /* ПАГИНАЦИЯ */
         .pagination-wrap {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 6px;
-            padding: 20px 0 60px;
+            padding: 40px 0 80px;
         }
 
-        .pagination-wrap .page-btn {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(0,0,0,0.06);
-            border-radius: 4px;
-            background: transparent;
-            font-size: 13px;
+        /* ПУСТОЙ КАТАЛОГ */
+        .empty-catalog {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(26, 26, 26, 0.2);
+            background: #FFFFFF;
+        }
+
+        .empty-catalog .empty-icon {
+            font-family: 'Noto Serif SC', 'SimSun', serif;
+            font-size: 64px;
+            font-weight: 900;
+            opacity: 0.2;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .empty-catalog .empty-text {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             font-weight: 500;
-            color: rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
         }
 
-        .pagination-wrap .page-btn:hover {
-            border-color: rgba(0,0,0,0.15);
-            color: #111827;
+        /* ЗАГРУЗКА */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
 
-        .pagination-wrap .page-btn.active {
-            background: #111827;
-            color: #FFFFFF;
-            border-color: #111827;
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .pagination-wrap .page-btn.arrow {
-            font-size: 14px;
+        .loading-spinner {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(26, 26, 26, 0.1);
+            border-top-color: #1A1A1A;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
-        /* ===== АДАПТИВ ===== */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ */
+        .hanzi-decor {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            font-family: 'Noto Serif SC', 'SimSun', serif;
+            font-weight: 900;
+            color: #1A1A1A;
+            line-height: 1;
+            z-index: 0;
+            transition: opacity 1s ease;
+        }
+
+        .hanzi-decor.xl { font-size: 140px; }
+        .hanzi-decor.lg { font-size: 100px; }
+        .hanzi-decor.md { font-size: 70px; }
+        .hanzi-decor.sm { font-size: 45px; }
+        .hanzi-decor.xs { font-size: 28px; }
+
+        /* АДАПТИВ */
         @media (max-width: 768px) {
             .catalog-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 1px;
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
 
             .product-card {
-                padding: 20px 16px 24px;
+                padding: 20px 20px 24px;
             }
 
             .product-card .image-wrap {
-                height: 140px;
+                height: 180px;
             }
 
             .filters-bar {
                 gap: 8px;
-                padding: 16px 0;
+                padding: 0;
                 overflow-x: auto;
                 flex-wrap: nowrap;
                 -webkit-overflow-scrolling: touch;
@@ -380,12 +661,15 @@
             .filter-group {
                 flex-shrink: 0;
             }
+
+            .hanzi-decor.xl { font-size: 100px; opacity: 0.04 !important; }
+            .hanzi-decor.lg { font-size: 70px; opacity: 0.03 !important; }
+            .hanzi-decor.md { font-size: 50px; opacity: 0.02 !important; }
         }
 
         @media (max-width: 480px) {
             .catalog-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 1px;
             }
 
             .product-card {
@@ -393,39 +677,38 @@
             }
 
             .product-card .image-wrap {
-                height: 110px;
+                height: 140px;
             }
 
             .product-card .product-name {
-                font-size: 13px;
+                font-size: 14px;
             }
 
             .product-card .price {
-                font-size: 15px;
+                font-size: 16px;
             }
 
             .product-card .btn-order {
-                padding: 6px 12px;
-                font-size: 7px;
-            }
-
-            .product-card .product-meta .meta-item {
+                padding: 8px 14px;
                 font-size: 8px;
             }
+
+            .filter-range input {
+                width: 70px;
+            }
+
+            .hanzi-decor { display: none; }
         }
 
-        /* ===== СКРОЛЛБАР ===== */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #FFFFFF; }
         ::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
 
-        /* ===== AOS ===== */
         [data-aos] {
             transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             [data-aos] {
                 opacity: 1 !important;
@@ -443,239 +726,177 @@
 @endpush
 
 @section('content')
-    <div class="catalog-wrapper">
-        <!-- ===== ХЛЕБНЫЕ КРОШКИ ===== -->
+    <div class="catalog-wrapper" id="catalogApp">
+        <!-- ХЛЕБНЫЕ КРОШКИ -->
         <div class="px-6 md:px-12 lg:px-16">
             <div class="breadcrumbs" data-aos="fade-up">
-                <a href="/">Главная</a>
+                <a href="{{ route('home') }}">Главная</a>
                 <span class="separator">/</span>
                 <span class="current">Каталог</span>
             </div>
         </div>
 
-        <!-- ===== ЗАГОЛОВОК ===== -->
-        <div class="px-6 md:px-12 lg:px-16 catalog-header" data-aos="fade-up" data-aos-delay="100">
-            <h1>Каталог товаров</h1>
-            <p class="subtitle">Оптовые поставки продуктов питания из Китая. Минимальный заказ от 100 000 руб.</p>
+        <!-- ЗАГОЛОВОК -->
+        <div class="px-6 md:px-12 lg:px-16 catalog-header relative section-with-hanzi">
+            <h1 data-aos="fade-up" data-aos-delay="100">Каталог товаров</h1>
+            <p class="subtitle" data-aos="fade-up" data-aos-delay="200">
+                Оптовые поставки продуктов питания из Китая. Минимальный заказ от 100 000 руб.
+            </p>
+            <span class="hanzi-decor xl" style="top: 10px; right: 40px; opacity: 0.04; transform: rotate(5deg);" data-aos="fade-left" data-aos-delay="300">品</span>
+            <span class="hanzi-decor lg" style="bottom: -20px; left: 20px; opacity: 0.03; transform: rotate(-8deg);" data-aos="fade-right" data-aos-delay="400">类</span>
         </div>
 
-        <!-- ===== ФИЛЬТРЫ ===== -->
-        <div class="px-6 md:px-12 lg:px-16 filters-bar" data-aos="fade-up" data-aos-delay="150">
-            <div class="filter-group">
-                <span class="filter-group-label">Категория</span>
-                <button class="filter-btn active" data-filter="all">Все</button>
-                <button class="filter-btn" data-filter="noodles">Лапша</button>
-                <button class="filter-btn" data-filter="wonton">Вонтоны</button>
-                <button class="filter-btn" data-filter="rice">Рис</button>
-                <button class="filter-btn" data-filter="soup">Супы</button>
+        <!-- ПОИСК И ФИЛЬТРЫ -->
+        <div class="px-6 md:px-12 lg:px-16" data-aos="fade-up" data-aos-delay="150">
+            <!-- Поисковая строка -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск по названию, описанию..." value="{{ request('search') }}">
+                <button class="clear-search" id="clearSearch" style="{{ request('search') ? 'display:block' : '' }}">×</button>
+                <span class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </span>
             </div>
 
-            <div class="filter-divider"></div>
-
-            <div class="filter-group">
-                <span class="filter-group-label">Упаковка</span>
-                <button class="filter-btn active" data-filter="all-pack">Все</button>
-                <button class="filter-btn" data-filter="cup">Стакан</button>
-                <button class="filter-btn" data-filter="pouch">Мягкая</button>
-                <button class="filter-btn" data-filter="box">Коробка</button>
+            <!-- Счётчик результатов -->
+            <div class="search-results-count" id="resultsCount">
+                Найдено: {{ $products->total() }} товаров
             </div>
-        </div>
 
-        <!-- ===== СЕТКА ТОВАРОВ ===== -->
-        <div class="px-6 md:px-12 lg:px-16 catalog-grid" id="catalogGrid">
-            @php
-                $catalogProducts = [
-                    [
-                        'id' => 1,
-                        'name' => 'Лапша быстрого приготовления в стакане',
-                        'desc' => 'Говядина. Удобный формат для розничных сетей и HoReCa.',
-                        'category' => 'noodles',
-                        'pack' => 'cup',
-                        'badge' => 'Хит',
-                        'badgeType' => 'hit',
-                        'image' => 'images/product-1.png',
-                        'price' => '45',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '1000 шт',
-                        'weight' => '85 г',
-                        'shelfLife' => '12 мес',
-                    ],
-                    [
-                        'id' => 2,
-                        'name' => 'Лапша с вонтонами',
-                        'desc' => 'Фирменный продукт. Уникальная позиция с высокой маржинальностью.',
-                        'category' => 'wonton',
-                        'pack' => 'cup',
-                        'badge' => 'Уникальный',
-                        'badgeType' => 'new',
-                        'image' => 'images/product-2.png',
-                        'price' => '85',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '500 шт',
-                        'weight' => '120 г',
-                        'shelfLife' => '12 мес',
-                    ],
-                    [
-                        'id' => 3,
-                        'name' => 'Сублимированная лапша',
-                        'desc' => 'Говядина, курица, морепродукты. Высокая маржинальность.',
-                        'category' => 'noodles',
-                        'pack' => 'pouch',
-                        'badge' => 'Маржа 40%',
-                        'badgeType' => 'hit',
-                        'image' => 'images/product-3.png',
-                        'price' => '55',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '800 шт',
-                        'weight' => '70 г',
-                        'shelfLife' => '18 мес',
-                    ],
-                    [
-                        'id' => 4,
-                        'name' => 'Рис быстрого приготовления',
-                        'desc' => 'Бекон, говядина с перцем, курица, тушёное мясо. 4 вкуса.',
-                        'category' => 'rice',
-                        'pack' => 'pouch',
-                        'badge' => 'Новинка',
-                        'badgeType' => 'new',
-                        'image' => 'images/product-1.png',
-                        'price' => '65',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '500 шт',
-                        'weight' => '100 г',
-                        'shelfLife' => '14 мес',
-                    ],
-                    [
-                        'id' => 5,
-                        'name' => 'Лапша с говядиной в стакане',
-                        'desc' => 'Классический вкус. Стабильные продажи во всех каналах.',
-                        'category' => 'noodles',
-                        'pack' => 'cup',
-                        'badge' => 'Бестселлер',
-                        'badgeType' => 'hit',
-                        'image' => 'images/product-1.png',
-                        'price' => '42',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '1500 шт',
-                        'weight' => '80 г',
-                        'shelfLife' => '12 мес',
-                    ],
-                    [
-                        'id' => 6,
-                        'name' => 'Лапша с курицей в стакане',
-                        'desc' => 'Нежный вкус. Хит среди детского и семейного ассортимента.',
-                        'category' => 'noodles',
-                        'pack' => 'cup',
-                        'badge' => 'Хит',
-                        'badgeType' => 'hit',
-                        'image' => 'images/product-1.png',
-                        'price' => '42',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '1500 шт',
-                        'weight' => '80 г',
-                        'shelfLife' => '12 мес',
-                    ],
-                    [
-                        'id' => 7,
-                        'name' => 'Вонтоны с креветкой',
-                        'desc' => 'Премиальная позиция. Для ресторанов и дорогих розничных сетей.',
-                        'category' => 'wonton',
-                        'pack' => 'box',
-                        'badge' => 'Премиум',
-                        'badgeType' => 'new',
-                        'image' => 'images/product-2.png',
-                        'price' => '120',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '300 шт',
-                        'weight' => '150 г',
-                        'shelfLife' => '10 мес',
-                    ],
-                    [
-                        'id' => 8,
-                        'name' => 'Суп мисо с тофу',
-                        'desc' => 'Сублимированный суп. Быстрое приготовление, высокий спрос.',
-                        'category' => 'soup',
-                        'pack' => 'pouch',
-                        'badge' => 'Тренд',
-                        'badgeType' => 'new',
-                        'image' => 'images/product-3.png',
-                        'price' => '38',
-                        'priceUnit' => 'шт',
-                        'minOrder' => '1000 шт',
-                        'weight' => '50 г',
-                        'shelfLife' => '18 мес',
-                    ],
-                ];
-            @endphp
-
-            @foreach($catalogProducts as $index => $product)
-                <div class="product-card"
-                     data-aos="fade-up"
-                     data-aos-delay="{{ 50 + ($index % 4) * 100 }}"
-                     data-category="{{ $product['category'] }}"
-                     data-pack="{{ $product['pack'] }}"
-                     data-id="{{ $product['id'] }}">
-
-                    @if($product['badge'])
-                        <span class="badge {{ $product['badgeType'] }}">{{ $product['badge'] }}</span>
-                    @endif
-
-                    <div class="image-wrap">
-                        @if($product['image'] && file_exists(public_path($product['image'])))
-                            <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}" loading="lazy">
-                        @else
-                            <span class="emoji-big">&#127836;</span>
-                        @endif
+            <div class="filters-wrapper">
+                <!-- Основные фильтры -->
+                <div class="filters-bar" id="filtersBar">
+                    <div class="filter-group">
+                        <span class="filter-group-label">Категория</span>
+                        <button class="filter-btn {{ !request('category') || request('category') === 'all' ? 'active' : '' }}" data-filter="category" data-value="all">Все</button>
+                        @foreach($categories as $category)
+                            <button class="filter-btn {{ request('category') === $category->slug ? 'active' : '' }}" data-filter="category" data-value="{{ $category->slug }}">{{ $category->name }}</button>
+                        @endforeach
                     </div>
 
-                    <div class="category-tag">{{ strtoupper(str_replace('_', ' ', $product['category'])) }}</div>
-                    <div class="product-name">{{ $product['name'] }}</div>
-                    <div class="product-desc">{{ $product['desc'] }}</div>
+                    <div class="filter-divider"></div>
 
-                    <div class="product-meta">
-                        <span class="meta-item">
-                            <span class="meta-icon">&#128230;</span>
-                            <strong>{{ $product['minOrder'] }}</strong>
-                        </span>
-                        <span class="meta-item">
-                            <span class="meta-icon">&#9886;</span>
-                            <strong>{{ $product['weight'] }}</strong>
-                        </span>
-                        <span class="meta-item">
-                            <span class="meta-icon">&#128197;</span>
-                            <strong>{{ $product['shelfLife'] }}</strong>
-                        </span>
+                    <div class="filter-group">
+                        <span class="filter-group-label">Упаковка</span>
+                        <button class="filter-btn {{ !request('pack') || request('pack') === 'all-pack' ? 'active' : '' }}" data-filter="pack" data-value="all-pack">Все</button>
+                        <button class="filter-btn {{ request('pack') === 'cup' ? 'active' : '' }}" data-filter="pack" data-value="cup">Стакан</button>
+                        <button class="filter-btn {{ request('pack') === 'pouch' ? 'active' : '' }}" data-filter="pack" data-value="pouch">Мягкая</button>
+                        <button class="filter-btn {{ request('pack') === 'box' ? 'active' : '' }}" data-filter="pack" data-value="box">Коробка</button>
                     </div>
 
-                    <div class="product-footer">
-                        <span class="price"><span class="from">от</span> {{ $product['price'] }} руб. / {{ $product['priceUnit'] }}</span>
-                        <button class="btn-order" data-product="{{ $product['id'] }}" data-name="{{ $product['name'] }}" data-price="{{ $product['price'] }}">
-                            Заказать
-                        </button>
+                    <div class="filter-divider"></div>
+
+                    <div class="filter-group">
+                        <span class="filter-group-label">Сертификаты</span>
+                        <button class="filter-btn {{ !request('cert') || request('cert') === 'all-cert' ? 'active' : '' }}" data-filter="cert" data-value="all-cert">Все</button>
+                        <button class="filter-btn {{ request('cert') === 'eac' ? 'active' : '' }}" data-filter="cert" data-value="eac">ЕАС</button>
+                        <button class="filter-btn {{ request('cert') === 'honest' ? 'active' : '' }}" data-filter="cert" data-value="honest">Честный знак</button>
+                    </div>
+
+                    <div class="filter-divider"></div>
+
+                    <div class="filter-group">
+                        <span class="filter-group-label">Сортировка</span>
+                        <select class="filter-btn" id="sortOrder">
+                            <option value="default" {{ !request('sort') || request('sort') === 'default' ? 'selected' : '' }}>По умолчанию</option>
+                            <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Цена: низкая → высокая</option>
+                            <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Цена: высокая → низкая</option>
+                            <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>Название: А → Я</option>
+                            <option value="popular" {{ request('sort') === 'popular' ? 'selected' : '' }}>Популярные</option>
+                            <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Новинки</option>
+                        </select>
                     </div>
                 </div>
-            @endforeach
+
+                <!-- Кнопка расширенных фильтров -->
+                <button class="toggle-advanced {{ request('weight_from') || request('weight_to') || request('price_from') || request('price_to') || request('shelf_life') || request('pieces_per_box') ? 'expanded' : '' }}" id="toggleAdvanced">
+                    Расширенные фильтры <span class="arrow">▼</span>
+                </button>
+
+                <!-- Расширенные фильтры -->
+                <div class="advanced-filters {{ request('weight_from') || request('weight_to') || request('price_from') || request('price_to') || request('shelf_life') || request('pieces_per_box') ? 'visible' : '' }}" id="advancedFilters">
+                    <div class="filters-bar" style="border-bottom: none; padding-bottom: 0;">
+                        <div class="filter-group">
+                            <span class="filter-group-label">Цена (₽)</span>
+                            <div class="filter-range">
+                                <input type="number" id="priceFrom" placeholder="От" value="{{ request('price_from') }}">
+                                <span>—</span>
+                                <input type="number" id="priceTo" placeholder="До" value="{{ request('price_to') }}">
+                            </div>
+                        </div>
+
+                        <div class="filter-divider"></div>
+
+                        <div class="filter-group">
+                            <span class="filter-group-label">Вес (г)</span>
+                            <div class="filter-range">
+                                <input type="number" id="weightFrom" placeholder="От" value="{{ request('weight_from') }}">
+                                <span>—</span>
+                                <input type="number" id="weightTo" placeholder="До" value="{{ request('weight_to') }}">
+                            </div>
+                        </div>
+
+                        <div class="filter-divider"></div>
+
+                        <div class="filter-group">
+                            <span class="filter-group-label">Срок годности</span>
+                            <select class="filter-btn" id="shelfLife">
+                                <option value="">Любой</option>
+                                <option value="90" {{ request('shelf_life') == '90' ? 'selected' : '' }}>До 90 дней</option>
+                                <option value="180" {{ request('shelf_life') == '180' ? 'selected' : '' }}>До 180 дней</option>
+                                <option value="365" {{ request('shelf_life') == '365' ? 'selected' : '' }}>До 365 дней</option>
+                                <option value="366" {{ request('shelf_life') == '366' ? 'selected' : '' }}>Более 365 дней</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-divider"></div>
+
+                        <div class="filter-group">
+                            <span class="filter-group-label">Штук в коробке</span>
+                            <select class="filter-btn" id="piecesPerBox">
+                                <option value="">Любое</option>
+                                <option value="12" {{ request('pieces_per_box') == '12' ? 'selected' : '' }}>12</option>
+                                <option value="24" {{ request('pieces_per_box') == '24' ? 'selected' : '' }}>24</option>
+                                <option value="36" {{ request('pieces_per_box') == '36' ? 'selected' : '' }}>36</option>
+                                <option value="48" {{ request('pieces_per_box') == '48' ? 'selected' : '' }}>48</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Активные фильтры -->
+                <div class="active-filters" id="activeFilters"></div>
+            </div>
         </div>
 
-        <!-- ===== ПАГИНАЦИЯ ===== -->
-        <div class="pagination-wrap" data-aos="fade-up" data-aos-delay="400">
-            <button class="page-btn arrow">&#8592;</button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">4</button>
-            <button class="page-btn arrow">&#8594;</button>
+        <!-- СЕТКА ТОВАРОВ -->
+        <div class="px-6 md:px-12 lg:px-16" style="position: relative;">
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="catalog-grid" id="catalogGrid">
+                @include('partials.catalog.products', ['products' => $products])
+            </div>
         </div>
 
-        <!-- ===== СЕКЦИЯ СВЯЗАТЬСЯ ===== -->
-        <div class="px-6 md:px-12 lg:px-16 py-12 border-t border-black/5" data-aos="fade-up">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- ПАГИНАЦИЯ -->
+        <div class="px-6 md:px-12 lg:px-16" id="paginationContainer">
+            @include('partials.catalog.pagination', ['products' => $products])
+        </div>
+
+        <!-- СЕКЦИЯ СВЯЗАТЬСЯ -->
+        <div class="px-6 md:px-12 lg:px-16 py-12 lg:py-16 border-t border-black/5 mt-8 relative section-with-hanzi" data-aos="fade-up">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative z-10">
                 <div>
-                    <h2 class="font-bold text-[18px] text-black">Не нашли нужный товар?</h2>
-                    <p class="text-[13px] text-black/30">Мы поставим любую позицию под ваш запрос</p>
+                    <h2 class="font-bold text-[20px] text-black tracking-[-0.3px]">Не нашли нужный товар?</h2>
+                    <p class="text-[14px] text-black/30 mt-1 font-light">Мы поставим любую позицию под ваш запрос</p>
                 </div>
-                <a href="#contacts" class="inline-block px-8 py-3 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Связаться с нами</a>
+                <a href="{{ route('contacts') }}" class="inline-block px-10 py-4 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Связаться с нами</a>
             </div>
+            <span class="hanzi-decor md" style="bottom: 10px; right: 60px; opacity: 0.03; transform: rotate(-5deg);">求</span>
+            <span class="hanzi-decor sm" style="top: 20px; left: 40px; opacity: 0.03; transform: rotate(10deg);">需</span>
         </div>
     </div>
 @endsection
@@ -691,116 +912,339 @@
         });
 
         (function() {
-            var filterBtns = document.querySelectorAll('.filter-btn');
-            var productCards = document.querySelectorAll('.product-card');
-            var activeCategory = 'all';
-            var activePack = 'all-pack';
+            // Элементы
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const resultsCount = document.getElementById('resultsCount');
+            const catalogGrid = document.getElementById('catalogGrid');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const activeFiltersContainer = document.getElementById('activeFilters');
+            const toggleAdvanced = document.getElementById('toggleAdvanced');
+            const advancedFilters = document.getElementById('advancedFilters');
 
-            function applyFilters() {
-                productCards.forEach(function(card) {
-                    var category = card.dataset.category || '';
-                    var pack = card.dataset.pack || '';
+            // Состояние фильтров
+            let filters = {
+                category: '{{ request('category', 'all') }}',
+                pack: '{{ request('pack', 'all-pack') }}',
+                cert: '{{ request('cert', 'all-cert') }}',
+                sort: '{{ request('sort', 'default') }}',
+                search: '{{ request('search', '') }}',
+                price_from: '{{ request('price_from', '') }}',
+                price_to: '{{ request('price_to', '') }}',
+                weight_from: '{{ request('weight_from', '') }}',
+                weight_to: '{{ request('weight_to', '') }}',
+                shelf_life: '{{ request('shelf_life', '') }}',
+                pieces_per_box: '{{ request('pieces_per_box', '') }}'
+            };
 
-                    var categoryMatch = activeCategory === 'all' || category === activeCategory;
-                    var packMatch = activePack === 'all-pack' || pack === activePack;
+            let searchTimeout;
 
-                    card.style.display = (categoryMatch && packMatch) ? 'flex' : 'none';
-                });
-            }
-
-            function updateActiveButtons(group, activeValue) {
-                var btns = group.querySelectorAll('.filter-btn');
-                btns.forEach(function(btn) {
-                    if (btn.dataset.filter === activeValue) {
-                        btn.classList.add('active');
+            // Функция для обновления URL без перезагрузки
+            function updateURL(params) {
+                const url = new URL(window.location);
+                Object.keys(params).forEach(key => {
+                    if (params[key] && params[key] !== 'all' && params[key] !== 'all-pack' && params[key] !== 'all-cert' && params[key] !== 'default') {
+                        url.searchParams.set(key, params[key]);
                     } else {
-                        btn.classList.remove('active');
+                        url.searchParams.delete(key);
                     }
                 });
+                window.history.pushState({}, '', url);
             }
 
-            var filterGroups = document.querySelectorAll('.filter-group');
+            // Функция для загрузки товаров через AJAX
+            function loadProducts() {
+                loadingOverlay.classList.add('active');
 
-            filterGroups.forEach(function(group) {
-                var btns = group.querySelectorAll('.filter-btn');
-                btns.forEach(function(btn) {
-                    btn.addEventListener('click', function() {
-                        var filterValue = this.dataset.filter;
-                        var parentGroup = this.closest('.filter-group');
-                        var label = parentGroup.querySelector('.filter-group-label');
-                        var isCategory = label && label.textContent.indexOf('Категория') !== -1;
-                        var isPack = label && label.textContent.indexOf('Упаковка') !== -1;
+                const params = new URLSearchParams(filters);
 
-                        if (isCategory) {
-                            activeCategory = filterValue;
-                            updateActiveButtons(parentGroup, filterValue);
-                        } else if (isPack) {
-                            activePack = filterValue;
-                            updateActiveButtons(parentGroup, filterValue);
+                fetch('{{ route("catalog") }}?' + params.toString(), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        catalogGrid.innerHTML = data.html;
+                        paginationContainer.innerHTML = data.pagination;
+                        updateResultsCount(data.total || 0);
+                        updateActiveFilters();
+                        updateURL(filters);
+
+                        // Реинициализация AOS для новых элементов
+                        AOS.refresh();
+                    })
+                    .catch(error => {
+                        console.error('Ошибка загрузки:', error);
+                    })
+                    .finally(() => {
+                        loadingOverlay.classList.remove('active');
+                    });
+            }
+
+            // Обновление счётчика
+            function updateResultsCount(total) {
+                resultsCount.textContent = `Найдено: ${total} товаров`;
+            }
+
+            // Обновление активных фильтров
+            function updateActiveFilters() {
+                let html = '';
+
+                if (filters.category !== 'all') {
+                    const btn = document.querySelector(`[data-filter="category"][data-value="${filters.category}"]`);
+                    const name = btn ? btn.textContent : filters.category;
+                    html += `<span class="active-filter-tag" data-remove="category">${name} <span class="remove">×</span></span>`;
+                }
+
+                if (filters.pack !== 'all-pack') {
+                    const btn = document.querySelector(`[data-filter="pack"][data-value="${filters.pack}"]`);
+                    const name = btn ? btn.textContent : filters.pack;
+                    html += `<span class="active-filter-tag" data-remove="pack">${name} <span class="remove">×</span></span>`;
+                }
+
+                if (filters.cert !== 'all-cert') {
+                    const btn = document.querySelector(`[data-filter="cert"][data-value="${filters.cert}"]`);
+                    const name = btn ? btn.textContent : filters.cert;
+                    html += `<span class="active-filter-tag" data-remove="cert">${name} <span class="remove">×</span></span>`;
+                }
+
+                if (filters.price_from || filters.price_to) {
+                    const from = filters.price_from ? `от ${filters.price_from}` : '';
+                    const to = filters.price_to ? `до ${filters.price_to}` : '';
+                    html += `<span class="active-filter-tag" data-remove="price">Цена ${from} ${to} ₽ <span class="remove">×</span></span>`;
+                }
+
+                if (filters.weight_from || filters.weight_to) {
+                    const from = filters.weight_from ? `от ${filters.weight_from}` : '';
+                    const to = filters.weight_to ? `до ${filters.weight_to}` : '';
+                    html += `<span class="active-filter-tag" data-remove="weight">Вес ${from} ${to} г <span class="remove">×</span></span>`;
+                }
+
+                if (filters.shelf_life) {
+                    html += `<span class="active-filter-tag" data-remove="shelf_life">Срок: ${filters.shelf_life} дн. <span class="remove">×</span></span>`;
+                }
+
+                if (filters.pieces_per_box) {
+                    html += `<span class="active-filter-tag" data-remove="pieces_per_box">${filters.pieces_per_box} шт/кор <span class="remove">×</span></span>`;
+                }
+
+                if (filters.search) {
+                    html += `<span class="active-filter-tag" data-remove="search">"${filters.search}" <span class="remove">×</span></span>`;
+                }
+
+                if (html) {
+                    html += `<button class="reset-filters" id="resetAll">Сбросить все</button>`;
+                }
+
+                activeFiltersContainer.innerHTML = html;
+
+                // Обработчики для удаления фильтров
+                document.querySelectorAll('.active-filter-tag').forEach(tag => {
+                    tag.addEventListener('click', function() {
+                        const removeKey = this.dataset.remove;
+                        if (removeKey === 'price') {
+                            filters.price_from = '';
+                            filters.price_to = '';
+                            document.getElementById('priceFrom').value = '';
+                            document.getElementById('priceTo').value = '';
+                        } else if (removeKey === 'weight') {
+                            filters.weight_from = '';
+                            filters.weight_to = '';
+                            document.getElementById('weightFrom').value = '';
+                            document.getElementById('weightTo').value = '';
+                        } else if (removeKey === 'search') {
+                            filters.search = '';
+                            searchInput.value = '';
+                            clearSearch.style.display = 'none';
+                        } else {
+                            filters[removeKey] = removeKey === 'category' ? 'all' :
+                                removeKey === 'pack' ? 'all-pack' :
+                                    removeKey === 'cert' ? 'all-cert' : '';
+
+                            // Обновить кнопки
+                            document.querySelectorAll(`[data-filter="${removeKey}"]`).forEach(btn => {
+                                btn.classList.remove('active');
+                                if (btn.dataset.value === filters[removeKey]) {
+                                    btn.classList.add('active');
+                                }
+                            });
                         }
 
-                        applyFilters();
+                        loadProducts();
                     });
                 });
-            });
 
-            document.querySelectorAll('.btn-order').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    var name = this.dataset.name || 'Товар';
-                    var price = this.dataset.price || '0';
-                    alert('Заявка на "' + name + '"\nЦена: от ' + price + ' руб. / шт\n\nСвяжитесь с нами для оформления заказа.\nТел: +7 999 618 28 82');
+                // Сброс всех фильтров
+                const resetBtn = document.getElementById('resetAll');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', resetAllFilters);
+                }
+            }
+
+            function resetAllFilters() {
+                filters = {
+                    category: 'all',
+                    pack: 'all-pack',
+                    cert: 'all-cert',
+                    sort: 'default',
+                    search: '',
+                    price_from: '',
+                    price_to: '',
+                    weight_from: '',
+                    weight_to: '',
+                    shelf_life: '',
+                    pieces_per_box: ''
+                };
+
+                searchInput.value = '';
+                clearSearch.style.display = 'none';
+                document.getElementById('priceFrom').value = '';
+                document.getElementById('priceTo').value = '';
+                document.getElementById('weightFrom').value = '';
+                document.getElementById('weightTo').value = '';
+                document.getElementById('shelfLife').value = '';
+                document.getElementById('piecesPerBox').value = '';
+                document.getElementById('sortOrder').value = 'default';
+
+                document.querySelectorAll('.filter-btn.active').forEach(btn => {
+                    btn.classList.remove('active');
                 });
-            });
+                document.querySelectorAll('[data-value="all"], [data-value="all-pack"], [data-value="all-cert"]').forEach(btn => {
+                    btn.classList.add('active');
+                });
 
-            document.querySelectorAll('.page-btn:not(.arrow)').forEach(function(btn) {
+                loadProducts();
+            }
+
+            // Обработчики фильтров
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    document.querySelectorAll('.page-btn').forEach(function(b) {
-                        b.classList.remove('active');
-                    });
+                    const filterKey = this.dataset.filter;
+                    const filterValue = this.dataset.value;
+
+                    // Обновить активный класс
+                    const group = this.closest('.filter-group');
+                    group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    var header = document.querySelector('.catalog-header');
-                    if (header) {
-                        header.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+
+                    filters[filterKey] = filterValue;
+                    loadProducts();
                 });
             });
 
-            var prevArrow = document.querySelector('.page-btn.arrow:first-child');
-            var nextArrow = document.querySelector('.page-btn.arrow:last-child');
+            // Сортировка
+            document.getElementById('sortOrder').addEventListener('change', function() {
+                filters.sort = this.value;
+                loadProducts();
+            });
 
-            if (prevArrow && nextArrow) {
-                prevArrow.addEventListener('click', function() {
-                    var active = document.querySelector('.page-btn.active');
-                    if (active) {
-                        var prev = active.previousElementSibling;
-                        if (prev && prev.classList && !prev.classList.contains('arrow')) {
-                            prev.click();
-                        }
-                    }
+            // Поиск с задержкой
+            searchInput.addEventListener('input', function() {
+                const value = this.value.trim();
+                clearSearch.style.display = value ? 'block' : 'none';
+
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filters.search = value;
+                    loadProducts();
+                }, 400);
+            });
+
+            // Очистка поиска
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                this.style.display = 'none';
+                filters.search = '';
+                loadProducts();
+            });
+
+            // Расширенные фильтры
+            toggleAdvanced.addEventListener('click', function() {
+                this.classList.toggle('expanded');
+                advancedFilters.classList.toggle('visible');
+            });
+
+            // Применение диапазонов цен и веса
+            ['priceFrom', 'priceTo', 'weightFrom', 'weightTo'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+
+                let timeout;
+                el.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (id === 'priceFrom') filters.price_from = this.value;
+                        if (id === 'priceTo') filters.price_to = this.value;
+                        if (id === 'weightFrom') filters.weight_from = this.value;
+                        if (id === 'weightTo') filters.weight_to = this.value;
+                        loadProducts();
+                    }, 500);
                 });
+            });
 
-                nextArrow.addEventListener('click', function() {
-                    var active = document.querySelector('.page-btn.active');
-                    if (active) {
-                        var next = active.nextElementSibling;
-                        if (next && next.classList && !next.classList.contains('arrow')) {
-                            next.click();
-                        }
-                    }
-                });
-            }
+            // Срок годности
+            document.getElementById('shelfLife').addEventListener('change', function() {
+                filters.shelf_life = this.value;
+                loadProducts();
+            });
 
-            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-                anchor.addEventListener('click', function(e) {
+            // Штук в коробке
+            document.getElementById('piecesPerBox').addEventListener('change', function() {
+                filters.pieces_per_box = this.value;
+                loadProducts();
+            });
+
+            // Обработчики кнопок "Заказать"
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-order')) {
+                    const btn = e.target.closest('.btn-order');
+                    const name = btn.dataset.name || 'Товар';
+                    const price = btn.dataset.price || '0';
+                    const formattedPrice = new Intl.NumberFormat('ru-RU').format(price);
+
+                    alert(`Заявка на "${name}"\nЦена: от ${formattedPrice} руб.\n\nСвяжитесь с нами для оформления заказа.\nТел: +7 999 618 28 82\nEmail: eksport.inyan@mail.ru`);
+                }
+            });
+
+            // Обработчики пагинации (делегирование)
+            document.addEventListener('click', function(e) {
+                const pageLink = e.target.closest('#paginationContainer a');
+                if (pageLink) {
                     e.preventDefault();
-                    var target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        var headerOffset = 80;
-                        var elementPosition = target.getBoundingClientRect().top;
-                        var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    const url = new URL(pageLink.href);
+                    const page = url.searchParams.get('page');
+                    if (page) {
+                        filters.page = page;
+                        loadProducts();
+                        window.scrollTo({ top: document.getElementById('catalogApp').offsetTop - 100, behavior: 'smooth' });
                     }
-                });
+                }
+            });
+
+            // Инициализация активных фильтров при загрузке
+            updateActiveFilters();
+
+            // Обработка кнопок "назад/вперёд" браузера
+            window.addEventListener('popstate', function() {
+                const params = new URLSearchParams(window.location.search);
+                filters.category = params.get('category') || 'all';
+                filters.pack = params.get('pack') || 'all-pack';
+                filters.cert = params.get('cert') || 'all-cert';
+                filters.sort = params.get('sort') || 'default';
+                filters.search = params.get('search') || '';
+                filters.price_from = params.get('price_from') || '';
+                filters.price_to = params.get('price_to') || '';
+                filters.weight_from = params.get('weight_from') || '';
+                filters.weight_to = params.get('weight_to') || '';
+                filters.shelf_life = params.get('shelf_life') || '';
+                filters.pieces_per_box = params.get('pieces_per_box') || '';
+
+                searchInput.value = filters.search;
+                clearSearch.style.display = filters.search ? 'block' : 'none';
+
+                loadProducts();
             });
         })();
     </script>

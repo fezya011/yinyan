@@ -24,7 +24,6 @@
             }
         }
 
-        /* Панель превью */
         .preview-panel {
             position: sticky;
             top: 92px;
@@ -70,7 +69,6 @@
             background: linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 100%);
         }
 
-        /* Мини-карточка товара */
         .preview-card {
             background: #FFFFFF;
             border: 1px solid rgba(26, 26, 26, 0.06);
@@ -192,7 +190,7 @@
 
         .preview-card-featured {
             position: absolute;
-            top: 12px;
+            top: 40px;
             left: 50%;
             transform: translateX(-50%);
             color: #B8860B;
@@ -201,10 +199,9 @@
             filter: drop-shadow(0 2px 4px rgba(184, 134, 11, 0.3));
         }
 
-        /* Индикаторы */
         .preview-indicators {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1px;
             background: rgba(26, 26, 26, 0.04);
             margin-top: 16px;
@@ -232,14 +229,12 @@
             margin-top: 2px;
         }
 
-        /* Цветной акцент */
         .preview-accent-bar {
             height: 3px;
             width: 100%;
             transition: background-color 0.3s ease;
         }
 
-        /* Форма */
         .form-card {
             background: #FFFFFF;
             border: 1px solid rgba(26, 26, 26, 0.06);
@@ -258,7 +253,6 @@
             border-bottom: 1px solid rgba(26, 26, 26, 0.06);
         }
 
-        /* Адаптивные grid'ы */
         .form-grid-2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -271,14 +265,26 @@
             gap: 16px;
         }
 
+        .form-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 640px) {
             .form-grid-2,
-            .form-grid-3 {
+            .form-grid-3,
+            .form-grid-4 {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Чекбоксы */
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -301,7 +307,23 @@
             user-select: none;
         }
 
-        /* Галерея */
+        .text-muted {
+            color: #94a3b8;
+        }
+        .text-xs {
+            font-size: 11px;
+        }
+        .text-red-500 {
+            color: #ef4444;
+        }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mt-2 { margin-top: 8px; }
+        .gap-3 { gap: 12px; }
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+
         .current-gallery {
             display: flex;
             gap: 8px;
@@ -314,6 +336,7 @@
             height: 70px;
             object-fit: cover;
             border: 1px solid rgba(26, 26, 26, 0.06);
+            border-radius: 6px;
             transition: transform 0.2s ease;
         }
 
@@ -331,15 +354,16 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Основная информация --}}
+                {{-- ===== 1. ОСНОВНАЯ ИНФОРМАЦИЯ ===== --}}
                 <div class="form-section-title">Основная информация</div>
-                <div class="form-grid-2 mb-4">
-                    <div class="form-group">
-                        <label class="form-label" for="name">Название <span style="color: #999;">*</span></label>
-                        <input class="form-control" id="name" type="text" name="name" value="{{ old('name', $product->name) }}" required oninput="updatePreview()">
-                        @error('name')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                    </div>
 
+                <div class="form-group mb-3">
+                    <label class="form-label" for="name">Название <span style="color: #999;">*</span></label>
+                    <input class="form-control" id="name" type="text" name="name" value="{{ old('name', $product->name) }}" required oninput="updatePreview()" placeholder="Например: Лапша в стакане">
+                    @error('name')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="form-grid-2 mb-4">
                     <div class="form-group">
                         <label class="form-label" for="category_id">Категория <span style="color: #999;">*</span></label>
                         <select class="form-control" id="category_id" name="category_id" required>
@@ -352,11 +376,17 @@
                         </select>
                         @error('category_id')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="barcode">Штрих-код</label>
+                        <input class="form-control" id="barcode" type="text" name="barcode" value="{{ old('barcode', $product->barcode) }}" placeholder="4601234567890">
+                        @error('barcode')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
                 </div>
 
                 <div class="form-group mb-4">
                     <label class="form-label" for="description">Описание</label>
-                    <textarea class="form-control" id="description" name="description" rows="3" oninput="updatePreview()">{{ old('description', $product->description) }}</textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3" oninput="updatePreview()" placeholder="Подробное описание товара">{{ old('description', $product->description) }}</textarea>
                 </div>
 
                 <div class="form-group mb-4">
@@ -364,35 +394,17 @@
                     <input class="form-control" id="card_subtitle" type="text" name="card_subtitle" value="{{ old('card_subtitle', $product->card_subtitle) }}" placeholder="Говядина или курица. Удобная упаковка." oninput="updatePreview()">
                 </div>
 
-                {{-- Визуальные данные --}}
-                <div class="form-section-title">Визуальное оформление</div>
-                <div class="form-grid-3 mb-4">
-                    <div class="form-group">
-                        <label class="form-label" for="emoji_icon">Emoji-иконка</label>
-                        <input class="form-control" id="emoji_icon" type="text" name="emoji_icon" value="{{ old('emoji_icon', $product->emoji_icon) }}" placeholder="🍜" oninput="updatePreview()" maxlength="2">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="tag">Тег</label>
-                        <input class="form-control" id="tag" type="text" name="tag" value="{{ old('tag', $product->tag) }}" placeholder="Хит продаж" oninput="updatePreview()">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="accent_color">Цвет акцента</label>
-                        <input class="form-control" id="accent_color" type="color" name="accent_color" value="{{ old('accent_color', $product->accent_color ?? '#83BF32') }}" oninput="updatePreview()" style="height: 42px; padding: 4px 8px;">
-                    </div>
-                </div>
-
-                {{-- Характеристики --}}
+                {{-- ===== 2. ХАРАКТЕРИСТИКИ ===== --}}
                 <div class="form-section-title">Характеристики</div>
+
                 <div class="form-grid-3 mb-4">
                     <div class="form-group">
                         <label class="form-label" for="packaging_type">Тип упаковки</label>
-                        <input class="form-control" id="packaging_type" type="text" name="packaging_type" value="{{ old('packaging_type', $product->packaging_type) }}" placeholder="Стакан" oninput="updatePreview()">
+                        <input class="form-control" id="packaging_type" type="text" name="packaging_type" value="{{ old('packaging_type', $product->packaging_type) }}" placeholder="Стакан">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="weight_grams">Вес (грамм)</label>
+                        <label class="form-label" for="weight_grams">Вес нетто (грамм)</label>
                         <input class="form-control" id="weight_grams" type="number" step="0.01" name="weight_grams" value="{{ old('weight_grams', $product->weight_grams) }}" placeholder="85" oninput="updatePreview()">
                     </div>
 
@@ -402,58 +414,116 @@
                     </div>
                 </div>
 
-                <div class="form-grid-2 mb-4">
+                <div class="form-grid-3 mb-4">
                     <div class="form-group">
-                        <label class="form-label" for="pieces_per_box">Штук в коробке</label>
+                        <label class="form-label" for="pieces_per_box">Вложимость (шт в коробке)</label>
                         <input class="form-control" id="pieces_per_box" type="number" name="pieces_per_box" value="{{ old('pieces_per_box', $product->pieces_per_box) }}" placeholder="12" oninput="updatePreview()">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="boxes_per_pallet">Коробок на паллете</label>
+                        <label class="form-label" for="boxes_per_pallet">Вместимость паллеты (шт)</label>
                         <input class="form-control" id="boxes_per_pallet" type="number" name="boxes_per_pallet" value="{{ old('boxes_per_pallet', $product->boxes_per_pallet) }}" placeholder="100" oninput="updatePreview()">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="flavors">Вкусы (через запятую)</label>
+                        <input class="form-control" id="flavors" type="text" name="flavors_string" value="{{ old('flavors_string', is_array($product->flavors) ? implode(', ', $product->flavors) : '') }}" placeholder="Говядина, Курица, Морепродукты">
+                        <span class="text-xs text-muted">Введите вкусы через запятую</span>
                     </div>
                 </div>
 
-                <div class="form-group mb-4">
-                    <label class="form-label" for="flavors">Вкусы (через запятую)</label>
-                    <input class="form-control" id="flavors" type="text" name="flavors_string" value="{{ old('flavors_string', is_array($product->flavors) ? implode(', ', $product->flavors) : '') }}" placeholder="Говядина, Курица, Морепродукты">
-                    <span class="text-xs text-muted">Введите вкусы через запятую</span>
+                {{-- ===== 3. ЛОГИСТИКА ===== --}}
+                <div class="form-section-title">Логистика</div>
+
+                <div class="form-grid-2 mb-4">
+                    <div class="form-group">
+                        <label class="form-label" for="box_volume">Объём коробки (м³)</label>
+                        <input class="form-control" id="box_volume" type="number" step="0.001" name="box_volume" value="{{ old('box_volume', $product->box_volume) }}" placeholder="0.012">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="box_weight_kg">Вес коробки (кг)</label>
+                        <input class="form-control" id="box_weight_kg" type="number" step="0.01" name="box_weight_kg" value="{{ old('box_weight_kg', $product->box_weight_kg) }}" placeholder="0.5">
+                    </div>
                 </div>
 
-                {{-- Цены --}}
+                <div class="form-grid-2 mb-4">
+                    <div class="form-group">
+                        <label class="form-label" for="vat_rate">Ставка НДС (%)</label>
+                        <input class="form-control" id="vat_rate" type="number" step="0.01" name="vat_rate" value="{{ old('vat_rate', $product->vat_rate ?? 20) }}" placeholder="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="tnved_code">Код ТНВЭД</label>
+                        <input class="form-control" id="tnved_code" type="text" name="tnved_code" value="{{ old('tnved_code', $product->tnved_code) }}" placeholder="1902.30.1000">
+                    </div>
+                </div>
+
+                {{-- ===== 4. ЦЕНЫ ===== --}}
                 <div class="form-section-title">Цены</div>
-                <div class="form-grid-3 mb-4">
+
+                <div class="form-grid-4 mb-4">
                     <div class="form-group">
                         <label class="form-label" for="wholesale_price">Оптовая цена (₽)</label>
                         <input class="form-control" id="wholesale_price" type="number" step="0.01" name="wholesale_price" value="{{ old('wholesale_price', $product->wholesale_price) }}" placeholder="45.00" oninput="updatePreview()">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="retail_price">Розничная цена (₽)</label>
+                        <label class="form-label" for="retail_price">Цена для сетей (₽)</label>
                         <input class="form-control" id="retail_price" type="number" step="0.01" name="retail_price" value="{{ old('retail_price', $product->retail_price) }}" placeholder="65.00">
                     </div>
 
+                    <div class="form-group">
+                        <label class="form-label" for="distributor_price">Цена дистрибьютор (₽)</label>
+                        <input class="form-control" id="distributor_price" type="number" step="0.01" name="distributor_price" value="{{ old('distributor_price', $product->distributor_price) }}" placeholder="38.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="cost_price">Себестоимость (₽)</label>
+                        <input class="form-control" id="cost_price" type="number" step="0.01" name="cost_price" value="{{ old('cost_price', $product->cost_price) }}" placeholder="30.00">
+                    </div>
+                </div>
+
+                <div class="form-grid-2 mb-4">
                     <div class="form-group">
                         <label class="form-label" for="min_order_amount">Мин. заказ (₽)</label>
                         <input class="form-control" id="min_order_amount" type="number" step="0.01" name="min_order_amount" value="{{ old('min_order_amount', $product->min_order_amount) }}" placeholder="100000">
                     </div>
                 </div>
 
-                <div class="form-group mb-4">
-                    <label class="form-label" for="price_display">Отображение цены</label>
-                    <input class="form-control" id="price_display" type="text" name="price_display" value="{{ old('price_display', $product->price_display) }}" placeholder="от 45 ₽ / шт" oninput="updatePreview()">
+                {{-- ===== 5. ВИЗУАЛЬНОЕ ОФОРМЛЕНИЕ ===== --}}
+                <div class="form-section-title">Визуальное оформление</div>
+
+                <div class="form-grid-3 mb-4">
+                    <div class="form-group">
+                        <label class="form-label" for="emoji_icon">Emoji-иконка</label>
+                        <input class="form-control" id="emoji_icon" type="text" name="emoji_icon" value="{{ old('emoji_icon', $product->emoji_icon) }}" placeholder="🍜" oninput="updatePreview()" maxlength="2">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="tag">Тег (Хит/Новинка)</label>
+                        <input class="form-control" id="tag" type="text" name="tag" value="{{ old('tag', $product->tag) }}" placeholder="Хит продаж" oninput="updatePreview()">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="accent_color">Цвет акцента</label>
+                        <input class="form-control" id="accent_color" type="color" name="accent_color" value="{{ old('accent_color', $product->accent_color ?? '#83BF32') }}" oninput="updatePreview()" style="height: 42px; padding: 4px 8px;">
+                    </div>
                 </div>
 
-                {{-- Изображения --}}
+                {{-- ===== 6. ИЗОБРАЖЕНИЯ ===== --}}
                 <div class="form-section-title">Изображения</div>
+
                 @if($product->main_image)
                     <div class="form-group mb-3">
                         <label class="form-label">Текущее главное изображение</label>
-                        <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" style="max-width: 150px; max-height: 150px; border: 1px solid rgba(26, 26, 26, 0.06); display: block;">
+                        <div>
+                            <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" style="max-width: 150px; max-height: 150px; border: 1px solid rgba(26, 26, 26, 0.06); border-radius: 8px; object-fit: cover;">
+                        </div>
                     </div>
                 @endif
 
-                <div class="form-group mb-4">
+                <div class="form-group mb-3">
                     <label class="form-label" for="main_image">Заменить главное изображение</label>
                     <input class="form-control" id="main_image" type="file" name="main_image" accept="image/*" onchange="previewMainImage(event)">
                     <span class="text-xs text-muted">Оставьте пустым, чтобы не менять</span>
@@ -478,8 +548,9 @@
                     @error('gallery.*')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
-                {{-- Статусы --}}
+                {{-- ===== 7. СТАТУСЫ И НАСТРОЙКИ ===== --}}
                 <div class="form-section-title">Статус и настройки</div>
+
                 <div class="form-grid-3 mb-4">
                     <div class="form-group">
                         <label class="form-label" for="status">Статус <span style="color: #999;">*</span></label>
@@ -494,17 +565,19 @@
                         <label class="form-label" for="sort_order">Порядок сортировки</label>
                         <input class="form-control" id="sort_order" type="number" name="sort_order" value="{{ old('sort_order', $product->sort_order) }}" min="0">
                     </div>
-                </div>
 
-                <div class="form-grid-2 mb-4">
-                    <div class="checkbox-group">
-                        <input type="hidden" name="is_featured" value="0">
-                        <input type="checkbox" name="is_featured" value="1" id="is_featured" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }} onchange="updatePreview()">
-                        <label for="is_featured">Товар в избранном</label>
+                    <div class="form-group" style="display: flex; align-items: center; padding-top: 24px;">
+                        <div class="checkbox-group" style="padding: 0;">
+                            <input type="hidden" name="is_featured" value="0">
+                            <input type="checkbox" name="is_featured" value="1" id="is_featured" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }} onchange="updatePreview()">
+                            <label for="is_featured">В избранное</label>
+                        </div>
                     </div>
                 </div>
 
-                {{-- Сертификация --}}
+                {{-- ===== 8. СЕРТИФИКАЦИЯ ===== --}}
+                <div class="form-section-title">Сертификация</div>
+
                 <div class="form-grid-2 mb-4">
                     <div class="checkbox-group">
                         <input type="hidden" name="has_eac" value="0">
@@ -519,8 +592,9 @@
                     </div>
                 </div>
 
-                {{-- SEO --}}
+                {{-- ===== 9. SEO ===== --}}
                 <div class="form-section-title">SEO</div>
+
                 <div class="form-group mb-3">
                     <label class="form-label" for="meta_title">Meta Title</label>
                     <input class="form-control" id="meta_title" type="text" name="meta_title" value="{{ old('meta_title', $product->meta_title) }}" placeholder="SEO заголовок">
@@ -528,9 +602,18 @@
 
                 <div class="form-group mb-4">
                     <label class="form-label" for="meta_description">Meta Description</label>
-                    <textarea class="form-control" id="meta_description" name="meta_description" rows="2">{{ old('meta_description', $product->meta_description) }}</textarea>
+                    <textarea class="form-control" id="meta_description" name="meta_description" rows="2" placeholder="Краткое описание для поисковиков">{{ old('meta_description', $product->meta_description) }}</textarea>
                 </div>
 
+                {{-- ===== 10. КОММЕНТАРИЙ ===== --}}
+                <div class="form-section-title">Дополнительно</div>
+
+                <div class="form-group mb-4">
+                    <label class="form-label" for="comment">Комментарий (внутренний)</label>
+                    <textarea class="form-control" id="comment" name="comment" rows="2" placeholder="Внутренний комментарий">{{ old('comment', $product->comment) }}</textarea>
+                </div>
+
+                {{-- ===== КНОПКИ ===== --}}
                 <div class="flex gap-3" style="padding-top: 8px; border-top: 1px solid rgba(26, 26, 26, 0.06);">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i>
@@ -541,7 +624,7 @@
             </form>
         </div>
 
-        {{-- ПРЕВЬЮ --}}
+        {{-- ===== ПРЕВЬЮ ===== --}}
         <div class="preview-panel" id="previewPanel">
             <div class="preview-panel-header">
                 <span class="dot"></span>
@@ -549,15 +632,10 @@
             </div>
             <div class="preview-panel-body">
                 <div class="preview-card" id="previewCard">
-                    {{-- Акцентная полоса --}}
                     <div class="preview-accent-bar" id="previewAccentBar" style="background-color: {{ $product->accent_color ?? '#83BF32' }};"></div>
 
-                    {{-- Изображение --}}
                     <div class="preview-card-image">
-                        @if($product->is_featured)
-                            <span class="preview-card-featured" id="previewFeatured">⭐</span>
-                        @endif
-
+                        <span class="preview-card-featured" id="previewFeatured" style="display: {{ $product->is_featured ? 'block' : 'none' }};">⭐</span>
                         <span class="preview-card-tag" id="previewTag">{{ $product->tag ?: 'Тег' }}</span>
                         <span class="preview-card-status {{ $product->status }}" id="previewStatus">
                             {{ match($product->status) { 'active' => 'Активен', 'inactive' => 'Неактивен', 'out_of_stock' => 'Нет в наличии', default => $product->status } }}
@@ -570,7 +648,6 @@
                         @endif
                     </div>
 
-                    {{-- Информация --}}
                     <div class="preview-card-info">
                         <div class="preview-card-name" id="previewName">{{ $product->name }}</div>
                         <div class="preview-card-desc" id="previewDesc">{{ $product->card_subtitle ?: Str::limit($product->description, 80) }}</div>
@@ -578,7 +655,6 @@
                     </div>
                 </div>
 
-                {{-- Индикаторы --}}
                 <div class="preview-indicators">
                     <div class="preview-indicator">
                         <div class="value" id="previewWeight">{{ $product->weight_grams ? $product->weight_grams . ' г' : '—' }}</div>
@@ -601,13 +677,11 @@
         </div>
     </div>
 
-    {{-- Декоративные иероглифы --}}
     <span class="hanzi-decor md rotate-n8" style="top: 3%; right: 2%; opacity: 0.02 !important;">编</span>
     <span class="hanzi-decor sm rotate-10" style="bottom: 3%; left: 2%; opacity: 0.02 !important;">辑</span>
 
     @push('scripts')
         <script>
-            // Превью загруженного изображения
             function previewMainImage(event) {
                 const file = event.target.files[0];
                 if (file) {
@@ -619,6 +693,7 @@
                         if (previewImg) {
                             previewImg.src = e.target.result;
                             previewImg.style.display = 'block';
+                            previewImg.onerror = null;
                         }
                         if (previewEmoji) {
                             previewEmoji.style.display = 'none';
@@ -628,7 +703,6 @@
                 }
             }
 
-            // Живое обновление превью
             function updatePreview() {
                 const name = document.getElementById('name')?.value || 'Название товара';
                 const tag = document.getElementById('tag')?.value || 'Тег';
@@ -640,7 +714,6 @@
                 const isFeatured = document.getElementById('is_featured')?.checked;
                 const accentColor = document.getElementById('accent_color')?.value || '#83BF32';
 
-                // Обновление текста
                 const previewName = document.getElementById('previewName');
                 const previewTag = document.getElementById('previewTag');
                 const previewDesc = document.getElementById('previewDesc');
@@ -653,19 +726,23 @@
                 if (previewName) previewName.textContent = name;
                 if (previewTag) previewTag.textContent = tag;
                 if (previewDesc) previewDesc.textContent = subtitle;
-                if (previewEmoji && !document.getElementById('previewImage')?.src) previewEmoji.textContent = emoji;
                 if (previewAccentBar) previewAccentBar.style.backgroundColor = accentColor;
 
-                // Цена
+                const previewImg = document.getElementById('previewImage');
+                if (previewEmoji && (!previewImg || previewImg.style.display === 'none')) {
+                    previewEmoji.textContent = emoji;
+                }
+
                 if (previewPrice) {
                     if (priceDisplay) {
                         previewPrice.textContent = priceDisplay;
                     } else if (wholesalePrice) {
                         previewPrice.textContent = 'от ' + new Intl.NumberFormat('ru-RU').format(wholesalePrice) + ' ₽ / шт';
+                    } else {
+                        previewPrice.textContent = 'от 0 ₽ / шт';
                     }
                 }
 
-                // Статус
                 if (previewStatus) {
                     previewStatus.className = 'preview-card-status ' + status;
                     const statusLabels = {
@@ -676,12 +753,10 @@
                     previewStatus.textContent = statusLabels[status] || status;
                 }
 
-                // Избранное
                 if (previewFeatured) {
                     previewFeatured.style.display = isFeatured ? 'block' : 'none';
                 }
 
-                // Характеристики
                 const weight = document.getElementById('weight_grams')?.value;
                 const pieces = document.getElementById('pieces_per_box')?.value;
                 const shelf = document.getElementById('shelf_life_days')?.value;
@@ -698,7 +773,6 @@
                 if (previewBoxes) previewBoxes.textContent = boxes || '—';
             }
 
-            // Инициализация при загрузке
             document.addEventListener('DOMContentLoaded', function() {
                 updatePreview();
             });

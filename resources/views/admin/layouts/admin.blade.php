@@ -414,7 +414,7 @@
                 <span class="badge badge-new">{{ $newLeadsCount }} новых</span>
             @endif
         </a>
-        <a href="{{ route('admin.leads.export') }}" class="sidebar-link">
+        <a href="{{ route('admin.leads.export-page') }}" class="sidebar-link">
             <span class="icon"><i class="fas fa-file-export"></i></span>
             Экспорт в CSV
         </a>

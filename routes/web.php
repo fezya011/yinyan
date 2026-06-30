@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 // Главная страница
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/catalog', [PageController::class, 'catalog'])->name('catalog');
+Route::get('/product/{slug}', [PageController::class, 'product'])->name('product');
 
 // ===== АДМИНКА =====
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -39,18 +41,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('products.toggle-featured');
 
         // Leads
+        Route::get('leads/export-page', [AdminLeadController::class, 'exportPage'])->name('leads.export-page');
+        Route::get('leads/export', [AdminLeadController::class, 'export'])->name('leads.export');
         Route::get('leads', [AdminLeadController::class, 'index'])->name('leads.index');
         Route::get('leads/{lead}', [AdminLeadController::class, 'show'])->name('leads.show');
         Route::put('leads/{lead}/status', [AdminLeadController::class, 'updateStatus'])->name('leads.update-status');
         Route::delete('leads/{lead}', [AdminLeadController::class, 'destroy'])->name('leads.destroy');
-        Route::get('leads/export', [AdminLeadController::class, 'export'])->name('leads.export');
     });
 });
-
-
-Route::get('/catalog', function () {
-    return view('catalog'); // создайте при необходимости
-})->name('catalog');
 
 Route::get('/about', function () {
     return view('about'); // создайте при необходимости

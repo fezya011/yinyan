@@ -72,6 +72,16 @@ class LeadController extends Controller
             ->with('success', 'Заявка успешно удалена');
     }
 
+    public function exportPage(Request $request)
+    {
+        Gate::forUser(auth('admin')->user())->authorize('manage-leads');
+
+        $statuses = Lead::getStatuses();
+        $totalLeads = Lead::count();
+
+        return view('admin.leads.export', compact('statuses', 'totalLeads'));
+    }
+
     public function export(Request $request)
     {
         Gate::forUser(auth('admin')->user())->authorize('manage-leads');

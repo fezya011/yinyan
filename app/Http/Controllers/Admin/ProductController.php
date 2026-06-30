@@ -21,7 +21,9 @@ class ProductController extends Controller
         $products = Product::with('category')
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%")
-                    ->orWhere('description', 'like', "%{$request->search}%");
+                    ->orWhere('description', 'like', "%{$request->search}%")
+                    ->orWhere('barcode', 'like', "%{$request->search}%")
+                    ->orWhere('tnved_code', 'like', "%{$request->search}%");
             })
             ->when($request->filled('category'), function ($q) use ($request) {
                 $q->where('category_id', $request->category);
@@ -52,6 +54,11 @@ class ProductController extends Controller
 
         $data = $request->validated();
         $data['slug'] = $data['slug'] ?? Str::slug($data['name']);
+
+        // Обработка вкусов (из строки в массив)
+        if ($request->filled('flavors_string')) {
+            $data['flavors'] = array_map('trim', explode(',', $request->flavors_string));
+        }
 
         // Обработка изображений
         if ($request->hasFile('main_image')) {
@@ -93,6 +100,14 @@ class ProductController extends Controller
 
         $data = $request->validated();
 
+        // Обработка вкусов (из строки в массив)
+        if ($request->filled('flavors_string')) {
+            $data['flavors'] = array_map('trim', explode(',', $request->flavors_string));
+        } else {
+            $data['flavors'] = null;
+        }
+
+        // Обработка изображений
         if ($request->hasFile('main_image')) {
             if ($product->main_image) {
                 \Storage::disk('public')->delete($product->main_image);
