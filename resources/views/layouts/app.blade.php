@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name', 'Инь Ян'))</title>
+    <title>@yield('title', config('app.name', 'Инь Янь'))</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
     {{-- Tailwind CSS --}}
     <script src="https://cdn.tailwindcss.com"></script>

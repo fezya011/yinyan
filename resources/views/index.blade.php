@@ -1253,33 +1253,59 @@
         <span class="hanzi-decor sm rotate-8" style="bottom: 30%; right: 8%; opacity: 0.01;">誉</span>
     </section>
 
-    <!-- ===== КАТАЛОГ ===== -->
+    <!-- ===== КАТАЛОГ С КАРУСЕЛЬЮ ИЗ БД ===== -->
     <section class="bg-white py-[60px] lg:py-[80px] section-with-hanzi" id="products">
-        <div class="px-6 md:px-12 lg:px-16 pb-10">
+        <div class="px-6 md:px-12 lg:px-16 pb-8">
             <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">Ассортимент</p>
             <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Наша продукция</h2>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            @php
-                $products = [
-                    ['icon' => '🍜', 'tag' => 'Лапша · Стакан', 'name' => 'Лапша быстрого приготовления в стакане', 'desc' => 'Говядина или курица. Удобная упаковка.'],
-                    ['icon' => '🥣', 'tag' => 'Лапша · Мягкая упаковка', 'name' => 'Сублимированная лапша', 'desc' => 'Говядина, курица, морепродукты. Высокая маржинальность.'],
-                    ['icon' => '🥟', 'tag' => 'Вонтоны', 'name' => 'Лапша с вонтонами', 'desc' => 'Фирменная позиция. Уникальный продукт на рынке.'],
-                    ['icon' => '🍚', 'tag' => 'Рис', 'name' => 'Рис быстрого приготовления', 'desc' => 'Бекон, говядина с перцем, курица, тушёное мясо.'],
-                ];
-            @endphp
-            @foreach($products as $index => $product)
-                <div class="p-6 lg:p-8 border-r border-b border-[#1A1A1A]/6 {{ $loop->last ? 'lg:border-r-0' : '' }} {{ $loop->index % 2 === 1 ? 'max-lg:border-r-0' : '' }} max-sm:border-r-0 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                    <span class="text-2xl mb-4 block transition-transform duration-300 hover:scale-110">{{ $product['icon'] }}</span>
-                    <div class="text-[8px] tracking-[3px] uppercase text-[#1A1A1A]/40 mb-2">{{ $product['tag'] }}</div>
-                    <div class="font-bold text-[13px] leading-tight text-[#1A1A1A] mb-2">{{ $product['name'] }}</div>
-                    <p class="text-[11px] text-[#1A1A1A]/40 leading-relaxed font-light">{{ $product['desc'] }}</p>
+
+        <!-- Карусель товаров -->
+        <div class="px-6 md:px-12 lg:px-16 relative" data-aos="fade-up" data-aos-delay="200">
+            <div class="overflow-hidden">
+                <div class="carousel-track-products flex gap-5 transition-transform duration-500 ease-out" id="carouselTrackProducts">
+                    @foreach($slides as $slide)
+                        <div class="carousel-slide-product w-[280px] md:w-[320px] lg:w-[350px] flex-shrink-0 bg-[#F8F8F8] rounded-xl p-5 border border-[#1A1A1A]/6 hover:border-[#1A1A1A]/20 transition-all duration-300 hover:shadow-md">
+                            <div class="aspect-square bg-white rounded-lg mb-3 overflow-hidden flex items-center justify-center relative">
+                                @if($slide['image'])
+                                    <img src="{{ $slide['image'] }}" alt="{{ $slide['name'] }}" class="w-full h-full object-cover">
+                                @else
+                                    <span class="text-5xl opacity-30">{{ $slide['emoji'] }}</span>
+                                @endif
+                                <span class="absolute top-2 right-2 bg-[#1A1A1A] text-white text-[8px] font-semibold tracking-[1px] px-2.5 py-1 rounded-full">{{ $slide['price'] }}</span>
+                            </div>
+                            <div>
+                                <div class="text-[7px] tracking-[2px] uppercase text-[#1A1A1A]/40 mb-1">{{ $slide['tag'] }}</div>
+                                <h3 class="font-bold text-[13px] leading-tight text-[#1A1A1A] line-clamp-2">{{ $slide['name'] }}</h3>
+                                <p class="text-[10px] text-[#1A1A1A]/50 leading-relaxed line-clamp-2 mt-1">{{ Str::limit($slide['desc'], 70) }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
+
+            <!-- Стрелки -->
+            <button id="carouselProductsPrev" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow border border-[#1A1A1A]/10 hover:border-[#1A1A1A]/30 flex items-center justify-center transition-all hover:scale-110 z-10 -ml-3">
+                <svg class="w-3.5 h-3.5 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="carouselProductsNext" class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow border border-[#1A1A1A]/10 hover:border-[#1A1A1A]/30 flex items-center justify-center transition-all hover:scale-110 z-10 -mr-3">
+                <svg class="w-3.5 h-3.5 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+
+            <!-- Точки -->
+            <div class="flex justify-center gap-1.5 mt-5" id="carouselProductsDots">
+                @foreach($slides as $index => $slide)
+                    <button class="carousel-product-dot w-1.5 h-1.5 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-[#1A1A1A] w-5' : 'bg-[#1A1A1A]/30 hover:bg-[#1A1A1A]/50' }}" data-index="{{ $index }}"></button>
+                @endforeach
+            </div>
         </div>
-        <div class="px-6 md:px-12 lg:px-16 pt-10 text-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="#contacts" class="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный прайс</a>
+
+        <!-- Кнопка -->
+        <div class="px-6 md:px-12 lg:px-16 pt-8 text-center" data-aos="fade-up" data-aos-delay="400">
+            <a href="{{ route('catalog') }}" class="inline-block px-6 py-2.5 bg-[#1A1A1A] text-white text-[9px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный каталог</a>
         </div>
+
+        <!-- Иероглифы -->
         <span class="hanzi-decor lg rotate-10" style="top: 5%; left: 2%; opacity: 0.015;">品</span>
         <span class="hanzi-decor md rotate-n12" style="bottom: 5%; right: 2%; opacity: 0.015;">类</span>
         <span class="hanzi-decor sm rotate-8" style="top: 20%; right: 5%; opacity: 0.01;">丰</span>
@@ -1638,7 +1664,7 @@
             if (statItems.length) observer.observe(statItems[0]);
         })();
 
-        // ===== КАРУСЕЛЬ С ПЛАВНЫМИ ПЕРЕХОДАМИ =====
+        // ===== КАРУСЕЛЬ НА HERO С ПЛАВНЫМИ ПЕРЕХОДАМИ =====
         (function() {
             const track = document.getElementById('carouselTrack');
             const slides = document.querySelectorAll('.carousel-slide');
@@ -1807,6 +1833,151 @@
                 else startAutoPlay();
             });
         })();
+
+        // ===== КАРУСЕЛЬ ТОВАРОВ В СЕКЦИИ ПРОДУКТОВ =====
+        window.addEventListener('load', function() {
+            const track = document.getElementById('carouselTrackProducts');
+            const slides = document.querySelectorAll('.carousel-slide-product');
+            const dots = document.querySelectorAll('.carousel-product-dot');
+            const prevBtn = document.getElementById('carouselProductsPrev');
+            const nextBtn = document.getElementById('carouselProductsNext');
+
+            if (!track || !slides.length) {
+                console.error('❌ Карусель товаров: элементы не найдены');
+                return;
+            }
+
+            console.log('✅ Карусель товаров: найдено', slides.length, 'слайдов, ширина:', slides[0].offsetWidth);
+
+            let currentIndex = 0;
+            let autoPlayInterval;
+            let isInteracting = false;
+            let isTransitioning = false;
+
+            function getGap() {
+                return 20; // gap-5 = 20px
+            }
+
+            function getMaxIndex() {
+                const containerWidth = track.parentElement.offsetWidth;
+                const slideWidth = slides[0].offsetWidth;
+                const gap = getGap();
+                const visibleSlides = Math.floor((containerWidth + gap) / (slideWidth + gap));
+                return Math.max(0, slides.length - visibleSlides);
+            }
+
+            function updateCarousel() {
+                if (currentIndex > getMaxIndex()) {
+                    currentIndex = getMaxIndex();
+                }
+
+                const slideWidth = slides[0].offsetWidth;
+                const gap = getGap();
+                const offset = currentIndex * (slideWidth + gap);
+
+                track.style.transform = `translateX(-${offset}px)`;
+
+                dots.forEach((dot, i) => {
+                    if (i === currentIndex) {
+                        dot.classList.add('bg-[#1A1A1A]', 'w-5');
+                        dot.classList.remove('bg-[#1A1A1A]/30', 'w-1.5');
+                    } else {
+                        dot.classList.remove('bg-[#1A1A1A]', 'w-5');
+                        dot.classList.add('bg-[#1A1A1A]/30', 'w-1.5');
+                    }
+                });
+            }
+
+            function goTo(index) {
+                if (isTransitioning) return;
+
+                const newIndex = Math.max(0, Math.min(index, getMaxIndex()));
+                if (newIndex === currentIndex) return;
+
+                isTransitioning = true;
+                currentIndex = newIndex;
+                updateCarousel();
+
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 500);
+            }
+
+            function nextSlide() {
+                if (currentIndex < getMaxIndex()) {
+                    goTo(currentIndex + 1);
+                } else {
+                    goTo(0);
+                }
+            }
+
+            function prevSlide() {
+                if (currentIndex > 0) {
+                    goTo(currentIndex - 1);
+                } else {
+                    goTo(getMaxIndex());
+                }
+            }
+
+            function startAutoPlay() {
+                stopAutoPlay();
+                autoPlayInterval = setInterval(() => {
+                    if (!isInteracting && !isTransitioning) {
+                        nextSlide();
+                    }
+                }, 4000);
+            }
+
+            function stopAutoPlay() {
+                clearInterval(autoPlayInterval);
+            }
+
+            // Обработчики событий
+            prevBtn?.addEventListener('click', () => {
+                prevSlide();
+                stopAutoPlay();
+                startAutoPlay();
+            });
+
+            nextBtn?.addEventListener('click', () => {
+                nextSlide();
+                stopAutoPlay();
+                startAutoPlay();
+            });
+
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (index !== currentIndex && !isTransitioning) {
+                        goTo(index);
+                        stopAutoPlay();
+                        startAutoPlay();
+                    }
+                });
+            });
+
+            // Пауза при наведении
+            const container = track.closest('.relative');
+            container?.addEventListener('mouseenter', () => {
+                isInteracting = true;
+            });
+            container?.addEventListener('mouseleave', () => {
+                isInteracting = false;
+            });
+
+            // Ресайз
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    updateCarousel();
+                }, 150);
+            });
+
+            // Запуск
+            updateCarousel();
+            startAutoPlay();
+        });
 
         // ===== ПЛАВНЫЙ СКРОЛЛ =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

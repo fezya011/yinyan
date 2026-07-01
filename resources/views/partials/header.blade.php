@@ -29,7 +29,7 @@
 
                 <a href="#contacts" class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold tracking-[1.5px] uppercase text-white bg-black hover:bg-black/80 transition-all duration-300 hover:shadow-lg relative overflow-hidden group">
                     <span class="relative z-10">Связаться</span>
-                    <span class="relative z-10 text-sm group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    <span class="relative z-10 pb-1 text-sm group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </a>
 
                 <!-- Бургер -->
@@ -78,7 +78,7 @@
 
                     <div class="h-px bg-gradient-to-r from-transparent via-black/[0.04] to-transparent mx-4"></div>
 
-                    <a href="#products" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
+                    <a href="{{ route('catalog') }}" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
                         <div class="flex items-center gap-4">
                             <span class="text-[28px] sm:text-[36px] font-light text-black/40 group-hover:text-black transition-colors duration-300">Каталог</span>
                             <span class="text-lg font-black opacity-10 group-hover:opacity-25 transition-all duration-300 menu-hanzi"
@@ -101,7 +101,7 @@
 
                 <!-- Кнопка и подпись -->
                 <div class="relative mt-6 pt-6 border-t border-black/[0.04]">
-                    <a href="#contacts" class="mobile-menu-link block w-full px-8 py-5 bg-black text-white text-sm font-bold tracking-[2px] uppercase rounded-2xl hover:bg-black/90 transition-all duration-300 text-center hover:shadow-xl active:scale-[0.98]">
+                    <a href="#contacts" class="mobile-menu-link block w-full px-8 py-5 bg-black text-white text-sm font-bold tracking-[2px] uppercase hover:bg-black/90 transition-all duration-300 text-center hover:shadow-xl active:scale-[0.98]">
                         Связаться с нами
                     </a>
                     <div class="mt-6 flex items-center justify-center gap-6">

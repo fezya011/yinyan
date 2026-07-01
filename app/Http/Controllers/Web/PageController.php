@@ -92,6 +92,15 @@ class PageController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // Получаем все уникальные типы упаковки из БД
+        $packagingTypes = Product::where('status', 'active')
+            ->whereNotNull('packaging_type')
+            ->where('packaging_type', '!=', '')
+            ->distinct()
+            ->orderBy('packaging_type')
+            ->pluck('packaging_type')
+            ->toArray();
+
         // Базовый запрос
         $query = Product::with('category')
             ->where('status', 'active')
@@ -198,7 +207,7 @@ class PageController extends Controller
             ]);
         }
 
-        return view('catalog', compact('products', 'categories'));
+        return view('catalog', compact('products', 'categories', 'packagingTypes'));
     }
 
     /**
