@@ -6,12 +6,16 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Web\PageController;
+use App\Http\Controllers\Web\LeadFormController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/catalog', [PageController::class, 'catalog'])->name('catalog');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/product/{slug}', [PageController::class, 'product'])->name('product');
+Route::post('/lead', [LeadFormController::class, 'store'])->name('lead.store');
+Route::get('/cities', [LeadFormController::class, 'cities'])->name('cities');
 
 // ===== АДМИНКА =====
 Route::prefix('admin')->name('admin.')->group(function () {

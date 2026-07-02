@@ -63,6 +63,7 @@ class PageController extends Controller
             ];
         });
 
+
         // Если слайдов нет — создаём заглушку
         if ($slides->isEmpty()) {
             $slides = collect([
@@ -78,8 +79,21 @@ class PageController extends Controller
                 ]
             ]);
         }
+        $popularProducts = Product::with('category')
+            ->where('status', 'active')
+            ->orderByDesc('views_count')   // или orderBy('sort_order')
+            ->limit(8)
+            ->get();
 
-        return view('index', compact('slides'));
+        // Если популярных нет – подгружаем любые активные
+        if ($popularProducts->isEmpty()) {
+            $popularProducts = Product::where('status', 'active')
+                ->orderBy('sort_order')
+                ->limit(8)
+                ->get();
+        }
+
+        return view('index', compact('slides', 'popularProducts'));
     }
 
     /**
@@ -257,5 +271,10 @@ class PageController extends Controller
                 'url' => route('product', $product->slug),
             ];
         }));
+    }
+
+    public function privacy()
+    {
+        return view('privacy');
     }
 }

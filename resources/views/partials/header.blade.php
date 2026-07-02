@@ -1,5 +1,5 @@
 <!-- ============================================================
-     НАВИГАЦИЯ — ИНЬ ЯН
+     НАВИГАЦИЯ — ИНЬ ЯН (исправленная анимация бургера)
      ============================================================ -->
 <header class="fixed top-0 left-0 right-0 z-[1000] transition-all duration-500" id="siteHeader">
     <div class="mx-auto px-6 lg:px-12">
@@ -27,14 +27,16 @@
             <div class="flex items-center gap-3 lg:gap-4 flex-shrink-0">
                 <span class="hidden lg:block text-sm font-black text-black/8 tracking-[4px] select-none cursor-default" style="font-family: 'Noto Serif SC', serif;">道</span>
 
-                <a href="#contacts" class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold tracking-[1.5px] uppercase text-white bg-black hover:bg-black/80 transition-all duration-300 hover:shadow-lg relative overflow-hidden group">
+                <a href="#"
+                   class="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold tracking-[1.5px] uppercase text-white bg-black hover:bg-black/80 transition-all duration-300 hover:shadow-lg relative overflow-hidden group"
+                   data-lead-modal>
                     <span class="relative z-10">Связаться</span>
                     <span class="relative z-10 pb-1 text-sm group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </a>
 
-                <!-- Бургер -->
+                <!-- БУРГЕР -->
                 <button id="menuToggle" class="lg:hidden relative w-10 h-10 flex items-center justify-center z-[1002]" aria-label="Меню" aria-expanded="false">
-                    <div class="w-5 h-4 relative">
+                    <div class="w-5 h-5 relative">
                         <span class="block absolute w-full h-[2px] bg-black/70 rounded-full transition-all duration-300 top-0" id="bar1"></span>
                         <span class="block absolute w-full h-[2px] bg-black/70 rounded-full transition-all duration-300 top-1/2 -translate-y-1/2" id="bar2"></span>
                         <span class="block absolute w-full h-[2px] bg-black/70 rounded-full transition-all duration-300 bottom-0" id="bar3"></span>
@@ -101,7 +103,9 @@
 
                 <!-- Кнопка и подпись -->
                 <div class="relative mt-6 pt-6 border-t border-black/[0.04]">
-                    <a href="#contacts" class="mobile-menu-link block w-full px-8 py-5 bg-black text-white text-sm font-bold tracking-[2px] uppercase hover:bg-black/90 transition-all duration-300 text-center hover:shadow-xl active:scale-[0.98]">
+                    <a href="#"
+                       class="mobile-menu-link block w-full px-8 py-5 bg-black text-white text-sm font-bold tracking-[2px] uppercase hover:bg-black/90 transition-all duration-300 text-center hover:shadow-xl active:scale-[0.98]"
+                       data-lead-modal>
                         Связаться с нами
                     </a>
                     <div class="mt-6 flex items-center justify-center gap-6">
@@ -161,19 +165,44 @@
             width: 40%;
         }
 
-        /* Бургер анимация */
+        /* ===== БУРГЕР — ИСПРАВЛЕННАЯ АНИМАЦИЯ ===== */
+        #menuToggle {
+            transition: transform 0.25s ease !important;
+        }
+
+        #menuToggle:hover {
+            transform: rotate(90deg) !important;
+        }
+
+        /* active не вращаем, иначе ломается анимация полосок */
+        #menuToggle.active {
+            /* transform не задаём */
+        }
+        #menuToggle.active:hover {
+            transform: rotate(90deg) scale(1.05);
+        }
+
+        /* Палочки — используем ID и !important для переопределения Tailwind */
+        #bar1,
+        #bar2,
+        #bar3 {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
         #menuToggle.active #bar1 {
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
+            top: 50% !important;
+            transform: translateY(-50%) rotate(45deg) !important;
             background: #000;
         }
+
         #menuToggle.active #bar2 {
-            opacity: 0;
-            transform: scaleX(0);
+            opacity: 0 !important;
+            transform: scaleX(0) !important;
         }
+
         #menuToggle.active #bar3 {
-            bottom: 50%;
-            transform: translateY(50%) rotate(-45deg);
+            bottom: 50% !important;
+            transform: translateY(50%) rotate(-45deg) !important;
             background: #000;
         }
 

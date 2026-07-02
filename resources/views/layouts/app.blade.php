@@ -26,6 +26,7 @@
     </style>
 
     @stack('styles')
+
 </head>
 
 <body>
@@ -58,7 +59,7 @@
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
 </script>
-
+@include('partials.lead-modal')
 @stack('scripts')
 </body>
 </html>

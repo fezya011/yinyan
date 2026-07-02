@@ -1,4 +1,3 @@
-{{-- resources/views/catalog.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Каталог товаров – Инь Ян Экспорт и импорт из Китая')
@@ -24,7 +23,28 @@
             overflow-x: hidden;
         }
 
-        /* ХЛЕБНЫЕ КРОШКИ */
+        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ (CSS) ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .fade-in-up-delay-1 { animation-delay: 0.1s; }
+        .fade-in-up-delay-2 { animation-delay: 0.2s; }
+        .fade-in-up-delay-3 { animation-delay: 0.3s; }
+
+        /* ===== ХЛЕБНЫЕ КРОШКИ ===== */
         .breadcrumbs {
             padding: 20px 0 10px;
             font-size: 10px;
@@ -38,7 +58,7 @@
         .breadcrumbs .separator { margin: 0 8px; color: rgba(26,26,26,0.12); }
         .breadcrumbs .current { color: rgba(26,26,26,0.5); }
 
-        /* ЗАГОЛОВОК */
+        /* ===== ЗАГОЛОВОК ===== */
         .catalog-header {
             padding: 20px 0 40px;
             border-bottom: 1px solid rgba(26,26,26,0.04);
@@ -58,7 +78,7 @@
             font-weight: 400; line-height: 1.6;
         }
 
-        /* ПОИСК */
+        /* ===== ПОИСК ===== */
         .search-bar { position: relative; margin-bottom: 20px; }
         .search-bar input {
             width: 100%; padding: 14px 48px 14px 20px;
@@ -87,10 +107,10 @@
             color: rgba(26,26,26,0.3); margin-bottom: 16px; font-weight: 500;
         }
 
-        /* ФИЛЬТРЫ */
+        /* ===== ФИЛЬТРЫ ===== */
         .filters-wrapper {
             border-bottom: 1px solid rgba(26,26,26,0.04);
-            padding-bottom: 20px; margin-bottom: 20px;
+            padding-bottom: 12px; margin-bottom: 20px;
         }
         .filters-bar {
             display: flex; flex-wrap: wrap; gap: 12px; padding: 0;
@@ -111,7 +131,6 @@
         .filter-btn:hover { border-color: rgba(26,26,26,0.2); color: #1A1A1A; }
         .filter-btn.active { background: #1A1A1A; color: #FFFFFF; border-color: #1A1A1A; }
 
-        /* Кастомный select */
         .custom-select-wrap {
             position: relative;
             display: inline-block;
@@ -140,7 +159,6 @@
             background: rgba(26,26,26,0.06); margin: 0 4px;
         }
 
-        /* ПРОДВИНУТЫЕ ФИЛЬТРЫ */
         .advanced-filters { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(26,26,26,0.04); }
         .advanced-filters.visible { display: block; }
         .filter-range { display: flex; align-items: center; gap: 8px; }
@@ -156,9 +174,8 @@
             font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
             color: rgba(26,26,26,0.4); cursor: pointer; font-weight: 500;
             display: inline-flex; align-items: center; gap: 4px;
-            transition: color 0.3s; padding-top: 15px;
+            transition: color 0.3s; padding-top: 17px;
             background: none; border: none; font-family: 'Inter', sans-serif;
-
         }
         .toggle-advanced:hover { color: #1A1A1A; }
         .toggle-advanced .arrow { transition: transform 0.3s; font-size: 8px; }
@@ -180,7 +197,7 @@
         }
         .reset-filters:hover { color: #1A1A1A; }
 
-        /* ===== СЕТКА ТОВАРОВ ===== */
+        /* ===== СЕТКА ТОВАРОВ (УВЕЛИЧЕННЫЕ ШРИФТЫ) ===== */
         .catalog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -202,12 +219,13 @@
         .product-card .image-wrap {
             width: 100%; height: 240px;
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 24px; background: #FAFAFA;
+            margin-bottom: 24px; background: #FFFFFF;
             overflow: hidden; position: relative;
         }
         .product-card .badge {
             position: absolute; top: 14px; right: 14px;
-            font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+            font-size: 9px;                  /* было 8px */
+            letter-spacing: 2px; text-transform: uppercase;
             padding: 5px 12px; font-weight: 600;
             background: #1A1A1A; color: #FFFFFF; z-index: 2;
         }
@@ -223,41 +241,44 @@
             text-transform: uppercase; font-weight: 500;
         }
         .product-card .category-tag {
-            font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+            font-size: 10px;                 /* было 9px */
+            letter-spacing: 2.5px; text-transform: uppercase;
             color: rgba(26,26,26,0.25); margin-bottom: 8px; font-weight: 600;
         }
         .product-card .product-name {
-            font-weight: 700; font-size: 18px; color: #1A1A1A;
+            font-weight: 700; font-size: 20px;  /* было 18px */
+            color: #1A1A1A;
             line-height: 1.3; margin-bottom: 8px; letter-spacing: -0.3px;
         }
         .product-card .product-desc {
-            font-size: 13px; color: rgba(26,26,26,0.4);
+            font-size: 14px;                 /* было 13px */
+            color: rgba(26,26,26,0.4);
             line-height: 1.6; flex-grow: 1; margin-bottom: 20px;
             font-weight: 400;
         }
         .product-card .certificates { display: flex; gap: 6px; margin-bottom: 12px; }
         .product-card .cert-badge {
-            font-size: 7px; letter-spacing: 1.5px; text-transform: uppercase;
+            font-size: 8px;                  /* было 7px */
+            letter-spacing: 1.5px; text-transform: uppercase;
             padding: 3px 8px; background: rgba(26,26,26,0.03);
             color: rgba(26,26,26,0.3); font-weight: 500;
         }
         .product-card .cert-badge.has { background: #1A1A1A; color: #FFFFFF; }
 
-        /* Десктопная мета */
         .product-card .product-meta {
             display: flex; flex-wrap: wrap; gap: 8px 16px;
             margin-bottom: 20px; padding-top: 16px;
             border-top: 1px solid rgba(26,26,26,0.04);
         }
         .product-card .product-meta .meta-item {
-            font-size: 10px; color: rgba(26,26,26,0.3);
+            font-size: 11px;                 /* было 10px */
+            color: rgba(26,26,26,0.3);
             display: flex; align-items: center; gap: 4px; font-weight: 450;
         }
         .product-card .product-meta .meta-item strong {
             color: rgba(26,26,26,0.5); font-weight: 500;
         }
 
-        /* Мобильная мета (скрыта на десктопе) */
         .product-card .product-meta-mobile { display: none; }
 
         .product-card .product-footer {
@@ -265,18 +286,16 @@
             align-items: center; margin-top: auto;
         }
         .product-card .price {
-            font-weight: 700; font-size: 20px;
+            font-weight: 700; font-size: 22px;  /* было 20px */
             color: #1A1A1A; letter-spacing: -0.5px;
         }
         .product-card .price .from {
-            font-weight: 400; font-size: 11px;
+            font-weight: 400; font-size: 12px;  /* было 11px */
             color: rgba(26,26,26,0.3); margin-right: 2px;
         }
 
-        /* ПАГИНАЦИЯ */
         .pagination-wrap { display: flex; justify-content: center; align-items: center; gap: 6px; padding: 40px 0 80px; }
 
-        /* ПУСТОЙ КАТАЛОГ */
         .empty-catalog {
             grid-column: 1 / -1; text-align: center;
             padding: 80px 20px; color: rgba(26,26,26,0.2); background: #FFFFFF;
@@ -291,7 +310,6 @@
             text-transform: uppercase; font-weight: 500;
         }
 
-        /* ЗАГРУЗКА */
         .loading-overlay {
             position: absolute; inset: 0;
             background: rgba(255,255,255,0.7);
@@ -307,7 +325,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ */
         .hanzi-decor {
             position: absolute; pointer-events: none; user-select: none;
             font-family: 'Noto Serif SC', 'SimSun', serif;
@@ -319,7 +336,7 @@
         .hanzi-decor.sm { font-size: 45px; }
         .hanzi-decor.xs { font-size: 28px; }
 
-        /* ===== АДАПТИВ ===== */
+        /* ===== АДАПТИВ (с увеличенными шрифтами) ===== */
         @media (max-width: 768px) {
             .catalog-grid {
                 grid-template-columns: 1fr 1fr;
@@ -336,42 +353,21 @@
                 box-shadow: 0 6px 20px rgba(26,26,26,0.05);
                 border-color: rgba(26,26,26,0.1);
             }
-            .product-card .image-wrap {
-                height: 170px;
-                margin-bottom: 14px;
-            }
+            .product-card .image-wrap { height: 170px; margin-bottom: 14px; }
             .product-card .image-wrap img { padding: 14px; }
-            .product-card .badge {
-                top: 8px; right: 8px; font-size: 7px;
-                letter-spacing: 1.5px; padding: 4px 9px;
-            }
-            .product-card .category-tag {
-                font-size: 8px; letter-spacing: 2px; margin-bottom: 5px;
-            }
-            .product-card .product-name {
-                font-size: 15px; margin-bottom: 5px; line-height: 1.25;
-            }
-            .product-card .product-desc {
-                font-size: 11px; line-height: 1.5; margin-bottom: 10px;
-                display: -webkit-box; -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical; overflow: hidden;
-            }
+            .product-card .badge { top: 8px; right: 8px; font-size: 8px; letter-spacing: 1.5px; padding: 4px 9px; }
+            .product-card .category-tag { font-size: 9px; letter-spacing: 2px; margin-bottom: 5px; }
+            .product-card .product-name { font-size: 17px; margin-bottom: 5px; line-height: 1.25; }  /* было 15px */
+            .product-card .product-desc { font-size: 12px; line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }  /* было 11px */
             .product-card .certificates { gap: 4px; margin-bottom: 8px; }
-            .product-card .cert-badge {
-                font-size: 6px; letter-spacing: 1px; padding: 2px 6px;
-            }
+            .product-card .cert-badge { font-size: 7px; letter-spacing: 1px; padding: 2px 6px; }
             .product-card .product-meta { display: none; }
-            .product-card .product-meta-mobile {
-                display: flex; flex-wrap: wrap;
-                gap: 4px 10px; margin-bottom: 10px;
-            }
-            .product-card .product-meta-mobile .meta-item {
-                font-size: 10px; color: rgba(26,26,26,0.4); font-weight: 450;
-            }
+            .product-card .product-meta-mobile { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 10px; }
+            .product-card .product-meta-mobile .meta-item { font-size: 11px; color: rgba(26,26,26,0.4); font-weight: 450; }  /* было 10px */
             .product-card .btn-order { display: none; }
             .product-card .product-footer { margin-top: auto; }
-            .product-card .price { font-size: 17px; }
-            .product-card .price .from { font-size: 10px; }
+            .product-card .price { font-size: 19px; }  /* было 17px */
+            .product-card .price .from { font-size: 11px; }  /* было 10px */
             .filters-bar {
                 gap: 8px; overflow-x: auto; flex-wrap: nowrap;
                 -webkit-overflow-scrolling: touch;
@@ -389,14 +385,14 @@
             .product-card { padding: 14px 12px 18px; }
             .product-card .image-wrap { height: 150px; margin-bottom: 12px; }
             .product-card .image-wrap img { padding: 12px; }
-            .product-card .badge { top: 6px; right: 6px; font-size: 6px; letter-spacing: 1px; padding: 3px 7px; }
-            .product-card .product-name { font-size: 14px; margin-bottom: 4px; }
-            .product-card .product-desc { font-size: 10px; -webkit-line-clamp: 2; margin-bottom: 8px; }
-            .product-card .category-tag { font-size: 7px; letter-spacing: 1.5px; margin-bottom: 4px; }
+            .product-card .badge { top: 6px; right: 6px; font-size: 7px; letter-spacing: 1px; padding: 3px 7px; }
+            .product-card .category-tag { font-size: 8px; letter-spacing: 1.5px; margin-bottom: 4px; }  /* было 7px */
+            .product-card .product-name { font-size: 15px; margin-bottom: 4px; }  /* было 14px */
+            .product-card .product-desc { font-size: 11px; -webkit-line-clamp: 2; margin-bottom: 8px; }  /* было 10px */
             .product-card .product-meta-mobile { gap: 3px 8px; margin-bottom: 8px; }
-            .product-card .product-meta-mobile .meta-item { font-size: 9px; }
-            .product-card .price { font-size: 16px; }
-            .product-card .cert-badge { font-size: 6px; padding: 2px 5px; }
+            .product-card .product-meta-mobile .meta-item { font-size: 10px; }  /* было 9px */
+            .product-card .price { font-size: 17px; }  /* было 16px */
+            .product-card .cert-badge { font-size: 7px; padding: 2px 5px; }  /* было 6px */
             .hanzi-decor { display: none; }
         }
     </style>
@@ -405,7 +401,7 @@
 @section('content')
     <div class="catalog-wrapper" id="catalogApp">
         <div class="px-4 md:px-12 lg:px-16">
-            <div class="breadcrumbs" data-aos="fade-up">
+            <div class="breadcrumbs fade-in-up">
                 <a href="{{ route('home') }}">Главная</a>
                 <span class="separator">/</span>
                 <span class="current">Каталог</span>
@@ -413,13 +409,13 @@
         </div>
 
         <div class="px-4 md:px-12 lg:px-16 catalog-header relative section-with-hanzi">
-            <h1 data-aos="fade-up" data-aos-delay="100">Каталог товаров</h1>
-            <p class="subtitle" data-aos="fade-up" data-aos-delay="200">Оптовые поставки продуктов питания из Китая. Минимальный заказ от 100 000 руб.</p>
+            <h1 class="fade-in-up fade-in-up-delay-1">Каталог товаров</h1>
+            <p class="subtitle fade-in-up fade-in-up-delay-2">Оптовые поставки продуктов питания из Китая. Минимальный заказ от 100 000 руб.</p>
             <span class="hanzi-decor xl" style="top:10px;right:40px;opacity:0.04;transform:rotate(5deg);">品</span>
             <span class="hanzi-decor lg" style="bottom:-20px;left:20px;opacity:0.03;transform:rotate(-8deg);">类</span>
         </div>
 
-        <div class="px-4 md:px-12 lg:px-16" data-aos="fade-up" data-aos-delay="150">
+        <div class="px-4 md:px-12 lg:px-16 fade-in-up fade-in-up-delay-3">
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Поиск по названию, описанию..." value="{{ request('search') }}">
                 <button class="clear-search" id="clearSearch" style="{{ request('search') ? 'display:block' : '' }}">×</button>
@@ -448,13 +444,7 @@
                             <button class="filter-btn {{ request('pack') === $type ? 'active' : '' }}" data-filter="pack" data-value="{{ $type }}">{{ $type }}</button>
                         @endforeach
                     </div>
-                    <div class="filter-divider"></div>
-                    <div class="filter-group">
-                        <span class="filter-group-label">Сертификаты</span>
-                        <button class="filter-btn {{ !request('cert') || request('cert') === 'all-cert' ? 'active' : '' }}" data-filter="cert" data-value="all-cert">Все</button>
-                        <button class="filter-btn {{ request('cert') === 'eac' ? 'active' : '' }}" data-filter="cert" data-value="eac">ЕАС</button>
-                        <button class="filter-btn {{ request('cert') === 'honest' ? 'active' : '' }}" data-filter="cert" data-value="honest">Честный знак</button>
-                    </div>
+
                     <div class="filter-divider"></div>
                     <div class="filter-group">
                         <span class="filter-group-label">Сортировка</span>
@@ -520,13 +510,13 @@
             @include('partials.catalog.pagination', ['products' => $products])
         </div>
 
-        <div class="px-4 md:px-12 lg:px-16 py-12 lg:py-16 border-t border-black/5 mt-8 relative section-with-hanzi" data-aos="fade-up">
+        <div class="px-4 md:px-12 lg:px-16 py-12 lg:py-16 border-t border-black/5 mt-8 relative section-with-hanzi fade-in-up fade-in-up-delay-3">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative z-10">
                 <div>
                     <h2 class="font-bold text-[20px] text-black tracking-[-0.3px]">Не нашли нужный товар?</h2>
                     <p class="text-[14px] text-black/30 mt-1 font-light">Мы поставим любую позицию под ваш запрос</p>
                 </div>
-                <a href="{{ route('contacts') }}" class="inline-block px-10 py-4 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Связаться с нами</a>
+                <a href="#" data-lead-modal class="inline-block px-10 py-4 bg-black text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Связаться с нами</a>
             </div>
             <span class="hanzi-decor md" style="bottom:10px;right:60px;opacity:0.03;transform:rotate(-5deg);">求</span>
             <span class="hanzi-decor sm" style="top:20px;left:40px;opacity:0.03;transform:rotate(10deg);">需</span>
@@ -537,12 +527,14 @@
 @push('scripts')
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 500, once: true, offset: 20, easing: 'ease-out' });
+        // AOS инициализируется, но не используется для каталога (можно удалить, если не нужен на других страницах)
+        // AOS.init({ duration: 500, once: true, offset: 20, easing: 'ease-out' });
 
         (function() {
+            'use strict';
+
             const searchInput = document.getElementById('searchInput');
             const clearSearch = document.getElementById('clearSearch');
-            const resultsCount = document.getElementById('resultsCount');
             const catalogGrid = document.getElementById('catalogGrid');
             const paginationContainer = document.getElementById('paginationContainer');
             const loadingOverlay = document.getElementById('loadingOverlay');
@@ -564,16 +556,19 @@
             };
             let searchTimeout;
 
-            function updateURL(p) {
+            const updateURL = (p) => {
                 const url = new URL(window.location);
                 Object.keys(p).forEach(k => {
-                    if (p[k] && p[k] !== 'all' && p[k] !== 'all-pack' && p[k] !== 'all-cert' && p[k] !== 'default') url.searchParams.set(k, p[k]);
-                    else url.searchParams.delete(k);
+                    if (p[k] && p[k] !== 'all' && p[k] !== 'all-pack' && p[k] !== 'all-cert' && p[k] !== 'default') {
+                        url.searchParams.set(k, p[k]);
+                    } else {
+                        url.searchParams.delete(k);
+                    }
                 });
                 window.history.pushState({}, '', url);
-            }
+            };
 
-            function loadProducts() {
+            const loadProducts = () => {
                 loadingOverlay.classList.add('active');
                 fetch('{{ route("catalog") }}?' + new URLSearchParams(filters).toString(), {
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -582,101 +577,172 @@
                     .then(d => {
                         catalogGrid.innerHTML = d.html;
                         paginationContainer.innerHTML = d.pagination;
-                        updateResultsCount(d.total || 0);
                         updateActiveFilters();
                         updateURL(filters);
-                        AOS.refresh();
                     })
                     .catch(e => console.error(e))
                     .finally(() => loadingOverlay.classList.remove('active'));
-            }
+            };
 
-            function updateResultsCount(t) { resultsCount.textContent = `Найдено: ${t} товаров`; }
-
-            function updateActiveFilters() {
+            const updateActiveFilters = () => {
                 let h = '';
-                if (filters.category !== 'all') { const b = document.querySelector(`[data-filter="category"][data-value="${filters.category}"]`); h += `<span class="active-filter-tag" data-remove="category">${b?b.textContent:filters.category} <span class="remove">×</span></span>`; }
-                if (filters.pack !== 'all-pack') { const b = document.querySelector(`[data-filter="pack"][data-value="${filters.pack}"]`); h += `<span class="active-filter-tag" data-remove="pack">${b?b.textContent:filters.pack} <span class="remove">×</span></span>`; }
-                if (filters.cert !== 'all-cert') { const b = document.querySelector(`[data-filter="cert"][data-value="${filters.cert}"]`); h += `<span class="active-filter-tag" data-remove="cert">${b?b.textContent:filters.cert} <span class="remove">×</span></span>`; }
-                if (filters.price_from || filters.price_to) h += `<span class="active-filter-tag" data-remove="price">Цена ${filters.price_from?'от '+filters.price_from:''} ${filters.price_to?'до '+filters.price_to:''} ₽ <span class="remove">×</span></span>`;
-                if (filters.weight_from || filters.weight_to) h += `<span class="active-filter-tag" data-remove="weight">Вес ${filters.weight_from?'от '+filters.weight_from:''} ${filters.weight_to?'до '+filters.weight_to:''} г <span class="remove">×</span></span>`;
-                if (filters.shelf_life) h += `<span class="active-filter-tag" data-remove="shelf_life">Срок: ${filters.shelf_life} дн. <span class="remove">×</span></span>`;
-                if (filters.search) h += `<span class="active-filter-tag" data-remove="search">"${filters.search}" <span class="remove">×</span></span>`;
-                if (h) h += `<button class="reset-filters" id="resetAll">Сбросить все</button>`;
+                const addTag = (key, label) => {
+                    h += `<span class="active-filter-tag" data-remove="${key}">${label} <span class="remove">×</span></span>`;
+                };
+
+                if (filters.category !== 'all') {
+                    const btn = document.querySelector(`[data-filter="category"][data-value="${filters.category}"]`);
+                    addTag('category', btn ? btn.textContent : filters.category);
+                }
+                if (filters.pack !== 'all-pack') {
+                    const btn = document.querySelector(`[data-filter="pack"][data-value="${filters.pack}"]`);
+                    addTag('pack', btn ? btn.textContent : filters.pack);
+                }
+                if (filters.cert !== 'all-cert') {
+                    const btn = document.querySelector(`[data-filter="cert"][data-value="${filters.cert}"]`);
+                    addTag('cert', btn ? btn.textContent : filters.cert);
+                }
+                if (filters.price_from || filters.price_to) {
+                    addTag('price', `Цена ${filters.price_from ? 'от '+filters.price_from : ''} ${filters.price_to ? 'до '+filters.price_to : ''} ₽`);
+                }
+                if (filters.weight_from || filters.weight_to) {
+                    addTag('weight', `Вес ${filters.weight_from ? 'от '+filters.weight_from : ''} ${filters.weight_to ? 'до '+filters.weight_to : ''} г`);
+                }
+                if (filters.shelf_life) {
+                    addTag('shelf_life', `Срок: ${filters.shelf_life} дн.`);
+                }
+                if (filters.search) {
+                    addTag('search', `"${filters.search}"`);
+                }
+                if (h) {
+                    h += `<button class="reset-filters" id="resetAll">Сбросить все</button>`;
+                }
                 activeFiltersContainer.innerHTML = h;
 
                 document.querySelectorAll('.active-filter-tag').forEach(tag => {
                     tag.addEventListener('click', function() {
                         const k = this.dataset.remove;
-                        if (k === 'price') { filters.price_from = ''; filters.price_to = ''; document.getElementById('priceFrom').value = ''; document.getElementById('priceTo').value = ''; }
-                        else if (k === 'weight') { filters.weight_from = ''; filters.weight_to = ''; document.getElementById('weightFrom').value = ''; document.getElementById('weightTo').value = ''; }
-                        else if (k === 'search') { filters.search = ''; searchInput.value = ''; clearSearch.style.display = 'none'; }
-                        else if (k === 'shelf_life') { filters.shelf_life = ''; document.getElementById('shelfLife').value = ''; }
-                        else { filters[k] = k === 'category' ? 'all' : k === 'pack' ? 'all-pack' : k === 'cert' ? 'all-cert' : ''; document.querySelectorAll(`[data-filter="${k}"]`).forEach(b => { b.classList.remove('active'); if (b.dataset.value === filters[k]) b.classList.add('active'); }); }
+                        if (k === 'price') {
+                            filters.price_from = ''; filters.price_to = '';
+                            document.getElementById('priceFrom').value = ''; document.getElementById('priceTo').value = '';
+                        } else if (k === 'weight') {
+                            filters.weight_from = ''; filters.weight_to = '';
+                            document.getElementById('weightFrom').value = ''; document.getElementById('weightTo').value = '';
+                        } else if (k === 'search') {
+                            filters.search = ''; searchInput.value = ''; clearSearch.style.display = 'none';
+                        } else if (k === 'shelf_life') {
+                            filters.shelf_life = ''; document.getElementById('shelfLife').value = '';
+                        } else {
+                            const allVal = k === 'category' ? 'all' : k === 'pack' ? 'all-pack' : 'all-cert';
+                            filters[k] = allVal;
+                            document.querySelectorAll(`[data-filter="${k}"]`).forEach(b => {
+                                b.classList.remove('active');
+                                if (b.dataset.value === allVal) b.classList.add('active');
+                            });
+                        }
                         loadProducts();
                     });
                 });
-                const rb = document.getElementById('resetAll'); if (rb) rb.addEventListener('click', resetAllFilters);
-            }
 
-            function resetAllFilters() {
-                filters = { category: 'all', pack: 'all-pack', cert: 'all-cert', sort: 'default', search: '', price_from: '', price_to: '', weight_from: '', weight_to: '', shelf_life: '' };
+                const resetBtn = document.getElementById('resetAll');
+                if (resetBtn) resetBtn.addEventListener('click', resetAllFilters);
+            };
+
+            const resetAllFilters = () => {
+                filters = {
+                    category: 'all', pack: 'all-pack', cert: 'all-cert', sort: 'default',
+                    search: '', price_from: '', price_to: '', weight_from: '', weight_to: '', shelf_life: ''
+                };
                 searchInput.value = ''; clearSearch.style.display = 'none';
-                ['priceFrom','priceTo','weightFrom','weightTo','shelfLife'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+                document.getElementById('priceFrom').value = ''; document.getElementById('priceTo').value = '';
+                document.getElementById('weightFrom').value = ''; document.getElementById('weightTo').value = '';
+                document.getElementById('shelfLife').value = '';
                 document.getElementById('sortOrder').value = 'default';
                 document.querySelectorAll('.filter-btn.active').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('[data-value="all"], [data-value="all-pack"], [data-value="all-cert"]').forEach(b => b.classList.add('active'));
                 loadProducts();
-            }
+            };
 
+            // Обработчики фильтров
             document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const g = this.closest('.filter-group');
-                    g.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    const group = this.closest('.filter-group');
+                    if (group) {
+                        group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    }
                     this.classList.add('active');
                     filters[this.dataset.filter] = this.dataset.value;
                     loadProducts();
                 });
             });
 
-            document.getElementById('sortOrder').addEventListener('change', function() { filters.sort = this.value; loadProducts(); });
+            document.getElementById('sortOrder').addEventListener('change', function() {
+                filters.sort = this.value;
+                loadProducts();
+            });
+
             searchInput.addEventListener('input', function() {
                 const v = this.value.trim();
                 clearSearch.style.display = v ? 'block' : 'none';
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => { filters.search = v; loadProducts(); }, 400);
+                searchTimeout = setTimeout(() => {
+                    filters.search = v;
+                    loadProducts();
+                }, 400);
             });
-            clearSearch.addEventListener('click', function() { searchInput.value = ''; this.style.display = 'none'; filters.search = ''; loadProducts(); });
-            toggleAdvanced.addEventListener('click', function() { this.classList.toggle('expanded'); advancedFilters.classList.toggle('visible'); });
+
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                this.style.display = 'none';
+                filters.search = '';
+                loadProducts();
+            });
+
+            toggleAdvanced.addEventListener('click', function() {
+                this.classList.toggle('expanded');
+                advancedFilters.classList.toggle('visible');
+            });
 
             ['priceFrom','priceTo','weightFrom','weightTo'].forEach(id => {
-                const el = document.getElementById(id); if (!el) return;
-                let t; el.addEventListener('input', function() {
-                    clearTimeout(t);
-                    t = setTimeout(() => {
-                        if (id === 'priceFrom') filters.price_from = this.value;
-                        if (id === 'priceTo') filters.price_to = this.value;
-                        if (id === 'weightFrom') filters.weight_from = this.value;
-                        if (id === 'weightTo') filters.weight_to = this.value;
+                const el = document.getElementById(id);
+                if (!el) return;
+                let timer;
+                el.addEventListener('input', function() {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        const map = {
+                            priceFrom: 'price_from',
+                            priceTo: 'price_to',
+                            weightFrom: 'weight_from',
+                            weightTo: 'weight_to'
+                        };
+                        filters[map[id]] = this.value;
                         loadProducts();
                     }, 500);
                 });
             });
 
-            document.getElementById('shelfLife').addEventListener('change', function() { filters.shelf_life = this.value; loadProducts(); });
+            document.getElementById('shelfLife').addEventListener('change', function() {
+                filters.shelf_life = this.value;
+                loadProducts();
+            });
 
+            // Пагинация
             document.addEventListener('click', function(e) {
-                const pl = e.target.closest('#paginationContainer a');
-                if (pl) {
+                const link = e.target.closest('#paginationContainer a');
+                if (link) {
                     e.preventDefault();
-                    const url = new URL(pl.href);
+                    const url = new URL(link.href);
                     const page = url.searchParams.get('page');
-                    if (page) { filters.page = page; loadProducts(); window.scrollTo({ top: document.getElementById('catalogApp').offsetTop - 100, behavior: 'smooth' }); }
+                    if (page) {
+                        filters.page = page;
+                        loadProducts();
+                        window.scrollTo({ top: document.getElementById('catalogApp').offsetTop - 100, behavior: 'smooth' });
+                    }
                 }
             });
 
-            updateActiveFilters();
-
+            // Обновление при навигации назад/вперёд
             window.addEventListener('popstate', function() {
                 const p = new URLSearchParams(window.location.search);
                 filters.category = p.get('category') || 'all';
@@ -693,6 +759,9 @@
                 clearSearch.style.display = filters.search ? 'block' : 'none';
                 loadProducts();
             });
+
+            // Инициализация активных фильтров
+            updateActiveFilters();
         })();
     </script>
 @endpush

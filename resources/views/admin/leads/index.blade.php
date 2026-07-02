@@ -83,7 +83,15 @@
                         </div>
                     </td>
                     <td>{{ $lead->product?->name ?? 'Не указан' }}</td>
-                    <td class="font-medium">{{ $lead->estimated_budget ? number_format($lead->estimated_budget, 0, '.', ' ') . ' ₽' : '—' }}</td>
+                    <td class="font-medium">
+                        @if($lead->estimated_budget && is_numeric(str_replace(',', '.', $lead->estimated_budget)))
+                            {{ number_format((float)$lead->estimated_budget, 0, '.', ' ') }} ₽
+                        @elseif($lead->estimated_budget)
+                            {{ $lead->estimated_budget }}
+                        @else
+                            —
+                        @endif
+                    </td>
                     <td>{{ $lead->delivery_city ?? '—' }}</td>
                     <td>
                     <span class="status-badge {{ $lead->status }}" style="font-size: 10px; padding: 2px 10px;">

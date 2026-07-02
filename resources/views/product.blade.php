@@ -145,6 +145,12 @@
             margin-bottom: 24px;
             position: relative;
             z-index: 1;
+            background: rgba(26, 26, 26, 0.02);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(26, 26, 26, 0.04);
+            color: #1A1A1A;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
         .status-badge.in-stock { background: #1A1A1A; color: #FFFFFF; }
         .status-badge.out-of-stock { background: rgba(26,26,26,0.03); color: rgba(26,26,26,0.45); }
@@ -797,7 +803,10 @@
                         @endif
                     </div>
 
-                    <a href="#contacts" class="btn-contact">
+                    <a href="#"
+                       class="btn-contact"
+                       data-lead-modal
+                       data-lead-product="{{ $product->id }}">
                         <span>Связаться</span>
                         <span class="arrow">→</span>
                     </a>
@@ -915,30 +924,10 @@
                         </div>
                     </div>
 
-                    {{-- ВКУСЫ --}}
-                    @if($product->flavors && count($product->flavors) > 0)
-                        <div class="flavors-section" data-aos="fade-up">
-                            <h2 class="section-title">Доступные вкусы</h2>
-                            <div class="flavors-list">
-                                @foreach($product->flavors as $flavor)
-                                    <span class="flavor-tag">{{ $flavor }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
                     {{-- Иероглиф --}}
                     <span class="hanzi-decor md" style="top: 10%; right: -20px; opacity: 0.10; transform: rotate(10deg);">详</span>
                 </div>
             </div>
-
-            {{-- СЛУЖЕБНАЯ ЗАМЕТКА --}}
-            @if($product->comment)
-                <div class="internal-note" data-aos="fade-up">
-                    <div class="internal-note-label">Служебная информация</div>
-                    <div class="internal-note-text">{!! nl2br(e($product->comment)) !!}</div>
-                </div>
-            @endif
         </div>
 
         {{-- ПОХОЖИЕ ТОВАРЫ --}}
@@ -1003,9 +992,16 @@
             const r = parseInt(hex.substring(0, 2), 16);
             const g = parseInt(hex.substring(2, 4), 16);
             const b = parseInt(hex.substring(4, 6), 16);
+
+            // Для иероглифов на странице товара
             document.documentElement.style.setProperty('--accent-r', r);
             document.documentElement.style.setProperty('--accent-g', g);
             document.documentElement.style.setProperty('--accent-b', b);
+
+            // Для хедера и карусели (главная, бегущая строка и т.д.)
+            document.documentElement.style.setProperty('--carousel-accent-r', r);
+            document.documentElement.style.setProperty('--carousel-accent-g', g);
+            document.documentElement.style.setProperty('--carousel-accent-b', b);
         }
         setAccentColor('{{ $product->accent_color ?? "#FF6B00" }}');
 

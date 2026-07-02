@@ -24,7 +24,7 @@ class Lead extends Model
 
     protected $casts = [
         'interested_products' => 'array',
-        'estimated_budget' => 'decimal:2',
+        'estimated_budget' => 'string',
     ];
 
     // Статусы для удобства

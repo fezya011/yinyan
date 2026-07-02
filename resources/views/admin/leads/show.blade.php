@@ -30,7 +30,15 @@
                     </div>
                     <div>
                         <div class="text-sm text-muted">Бюджет</div>
-                        <div class="font-medium">{{ $lead->estimated_budget ? number_format($lead->estimated_budget, 0, '.', ' ') . ' ₽' : '—' }}</div>
+                        <div class="font-medium">
+                            @if($lead->estimated_budget && is_numeric(str_replace(',', '.', $lead->estimated_budget)))
+                                {{ number_format((float)$lead->estimated_budget, 0, '.', ' ') }} ₽
+                            @elseif($lead->estimated_budget)
+                                {{ $lead->estimated_budget }}
+                            @else
+                                —
+                            @endif
+                        </div>
                     </div>
                     <div>
                         <div class="text-sm text-muted">Товар</div>

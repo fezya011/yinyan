@@ -28,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== CSS-ПЕРЕМЕННЫЕ ===== */
         :root {
             --carousel-accent-r: 255;
             --carousel-accent-g: 107;
@@ -51,7 +50,7 @@
             color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
             line-height: 1;
             z-index: 0;
-            transition: color 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+            transition: color 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;,
             opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -119,7 +118,7 @@
                 rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.02) 40%,
                 transparent 55%
             );
-            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             will-change: background;
         }
 
@@ -163,7 +162,7 @@
                 rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.08) 0%,
                 transparent 70%
             );
-            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             z-index: 0;
             pointer-events: none;
             will-change: background;
@@ -446,6 +445,7 @@
             max-height: 100vh;
         }
 
+        /* ===== ИСПРАВЛЕННЫЙ GLOW ===== */
         .hero-right-glow {
             position: absolute;
             top: 50%;
@@ -455,21 +455,30 @@
             height: 70%;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0;
-            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1),
-            background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             z-index: 0;
+
+            /* Начальное состояние: прозрачный */
+            opacity: 0;
+
+            /* Анимируем opacity и background-color (если бы он был сплошным),
+               но для градиента нам поможет хак ниже */
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Используем переменную для цвета, чтобы CSS мог отслеживать изменения */
             background: radial-gradient(
                 circle,
                 rgba(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b), 0.3) 0%,
                 transparent 70%
             );
-            will-change: background, opacity;
+
+            /* ВАЖНО: Добавляем transition для background, хотя он работает плохо,
+               но с will-change браузер постарается */
+            will-change: opacity, background;
         }
 
         .hero-right-glow.visible {
-            opacity: 0.3;
+            opacity: 0.3; /* Или 1, если хочешь, чтобы прозрачность контролировалась внутри градиента */
         }
 
         @media (max-width: 1024px) {
@@ -511,6 +520,7 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
+            padding-top: 50px;
         }
 
         .carousel-track-wrapper {
@@ -571,11 +581,28 @@
         }
 
         @media (max-width: 1024px) {
-            .product-card-visual img { max-height: 40vh; }
+            .product-card-visual img { max-height: 60vh; }
         }
 
         @media (max-width: 640px) {
-            .product-card-visual img { max-height: 30vh; }
+            .carousel-slide .product-card-visual img {
+                max-height: 100vh !important;   /* было 60vh (или 55vh по умолчанию) – увеличиваем */
+            }
+
+            /* Если используется эмодзи-заглушка – тоже увеличиваем */
+            .carousel-slide .product-card-visual .fallback-emoji {
+                font-size: 22vw !important;    /* было 16vw – делаем крупнее */
+            }
+
+            /* Уменьшаем отступы вокруг картинки, чтобы она занимала больше места */
+            .carousel-slide {
+                padding: 12px 16px 60px !important;  /* уменьшаем боковые и верхние отступы */
+            }
+
+            /* Если нужно – можно немного уменьшить нижнюю навигацию, чтобы не перекрывала */
+            .carousel-nav {
+                bottom: 12px !important;
+            }
         }
 
         .carousel-slide:hover .product-card-visual img {
@@ -838,27 +865,8 @@
             background: #FFFFFF;
         }
 
-        #products {
-            background: #FFFFFF;
-            border-top: none !important;
-            border-bottom: none !important;
-        }
-
-        #products .grid {
-            border-top: none !important;
-        }
-
-        #products .border-r,
-        #products .border-b {
-            border-color: rgba(26, 26, 26, 0.04) !important;
-        }
-
         .cta-section {
             border-bottom: none !important;
-            background: #FFFFFF;
-        }
-
-        #contacts {
             background: #FFFFFF;
         }
 
@@ -880,11 +888,11 @@
         .marquee-char {
             font-family: 'Noto Serif SC', 'SimSun', serif;
             font-weight: 900;
-            font-size: 32px;
+            font-size: 60px;
             color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
             opacity: 0.15;
             letter-spacing: 6px;
-            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;,
             opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: color;
         }
@@ -892,9 +900,9 @@
         .marquee-separator {
             color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
             opacity: 0.5;
-            font-size: 20px;
+            font-size: 29px;
             font-weight: 300;
-            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
             will-change: color;
         }
 
@@ -1002,6 +1010,415 @@
         .am5-legend {
             display: none !important;
         }
+        /* ===== УВЕЛИЧЕНИЕ ШРИФТОВ В КАРУСЕЛИ ===== */
+        .carousel-slide .product-card-name {
+            font-size: 26px !important;   /* было 20px */
+        }
+
+        .carousel-slide .product-card-desc {
+            font-size: 14px !important;   /* было 12px */
+            max-width: 340px;             /* чуть шире для длинных названий */
+        }
+
+        .carousel-slide .product-card-price {
+            font-size: 16px !important;   /* было 13px */
+        }
+
+        .carousel-slide .product-card-tag {
+            font-size: 9px !important;    /* было 8px */
+            letter-spacing: 2.5px;
+        }
+
+        /* Адаптив для мобильных */
+        @media (max-width: 640px) {
+            .carousel-slide .product-card-name {
+                font-size: 22px !important;
+            }
+            .carousel-slide .product-card-desc {
+                font-size: 13px !important;
+            }
+            .carousel-slide .product-card-price {
+                font-size: 15px !important;
+            }
+        }
+
+        /* ===== СЕКЦИЯ ПОПУЛЯРНЫХ ТОВАРОВ (как в каталоге, но компактнее) ===== */
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(26, 26, 26, 0.04);
+        }
+
+        .product-card {
+            background: #FFFFFF;
+            padding: 24px 28px 28px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(26, 26, 26, 0.06);
+            z-index: 10;
+        }
+
+        /* ------ ИЗОБРАЖЕНИЕ (УМЕНЬШЕННОЕ) ------ */
+        .product-card .image-wrap {
+            width: 100%;
+            height: 250px;              /* было 240px – сделал компактнее */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-card .image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;        /* вписывается без искажений */
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 20px;              /* отступы внутри рамки */
+        }
+        .product-card:hover .image-wrap img {
+            transform: scale(1.06);
+        }
+        .product-card .image-wrap .no-image {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: rgba(26, 26, 26, 0.15);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* ------ БЕЙДЖ (тег) ------ */
+        .product-card .badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            font-weight: 600;
+            background: #1A1A1A;
+            color: #FFFFFF;
+            z-index: 2;
+        }
+
+        /* ------ КОНТЕНТ КАРТОЧКИ ------ */
+        .product-card .card-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .product-card .category-tag {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.25);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .product-card .product-name {
+            font-weight: 700;
+            font-size: 21px;
+            color: #1A1A1A;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .product-card .product-desc {
+            font-size: 13px;
+            color: rgba(26, 26, 26, 0.4);
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        /* ------ МЕТА-ДАННЫЕ (десктоп) ------ */
+        .product-card .product-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-bottom: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(26, 26, 26, 0.04);
+        }
+        .product-card .product-meta .meta-item {
+            font-size: 12px;
+            color: rgba(26, 26, 26, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 450;
+        }
+        .product-card .product-meta .meta-item strong {
+            color: rgba(26, 26, 26, 0.5);
+            font-weight: 500;
+        }
+
+        /* ------ МЕТА-ДАННЫЕ (мобильная, скрыта на десктопе) ------ */
+        .product-card .product-meta-mobile {
+            display: none;
+        }
+
+        /* ------ ФУТЕР С ЦЕНОЙ ------ */
+        .product-card .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .product-card .price {
+            font-weight: 700;
+            font-size: 23px;
+            color: #1A1A1A;
+            letter-spacing: -0.5px;
+        }
+        .product-card .price .from {
+            font-weight: 400;
+            font-size: 11px;
+            color: rgba(26, 26, 26, 0.3);
+            margin-right: 2px;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 1024px) {
+            .catalog-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .catalog-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                background: none;
+                padding: 0;
+            }
+            .product-card {
+                padding: 16px 14px 20px;
+                border: 1px solid rgba(26, 26, 26, 0.05);
+            }
+            .product-card:hover {
+                transform: none;
+                box-shadow: 0 6px 20px rgba(26, 26, 26, 0.05);
+                border-color: rgba(26, 26, 26, 0.1);
+            }
+            .product-card .image-wrap {
+                height: 160px;          /* ещё меньше на мобилках */
+                margin-bottom: 14px;
+            }
+            .product-card .image-wrap img {
+                padding: 14px;
+            }
+            .product-card .badge {
+                top: 8px;
+                right: 8px;
+                font-size: 7px;
+                letter-spacing: 1.5px;
+                padding: 4px 9px;
+            }
+            .product-card .category-tag {
+                font-size: 8px;
+                letter-spacing: 2px;
+                margin-bottom: 5px;
+            }
+            .product-card .product-name {
+                font-size: 15px;
+                margin-bottom: 5px;
+                line-height: 1.25;
+            }
+            .product-card .product-desc {
+                font-size: 11px;
+                line-height: 1.5;
+                margin-bottom: 10px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .product-card .product-meta {
+                display: none;          /* скрываем десктопную мету */
+            }
+            .product-card .product-meta-mobile {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px 10px;
+                margin-bottom: 10px;
+            }
+            .product-card .product-meta-mobile .meta-item {
+                font-size: 10px;
+                color: rgba(26, 26, 26, 0.4);
+                font-weight: 450;
+            }
+            .product-card .product-footer {
+                margin-top: auto;
+            }
+            .product-card .price {
+                font-size: 17px;
+            }
+            .product-card .price .from {
+                font-size: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .catalog-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .product-card {
+                padding: 14px 12px 18px;
+            }
+            .product-card .image-wrap {
+                height: 140px;
+                margin-bottom: 12px;
+            }
+            .product-card .image-wrap img {
+                padding: 12px;
+            }
+            .product-card .badge {
+                top: 6px;
+                right: 6px;
+                font-size: 6px;
+                letter-spacing: 1px;
+                padding: 3px 7px;
+            }
+            .product-card .product-name {
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .product-card .product-desc {
+                font-size: 10px;
+                -webkit-line-clamp: 2;
+                margin-bottom: 8px;
+            }
+            .product-card .category-tag {
+                font-size: 7px;
+                letter-spacing: 1.5px;
+                margin-bottom: 4px;
+            }
+            .product-card .product-meta-mobile {
+                gap: 3px 8px;
+                margin-bottom: 8px;
+            }
+            .product-card .product-meta-mobile .meta-item {
+                font-size: 9px;
+            }
+            .product-card .price {
+                font-size: 16px;
+            }
+        }
+        /* ===== КОМПАКТНАЯ СЕКЦИЯ ПОПУЛЯРНЫХ ТОВАРОВ (ЧУТЬ БОЛЬШЕ ШРИФТ) ===== */
+
+        /* Паддинги карточек */
+        .compact-card {
+            padding: 16px 18px 18px !important;
+        }
+
+        /* Изображение */
+        .compact-image {
+            height: 180px !important;
+            margin-bottom: 14px !important;
+        }
+        .compact-image img {
+            padding: 14px !important;
+        }
+
+        /* Бейдж */
+        .compact-badge {
+            top: 10px !important;
+            right: 10px !important;
+            font-size: 8px !important;   /* было 7px */
+            padding: 4px 10px !important;
+        }
+
+        /* Контент */
+        .compact-content .category-tag {
+            margin-bottom: 4px !important;
+            font-size: 10px !important;  /* было 9px */
+        }
+        .compact-content .product-name {
+            font-size: 19px !important;  /* было 17px */
+            margin-bottom: 4px !important;
+        }
+        .compact-content .product-desc {
+            font-size: 14px !important;  /* было 12px */
+            margin-bottom: 10px !important;
+            -webkit-line-clamp: 2 !important;
+        }
+
+        /* Мета */
+        .compact-meta {
+            padding-top: 10px !important;
+            margin-bottom: 10px !important;
+            gap: 4px 12px !important;
+        }
+        .compact-meta .meta-item {
+            font-size: 10px !important;
+            /* было 9px */
+        }
+
+        /* Цена */
+        .compact-price {
+            font-size: 20px !important;  /* было 18px */
+        }
+        .compact-price .from {
+            font-size: 11px !important;  /* было 10px */
+        }
+
+        /* Сетка */
+        .compact-grid {
+            gap: 1px !important;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 768px) {
+            .compact-image {
+                height: 150px !important;
+            }
+            .compact-content .product-name {
+                font-size: 17px !important;  /* было 15px */
+            }
+            .compact-content .product-desc {
+                font-size: 13px !important;  /* было 11px */
+            }
+            .compact-price {
+                font-size: 18px !important;  /* было 16px */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .compact-image {
+                height: 130px !important;
+            }
+            .compact-card {
+                padding: 12px 12px 14px !important;
+            }
+            .compact-content .product-name {
+                font-size: 15px !important;  /* было 13px */
+            }
+            .compact-content .product-desc {
+                font-size: 12px !important;  /* было 10px */
+            }
+            .compact-price {
+                font-size: 16px !important;  /* было 15px */
+            }
+        }
+        @media (max-width: 768px) {
+            .section-with-hanzi .hanzi-decor {
+                z-index: -1;
+                opacity: 0.03;
+            }
+        }
     </style>
 @endpush
 
@@ -1020,7 +1437,7 @@
             <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
                 Экспорт<br>
                 <span class="hero-title-outline">Импорт</span><br>
-                Инь Янь
+                Инь-Ян
             </h1>
 
             <!-- Описание -->
@@ -1033,16 +1450,6 @@
             <div class="hero-min-order" data-aos="fade-up" data-aos-delay="150">
                 <span class="min-order-label">Минимальный заказ</span>
                 <span class="min-order-amount">100 000 ₽</span>
-            </div>
-
-            <!-- Преимущества -->
-            <div class="hero-benefits" data-aos="fade-up" data-aos-delay="250">
-                <span class="hero-benefit-item">Сертификаты ЕАС</span>
-                <span class="hero-benefit-item">Честный знак</span>
-                <span class="hero-benefit-item">Собственный склад</span>
-                <span class="hero-benefit-item">Отгрузка за 24 ч</span>
-                <span class="hero-benefit-item">Прямые контракты</span>
-                <span class="hero-benefit-item">10+ лет на рынке</span>
             </div>
 
             <!-- Дополнительная информация -->
@@ -1114,7 +1521,6 @@
                                         {{-- БЛОК ЦЕНЫ --}}
                                         <div class="product-card-price-wrap">
                                             <span class="product-card-price">{{ $slide['price'] }}</span>
-                                            <span class="product-card-price-note">{{ $slide['price_note'] }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1153,8 +1559,11 @@
         </div>
     </section>
 
+    <span class="hanzi-decor md rotate-12" style="top: 30%; left: 20%; opacity: 0.02;">统</span>
+    <span class="hanzi-decor md rotate-n10" style="top: 30%; right: 20%; opacity: 0.02;">计</span>
+
     <!-- ===== СТАТИСТИКА ===== -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 stats-grid section-with-hanzi">
+    <div class="grid grid-cols-2 lg:grid-cols-4 stats-grid section-with-hanzi pb-10">
         @php
             $stats = [
                 ['number' => '10 000+', 'label' => 'Тонн импортировано'],
@@ -1169,8 +1578,6 @@
                 <div class="text-[9px] tracking-[2px] uppercase text-[#1A1A1A]/40 mt-2">{{ $stat['label'] }}</div>
             </div>
         @endforeach
-        <span class="hanzi-decor md rotate-10" style="top: 50%; left: 8%; transform: translateY(-50%) rotate(10deg); opacity: 0.015;">数</span>
-        <span class="hanzi-decor md rotate-n8" style="top: 50%; right: 8%; transform: translateY(-50%) rotate(-8deg); opacity: 0.015;">据</span>
     </div>
 
     <!-- ===== БЕГУЩАЯ СТРОКА ===== -->
@@ -1180,8 +1587,104 @@
         </div>
     </div>
 
+    {{-- ===== ПОПУЛЯРНЫЕ ТОВАРЫ (КОМПАКТНАЯ ВЕРСИЯ) ===== --}}
+    <section class="px-4 md:px-12 lg:px-16 py-12 lg:py-16 relative section-with-hanzi" id="products">
+        {{-- Заголовок --}}
+        <div class="mb-8 relative z-10" data-aos="fade-up">
+            <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3">Ассортимент</p>
+            <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] text-[#1A1A1A]">
+                Популярные позиции
+            </h2>
+        </div>
+
+        @if($popularProducts->isNotEmpty())
+            <div class="catalog-grid compact-grid" data-aos="fade-up">
+                @foreach($popularProducts as $product)
+                    <a href="{{ route('product', $product->slug) }}" class="product-card compact-card">
+                        {{-- Изображение --}}
+                        <div class="image-wrap compact-image">
+                            @if($product->main_image)
+                                <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" loading="lazy">
+                            @else
+                                <span class="no-image">Нет фото</span>
+                            @endif
+                            @if($product->tag)
+                                <span class="badge compact-badge">{{ $product->tag }}</span>
+                            @endif
+                        </div>
+
+                        {{-- Контент --}}
+                        <div class="card-content compact-content">
+                            <div class="category-tag">{{ $product->category?->name ?? 'Без категории' }}</div>
+                            <div class="product-name compact-name">{{ $product->name }}</div>
+                            <div class="product-desc compact-desc">{{ Str::limit($product->card_subtitle ?? $product->description ?? '', 70) }}</div>
+
+                            {{-- Десктопная мета --}}
+                            <div class="product-meta compact-meta">
+                            <span class="meta-item">
+                                <strong>Мин. заказ:</strong> {{ number_format($product->min_order_amount ?? 100000, 0, '.', ' ') }} ₽
+                            </span>
+                                @if($product->weight_grams)
+                                    <span class="meta-item">
+                                    <strong>Вес:</strong> {{ $product->weight_grams }} г
+                                </span>
+                                @endif
+                                @if($product->shelf_life_days)
+                                    <span class="meta-item">
+                                    <strong>Срок:</strong> {{ $product->shelf_life_days }} дн.
+                                </span>
+                                @endif
+                                @if($product->pieces_per_box)
+                                    <span class="meta-item">
+                                    <strong>В коробке:</strong> {{ $product->pieces_per_box }} шт.
+                                </span>
+                                @endif
+                            </div>
+
+                            {{-- Мобильная мета --}}
+                            <div class="product-meta-mobile">
+                                @if($product->weight_grams)
+                                    <span class="meta-item">{{ $product->weight_grams }} г</span>
+                                @endif
+                                @if($product->pieces_per_box)
+                                    <span class="meta-item">{{ $product->pieces_per_box }} шт/кор</span>
+                                @endif
+                                @if($product->shelf_life_days)
+                                    <span class="meta-item">{{ $product->shelf_life_days }} дн.</span>
+                                @endif
+                            </div>
+
+                            {{-- Футер с ценой --}}
+                            <div class="product-footer compact-footer">
+                            <span class="price compact-price">
+                                <span class="from">от</span>
+                                {{ number_format($product->wholesale_price ?? 0, 0, '.', ' ') }} ₽
+                            </span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            {{-- Кнопка --}}
+            <div class="text-center mt-8 relative z-10" data-aos="fade-up" data-aos-delay="150">
+                <a href="{{ route('catalog') }}"
+                   class="btn-catalog inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] no-underline">
+                    Перейти в каталог
+                </a>
+            </div>
+        @else
+            <p class="text-center text-gray-400 text-sm relative z-10 py-10">Товары скоро появятся</p>
+        @endif
+
+        {{-- Иероглифы --}}
+        <span class="hanzi-decor xl rotate-n8" style="bottom: 6%; left: 0%; opacity: 0.2;">品</span>
+        <span class="hanzi-decor xl rotate-12" style="top: 9%; right: 1%; opacity: 0.2;">味</span>
+    </section>
+
     <!-- ===== КАРТА ПОСТАВОК ===== -->
-    <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] bg-white section-with-hanzi" id="map">
+    <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] bg-white section-with-hanzi" id="map"
+             style="border-top: 1px solid rgba(26,26,26,0.04);">
         <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">География</p>
         <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">
             Маршруты поставок
@@ -1189,6 +1692,8 @@
 
         <div class="relative" data-aos="fade-up" data-aos-delay="200">
             <div class="relative w-full border border-[#1A1A1A]/8 overflow-hidden bg-[#FAFAFA]">
+                <span class="hanzi-decor lg rotate-5" style="top: 15%; right: 15%; opacity: 0.02;">通</span>
+                <span class="hanzi-decor md rotate-n12" style="bottom: 25%; left: 15%; opacity: 0.02;">达</span>
                 <div id="ammapContainer"></div>
 
                 <div class="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap gap-3">
@@ -1222,148 +1727,64 @@
                 </div>
             </div>
         </div>
-
-        <span class="hanzi-decor lg rotate-10" style="top: 5%; right: 3%; opacity: 0.015;">路</span>
-        <span class="hanzi-decor md rotate-n8" style="bottom: 5%; left: 3%; opacity: 0.015;">线</span>
     </section>
 
-    <!-- ===== ПОЧЕМУ МЫ ===== -->
     <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] section-with-hanzi" id="why">
         <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">О нас</p>
-        <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] mb-[48px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Партнёры доверяют нам</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-[1px] bg-transparent">
+        <div class="flex items-center gap-4 mb-[48px]" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight text-[#1A1A1A]">
+                Партнёры доверяют нам
+            </h2>
+            <span class="hidden md:block flex-1 h-[1px] bg-[#1A1A1A]/10"></span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @php
                 $reasons = [
-                    ['num' => '01', 'title' => 'Выгода', 'desc' => 'Прямой импорт без посредников. Никаких наценок в цепочке поставок.'],
-                    ['num' => '02', 'title' => 'Надёжность', 'desc' => 'Декларации, ЕАС, Честный знак — всё оформлено под ключ.'],
-                    ['num' => '03', 'title' => 'Оперативность', 'desc' => 'Собственный склад. Отгрузка на следующий день после оплаты.'],
+                    [
+                        'num' => '01',
+                        'title' => 'Выгода',
+                        'desc' => 'Прямой импорт без посредников. Никаких наценок в цепочке поставок.',
+                    ],
+                    [
+                        'num' => '02',
+                        'title' => 'Надёжность',
+                        'desc' => 'Декларации, ЕАС, Честный знак — всё оформлено под ключ.',
+                    ],
+                    [
+                        'num' => '03',
+                        'title' => 'Оперативность',
+                        'desc' => 'Собственный склад. Отгрузка на следующий день после оплаты.',
+                    ],
                 ];
             @endphp
+
             @foreach($reasons as $index => $reason)
-                <div class="bg-white p-8 lg:p-10 transition-all duration-300 hover:bg-black/[0.02]" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                    <div class="font-black text-3xl text-[#1A1A1A]/5 leading-none mb-4">{{ $reason['num'] }}</div>
-                    <div class="font-bold text-[10px] tracking-[3px] uppercase text-[#1A1A1A] mb-3">{{ $reason['title'] }}</div>
-                    <p class="text-sm text-[#1A1A1A]/40 leading-relaxed font-light">{{ $reason['desc'] }}</p>
+                <div class="group relative bg-white p-8 lg:p-10 border border-[#1A1A1A]/5 transition-all duration-300 hover:border-[#1A1A1A]/20 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1"
+                     data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
+                    <!-- Крупная цифра в круге -->
+                    <div class="flex items-center justify-center w-14 h-14 rounded-full border border-[#1A1A1A]/10 text-[#1A1A1A] font-black text-2xl mb-6 transition-colors duration-300 group-hover:border-[#1A1A1A]/30 group-hover:bg-[#1A1A1A]/5">
+                        {{ $reason['num'] }}
+                    </div>
+
+                    <div class="font-bold text-[11px] tracking-[3px] uppercase text-[#1A1A1A] mb-3">
+                        {{ $reason['title'] }}
+                    </div>
+                    <p class="text-[15px] text-[#1A1A1A]/50 leading-relaxed font-light">
+                        {{ $reason['desc'] }}
+                    </p>
                 </div>
             @endforeach
         </div>
-        <span class="hanzi-decor lg rotate-n10" style="top: 10%; right: 3%; opacity: 0.015;">信</span>
-        <span class="hanzi-decor md rotate-12" style="bottom: 10%; left: 3%; opacity: 0.015;">德</span>
-        <span class="hanzi-decor sm rotate-n8" style="top: 30%; left: 8%; opacity: 0.01;">诚</span>
-        <span class="hanzi-decor sm rotate-8" style="bottom: 30%; right: 8%; opacity: 0.01;">誉</span>
-    </section>
 
-    <!-- ===== КАТАЛОГ С КАРУСЕЛЬЮ ИЗ БД ===== -->
-    <section class="bg-white py-[60px] lg:py-[80px] section-with-hanzi" id="products">
-        <div class="px-6 md:px-12 lg:px-16 pb-8">
-            <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">Ассортимент</p>
-            <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[540px] text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Наша продукция</h2>
-        </div>
-
-        <!-- Карусель товаров -->
-        <div class="px-6 md:px-12 lg:px-16 relative" data-aos="fade-up" data-aos-delay="200">
-            <div class="overflow-hidden">
-                <div class="carousel-track-products flex gap-5 transition-transform duration-500 ease-out" id="carouselTrackProducts">
-                    @foreach($slides as $slide)
-                        <div class="carousel-slide-product w-[280px] md:w-[320px] lg:w-[350px] flex-shrink-0 bg-[#F8F8F8] rounded-xl p-5 border border-[#1A1A1A]/6 hover:border-[#1A1A1A]/20 transition-all duration-300 hover:shadow-md">
-                            <div class="aspect-square bg-white rounded-lg mb-3 overflow-hidden flex items-center justify-center relative">
-                                @if($slide['image'])
-                                    <img src="{{ $slide['image'] }}" alt="{{ $slide['name'] }}" class="w-full h-full object-cover">
-                                @else
-                                    <span class="text-5xl opacity-30">{{ $slide['emoji'] }}</span>
-                                @endif
-                                <span class="absolute top-2 right-2 bg-[#1A1A1A] text-white text-[8px] font-semibold tracking-[1px] px-2.5 py-1 rounded-full">{{ $slide['price'] }}</span>
-                            </div>
-                            <div>
-                                <div class="text-[7px] tracking-[2px] uppercase text-[#1A1A1A]/40 mb-1">{{ $slide['tag'] }}</div>
-                                <h3 class="font-bold text-[13px] leading-tight text-[#1A1A1A] line-clamp-2">{{ $slide['name'] }}</h3>
-                                <p class="text-[10px] text-[#1A1A1A]/50 leading-relaxed line-clamp-2 mt-1">{{ Str::limit($slide['desc'], 70) }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Стрелки -->
-            <button id="carouselProductsPrev" class="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow border border-[#1A1A1A]/10 hover:border-[#1A1A1A]/30 flex items-center justify-center transition-all hover:scale-110 z-10 -ml-3">
-                <svg class="w-3.5 h-3.5 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            <button id="carouselProductsNext" class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow border border-[#1A1A1A]/10 hover:border-[#1A1A1A]/30 flex items-center justify-center transition-all hover:scale-110 z-10 -mr-3">
-                <svg class="w-3.5 h-3.5 text-[#1A1A1A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </button>
-
-            <!-- Точки -->
-            <div class="flex justify-center gap-1.5 mt-5" id="carouselProductsDots">
-                @foreach($slides as $index => $slide)
-                    <button class="carousel-product-dot w-1.5 h-1.5 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-[#1A1A1A] w-5' : 'bg-[#1A1A1A]/30 hover:bg-[#1A1A1A]/50' }}" data-index="{{ $index }}"></button>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Кнопка -->
-        <div class="px-6 md:px-12 lg:px-16 pt-8 text-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="{{ route('catalog') }}" class="inline-block px-6 py-2.5 bg-[#1A1A1A] text-white text-[9px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02]">Полный каталог</a>
-        </div>
-
-        <!-- Иероглифы -->
-        <span class="hanzi-decor lg rotate-10" style="top: 5%; left: 2%; opacity: 0.015;">品</span>
-        <span class="hanzi-decor md rotate-n12" style="bottom: 5%; right: 2%; opacity: 0.015;">类</span>
-        <span class="hanzi-decor sm rotate-8" style="top: 20%; right: 5%; opacity: 0.01;">丰</span>
-        <span class="hanzi-decor xs rotate-n8" style="bottom: 15%; left: 5%; opacity: 0.01;">富</span>
     </section>
 
     <!-- ===== CTA ===== -->
     <div class="px-6 md:px-12 lg:px-16 py-14 lg:py-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cta-section section-with-hanzi">
         <h2 class="font-black text-[clamp(24px,2.8vw,38px)] uppercase tracking-[-1px] leading-none text-[#1A1A1A]" data-aos="fade-right">Готовы начать<br><span class="text-[#1A1A1A]/40">сотрудничество?</span></h2>
-        <a href="#contacts" class="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">Связаться</a>
-        <span class="hanzi-decor sm rotate-10" style="top: 10%; right: 30%; opacity: 0.015;">赢</span>
-        <span class="hanzi-decor xs rotate-n5" style="bottom: 10%; left: 10%; opacity: 0.01;">合</span>
-        <span class="hanzi-decor xs rotate-8" style="bottom: 10%; right: 25%; opacity: 0.01;">作</span>
-    </div>
 
-    <!-- ===== КОНТАКТЫ ===== -->
-    <section class="px-6 md:px-12 lg:px-16 py-[60px] lg:py-[80px] section-with-hanzi" id="contacts">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            <div>
-                <p class="text-[9px] tracking-[4px] uppercase text-[#1A1A1A]/40 mb-3" data-aos="fade-up">Контакты</p>
-                <h2 class="font-black text-[clamp(26px,3vw,40px)] uppercase tracking-[-1px] leading-tight max-w-[500px] mb-10 text-[#1A1A1A]" data-aos="fade-up" data-aos-delay="100">Свяжитесь с нами</h2>
-                @php
-                    $contacts = [
-                        ['label' => 'Коммерческий директор', 'value' => 'Алексей Ерышев', 'type' => 'text'],
-                        ['label' => 'Телефон', 'value' => '+7 999 618 28 82', 'type' => 'tel', 'href' => 'tel:+79996182882'],
-                        ['label' => 'Email', 'value' => 'eksport.inyan@mail.ru', 'type' => 'email', 'href' => 'mailto:eksport.inyan@mail.ru'],
-                        ['label' => 'Адрес', 'value' => '692771, Приморский край, г. Артём, ул. Постникова, д. 2а, каб. 21', 'type' => 'text'],
-                    ];
-                @endphp
-                @foreach($contacts as $index => $contact)
-                    <div class="mb-6" data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                        <div class="text-[9px] tracking-[3px] uppercase text-[#1A1A1A]/40 mb-1">{{ $contact['label'] }}</div>
-                        @if($contact['type'] === 'tel' || $contact['type'] === 'email')
-                            <a href="{{ $contact['href'] }}" class="font-semibold text-[16px] text-[#1A1A1A] no-underline transition-colors duration-300 hover:text-[#1A1A1A]/60">{{ $contact['value'] }}</a>
-                        @else
-                            <span class="font-semibold text-[16px] text-[#1A1A1A]">{{ $contact['value'] }}</span>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-            <div data-aos="fade-up" data-aos-delay="300">
-                <div class="border border-[#1A1A1A]/10 p-6 bg-white">
-                    <div class="text-[12px] text-[#1A1A1A]/50 space-y-3">
-                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">Организация</strong>ООО «Экспорт-Импорт Инь-Ян»</div>
-                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ОГРН</strong>1232500004846</div>
-                        <div><strong class="text-[#1A1A1A]/60 block text-[9px] tracking-[2px] uppercase mb-0.5 font-medium">ИНН / КПП</strong>2502071087 / 250201001</div>
-                    </div>
-                </div>
-                <div class="mt-4 p-6 border border-[#1A1A1A]/10 border-t-0 bg-white">
-                    <p class="text-[12px] text-[#1A1A1A]/40 leading-relaxed font-light">Стабильные поставки, конкурентные цены и широкий ассортимент продуктов из Китая.</p>
-                </div>
-            </div>
-        </div>
-        <span class="hanzi-decor lg rotate-n8" style="top: 5%; right: 5%; opacity: 0.015;">联</span>
-        <span class="hanzi-decor md rotate-10" style="bottom: 5%; left: 5%; opacity: 0.015;">系</span>
-        <span class="hanzi-decor sm rotate-n12" style="top: 40%; left: 2%; opacity: 0.01;">友</span>
-        <span class="hanzi-decor sm rotate-8" style="bottom: 40%; right: 2%; opacity: 0.01;">好</span>
-    </section>
+        <a href="#" data-lead-modal class="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[10px] font-semibold tracking-[2px] uppercase transition-all duration-300 hover:bg-black/80 hover:scale-[1.02] flex-shrink-0" data-aos="fade-left" data-aos-delay="150">Связаться</a>
+    </div>
 @endsection
 
 @push('scripts')
@@ -1693,37 +2114,51 @@
                 const g = parseInt(hex.substring(2, 4), 16);
                 const b = parseInt(hex.substring(4, 6), 16);
 
-                requestAnimationFrame(() => {
-                    root.style.setProperty('--carousel-accent-r', r);
-                    root.style.setProperty('--carousel-accent-g', g);
-                    root.style.setProperty('--carousel-accent-b', b);
+                // 1. Обновляем глобальные переменные для других элементов
+                root.style.setProperty('--carousel-accent-r', r);
+                root.style.setProperty('--carousel-accent-g', g);
+                root.style.setProperty('--carousel-accent-b', b);
 
-                    if (glow) {
-                        glow.style.background = `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.3) 0%, transparent 70%)`;
-                    }
+                // 2. ПЛАВНОЕ ОБНОВЛЕНИЕ GLOW
+                // Вместо прямой замены background, мы полагаемся на то,
+                // что CSS уже использует эти переменные в градиенте.
+                // НО! Браузеры плохо анимируют градиенты при смене переменных.
 
-                    document.querySelectorAll('.hanzi-decor').forEach(el => {
-                        el.style.color = `rgb(${r}, ${g}, ${b})`;
-                    });
+                // ХАК ДЛЯ ПЛАВНОСТИ:
+                // Мы создадим временный элемент или используем requestAnimationFrame,
+                // но проще всего заставить браузер "перерисовать" градиент плавно,
+                // если мы не меняем структуру градиента, а только цвета.
 
-                    document.querySelectorAll('.marquee-char').forEach(el => {
-                        el.style.color = `rgb(${r}, ${g}, ${b})`;
-                    });
+                // В современных браузерах (Chrome 111+, Safari 16.4+) transition для background
+                // работает при смене CSS variables, если свойство transition указано явно.
 
-                    document.querySelectorAll('.marquee-separator').forEach(el => {
-                        el.style.color = `rgb(${r}, ${g}, ${b})`;
-                    });
+                // Если у тебя старый браузер или дергается, используй этот fallback:
+                if (glow) {
+                    // Принудительно запускаем reflow, чтобы transition подхватился (иногда помогает)
+                    // Но главное - убедиться, что мы не удаляем класс visible
+
+                    // Просто обновляем переменные. CSS transition: background должен сработать
+                    // благодаря will-change и явному указанию в CSS выше.
+
+                    // Дополнительная страховка: если не работает, можно анимировать opacity:
+                    glow.style.opacity = '0';
+                    setTimeout(() => {
+                         glow.style.background = `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.3) 0%, transparent 70%)`;
+                         glow.style.opacity = '0.3';
+                     }, 50);
+                }
+
+                // Прямое изменение цвета для иероглифов и бегущей строки
+                document.querySelectorAll('.hanzi-decor, .marquee-char, .marquee-separator').forEach(el => {
+                    el.style.color = `rgb(${r}, ${g}, ${b})`;
                 });
             }
 
             function updateGlow(index) {
                 if (!glow) return;
-                glow.style.opacity = '0';
-                setTimeout(() => {
-                    glow.style.transition = 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                    glow.style.opacity = '0.3';
+                if (!glow.classList.contains('visible')) {
                     glow.classList.add('visible');
-                }, 500);
+                }
             }
 
             function updateCounter(index) {
@@ -1754,7 +2189,6 @@
                 });
 
                 updateAccentColor(currentIndex);
-                updateGlow(currentIndex);
                 updateCounter(currentIndex);
 
                 setTimeout(() => {
@@ -1833,151 +2267,6 @@
                 else startAutoPlay();
             });
         })();
-
-        // ===== КАРУСЕЛЬ ТОВАРОВ В СЕКЦИИ ПРОДУКТОВ =====
-        window.addEventListener('load', function() {
-            const track = document.getElementById('carouselTrackProducts');
-            const slides = document.querySelectorAll('.carousel-slide-product');
-            const dots = document.querySelectorAll('.carousel-product-dot');
-            const prevBtn = document.getElementById('carouselProductsPrev');
-            const nextBtn = document.getElementById('carouselProductsNext');
-
-            if (!track || !slides.length) {
-                console.error('❌ Карусель товаров: элементы не найдены');
-                return;
-            }
-
-            console.log('✅ Карусель товаров: найдено', slides.length, 'слайдов, ширина:', slides[0].offsetWidth);
-
-            let currentIndex = 0;
-            let autoPlayInterval;
-            let isInteracting = false;
-            let isTransitioning = false;
-
-            function getGap() {
-                return 20; // gap-5 = 20px
-            }
-
-            function getMaxIndex() {
-                const containerWidth = track.parentElement.offsetWidth;
-                const slideWidth = slides[0].offsetWidth;
-                const gap = getGap();
-                const visibleSlides = Math.floor((containerWidth + gap) / (slideWidth + gap));
-                return Math.max(0, slides.length - visibleSlides);
-            }
-
-            function updateCarousel() {
-                if (currentIndex > getMaxIndex()) {
-                    currentIndex = getMaxIndex();
-                }
-
-                const slideWidth = slides[0].offsetWidth;
-                const gap = getGap();
-                const offset = currentIndex * (slideWidth + gap);
-
-                track.style.transform = `translateX(-${offset}px)`;
-
-                dots.forEach((dot, i) => {
-                    if (i === currentIndex) {
-                        dot.classList.add('bg-[#1A1A1A]', 'w-5');
-                        dot.classList.remove('bg-[#1A1A1A]/30', 'w-1.5');
-                    } else {
-                        dot.classList.remove('bg-[#1A1A1A]', 'w-5');
-                        dot.classList.add('bg-[#1A1A1A]/30', 'w-1.5');
-                    }
-                });
-            }
-
-            function goTo(index) {
-                if (isTransitioning) return;
-
-                const newIndex = Math.max(0, Math.min(index, getMaxIndex()));
-                if (newIndex === currentIndex) return;
-
-                isTransitioning = true;
-                currentIndex = newIndex;
-                updateCarousel();
-
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 500);
-            }
-
-            function nextSlide() {
-                if (currentIndex < getMaxIndex()) {
-                    goTo(currentIndex + 1);
-                } else {
-                    goTo(0);
-                }
-            }
-
-            function prevSlide() {
-                if (currentIndex > 0) {
-                    goTo(currentIndex - 1);
-                } else {
-                    goTo(getMaxIndex());
-                }
-            }
-
-            function startAutoPlay() {
-                stopAutoPlay();
-                autoPlayInterval = setInterval(() => {
-                    if (!isInteracting && !isTransitioning) {
-                        nextSlide();
-                    }
-                }, 4000);
-            }
-
-            function stopAutoPlay() {
-                clearInterval(autoPlayInterval);
-            }
-
-            // Обработчики событий
-            prevBtn?.addEventListener('click', () => {
-                prevSlide();
-                stopAutoPlay();
-                startAutoPlay();
-            });
-
-            nextBtn?.addEventListener('click', () => {
-                nextSlide();
-                stopAutoPlay();
-                startAutoPlay();
-            });
-
-            dots.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    if (index !== currentIndex && !isTransitioning) {
-                        goTo(index);
-                        stopAutoPlay();
-                        startAutoPlay();
-                    }
-                });
-            });
-
-            // Пауза при наведении
-            const container = track.closest('.relative');
-            container?.addEventListener('mouseenter', () => {
-                isInteracting = true;
-            });
-            container?.addEventListener('mouseleave', () => {
-                isInteracting = false;
-            });
-
-            // Ресайз
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    updateCarousel();
-                }, 150);
-            });
-
-            // Запуск
-            updateCarousel();
-            startAutoPlay();
-        });
 
         // ===== ПЛАВНЫЙ СКРОЛЛ =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
