@@ -5,17 +5,35 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
-use App\Http\Controllers\Web\PageController;
-use App\Http\Controllers\Web\LeadFormController;
+use App\Http\Controllers\Web\CatalogController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\SearchController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\Lead\LeadController;
+use App\Http\Controllers\Web\Lead\LeadCityController;
 
-// Главная страница
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/catalog', [PageController::class, 'catalog'])->name('catalog');
-Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
-Route::get('/product/{slug}', [PageController::class, 'product'])->name('product');
-Route::post('/lead', [LeadFormController::class, 'store'])->name('lead.store');
-Route::get('/cities', [LeadFormController::class, 'cities'])->name('cities');
+
+
+// Главная
+Route::get('/', HomeController::class)->name('home');
+
+// Каталог
+Route::get('/catalog', CatalogController::class)->name('catalog');
+
+// Товар
+Route::get('/product/{slug}', ProductController::class)->name('product');
+
+// Поиск (API)
+Route::get('/search', SearchController::class)->name('search');
+
+// Статические страницы
+Route::view('/privacy', 'pages.static.privacy')->name('privacy');
+Route::view('/about', 'pages.static.about')->name('about');
+
+// Заявки
+Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');
+Route::get('/cities', [LeadCityController::class, 'index'])->name('cities');
 
 // ===== АДМИНКА =====
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -54,19 +72,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-Route::get('/about', function () {
-    return view('about'); // создайте при необходимости
-})->name('about');
-
-Route::get('/faq', function () {
-    return view('faq'); // создайте при необходимости
-})->name('faq');
-
-Route::get('/contacts', function () {
-    return view('landing#contacts'); // или отдельная страница
-})->name('contacts');
-
-Route::get('/search', function () {
-    return view('search-results'); // страница результатов
-})->name('search');
 

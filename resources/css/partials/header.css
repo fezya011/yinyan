@@ -1,0 +1,116 @@
+/* resources/css/partials/header.css */
+
+/* ===== ХЕДЕР ===== */
+#siteHeader {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+#siteHeader.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.03);
+}
+
+#siteHeader.hidden-header {
+    transform: translateY(-100%);
+}
+
+#siteHeader.menu-open {
+    transform: translateY(0) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* ===== НАВИГАЦИЯ ===== */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1.5px;
+    background: #000;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover::after {
+    width: 40%;
+}
+
+/* ===== БУРГЕР ===== */
+#menuToggle {
+    transition: transform 0.25s ease !important;
+}
+
+#menuToggle:hover {
+    transform: rotate(90deg) !important;
+}
+
+#menuToggle.active:hover {
+    transform: rotate(90deg) scale(1.05);
+}
+
+#bar1,
+#bar2,
+#bar3 {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+#menuToggle.active #bar1 {
+    top: 50% !important;
+    transform: translateY(-50%) rotate(45deg) !important;
+    background: #000;
+}
+
+#menuToggle.active #bar2 {
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+}
+
+#menuToggle.active #bar3 {
+    bottom: 50% !important;
+    transform: translateY(50%) rotate(-45deg) !important;
+    background: #000;
+}
+
+/* ===== МОБИЛЬНОЕ МЕНЮ ===== */
+body.menu-open {
+    overflow: hidden;
+}
+
+.menu-hanzi {
+    color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
+    transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 640px) {
+    #mobileMenu .text-\[28px\] {
+        font-size: 24px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #siteHeader .px-6 {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #siteHeader,
+    #mobileMenu,
+    #menuToggle span,
+    .menu-hanzi {
+        transition-duration: 0.01ms !important;
+    }
+}

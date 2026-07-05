@@ -1,65 +1,49 @@
-<!DOCTYPE html>
+{{-- layouts/app.blade.php --}}
+    <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    {{-- Meta --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>@yield('title', config('app.name', 'Инь Янь'))</title>
+
+    {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
-    {{-- Tailwind CSS --}}
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- Tailwind --}}
+    @include('layouts.partials.tailwind')
 
-    <style>
-        .backdrop-blur-sm {
-            backdrop-filter: blur(8px);
-        }
+    {{-- Core Styles --}}
+    @include('layouts.partials.core-styles')
 
-        @media (max-width: 768px) {
-            .backdrop-blur-sm {
-                backdrop-filter: blur(5px);
-            }
-        }
+    {{-- Modal Styles --}}
+    @vite(['resources/css/partials/lead-modal.css'])
 
-        [x-cloak] { display: none !important; }
-    </style>
-
+    {{-- Page Specific Styles --}}
     @stack('styles')
-
 </head>
 
 <body>
-
+{{-- Header --}}
 @include('partials.header')
 
+{{-- Main Content --}}
 <main>
     @yield('content')
 </main>
 
+{{-- Footer --}}
 @include('partials.footer')
 
-{{-- Alpine.js --}}
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{{-- Core Scripts --}}
+@include('layouts.partials.core-scripts')
 
-{{-- Скрипт для скрытия хедера при скролле --}}
-<script>
-    let lastScrollTop = 0;
-    const header = document.querySelector('header');
-    const scrollThreshold = 100;
+{{-- Lead Modal --}}
+@include('partials.lead-modal.index')
+@vite(['resources/js/partials/lead-modal.js'])
 
-    window.addEventListener('scroll', function() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-            header.style.transform = 'translateY(-100%)';
-            header.style.transition = 'transform 0.3s ease';
-        } else {
-            header.style.transform = 'translateY(0)';
-        }
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    });
-</script>
-@include('partials.lead-modal')
+{{-- Page Specific Scripts --}}
 @stack('scripts')
 </body>
 </html>

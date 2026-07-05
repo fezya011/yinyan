@@ -180,13 +180,14 @@ class Product extends Model
     /**
      * Получить маржинальность (%)
      */
-    public function getMarginPercent(): ?float
+    public function getMarginPercent()
     {
-        if (!$this->cost_price || !$this->wholesale_price || $this->cost_price == 0) {
+        if (!$this->wholesale_price || !$this->retail_price) {
             return null;
         }
 
-        return round((($this->wholesale_price - $this->cost_price) / $this->cost_price) * 100, 2);
+        // (цена - себестоимость) / цена * 100
+        return round(($this->retail_price - $this->wholesale_price) / $this->retail_price * 100, 2);
     }
 
     /**

@@ -1,0 +1,347 @@
+/* ===== МОДАЛЬНОЕ ОКНО ===== */
+.lead-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s ease, visibility .35s ease;
+    font-family: 'Inter', sans-serif;
+}
+.lead-modal.is-open {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+.lead-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.lead-modal__container {
+    position: relative;
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px 40px 32px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    transform: translateY(20px) scale(0.98);
+    transition: transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lead-modal.is-open .lead-modal__container {
+    transform: translateY(0) scale(1);
+}
+
+/* ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ НА ФОНЕ ===== */
+.lead-modal__bg-hanzi {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Noto Serif SC', 'SimSun', serif;
+    font-weight: 900;
+    color: #1A1A1A;
+    opacity: 0.035;
+    z-index: 0;
+    line-height: 1;
+    animation: hanziDrift 20s ease-in-out infinite alternate;
+}
+
+.lead-modal__bg-hanzi:nth-child(1) { animation-delay: 0s; }
+.lead-modal__bg-hanzi:nth-child(2) { animation-delay: 3s; }
+.lead-modal__bg-hanzi:nth-child(3) { animation-delay: 6s; }
+.lead-modal__bg-hanzi:nth-child(4) { animation-delay: 9s; }
+.lead-modal__bg-hanzi:nth-child(5) { animation-delay: 12s; }
+
+.lead-modal__body,
+.lead-modal__success {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== ЗАКРЫТИЕ ===== */
+.lead-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: rgba(26, 26, 26, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color .25s ease, transform .25s ease;
+    z-index: 2;
+}
+.lead-modal__close:hover {
+    color: #1A1A1A;
+    transform: rotate(90deg);
+}
+
+/* ===== ЗАГОЛОВОК ===== */
+.lead-modal__head {
+    margin-bottom: 24px;
+}
+.lead-modal__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.4);
+    font-weight: 500;
+    margin-bottom: 14px;
+}
+.lead-modal__badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #10B981;
+    animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.8); }
+}
+.lead-modal__title {
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+.lead-modal__desc {
+    font-size: 13px;
+    color: rgba(26, 26, 26, 0.5);
+    line-height: 1.6;
+    max-width: 440px;
+}
+
+/* ===== ФОРМА ===== */
+.lead-modal__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+@media (max-width: 520px) {
+    .lead-modal__container { padding: 28px 20px 24px; }
+    .lead-modal__grid { grid-template-columns: 1fr; }
+}
+
+.lead-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.lead-field--full { grid-column: 1 / -1; }
+.lead-field__label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.45);
+    font-weight: 600;
+}
+.lead-field__label .req { color: #FF6B00; }
+.lead-field__input,
+.lead-field__select,
+.lead-field__textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: #FAFAFA;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1A1A1A;
+    transition: border-color .25s ease, background .25s ease;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.lead-field__select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231A1A1A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+.lead-field__textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+.lead-field__input:focus,
+.lead-field__select:focus,
+.lead-field__textarea:focus {
+    border-color: #1A1A1A;
+    background: #FFFFFF;
+}
+.lead-field.is-invalid .lead-field__input,
+.lead-field.is-invalid .lead-field__textarea {
+    border-color: #EF4444;
+    background: #FEF2F2;
+}
+.lead-field__error {
+    font-size: 11px;
+    color: #EF4444;
+    min-height: 14px;
+    display: block;
+}
+
+/* ===== АВТОДОПОЛНЕНИЕ ГОРОДА ===== */
+.lead-field--city {
+    position: relative;
+}
+.lead-field__city-wrapper {
+    position: relative;
+}
+.lead-field__city-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.lead-field__city-suggestions.active {
+    display: block;
+}
+.lead-field__city-suggestion {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #1A1A1A;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.lead-field__city-suggestion:hover {
+    background: rgba(26, 26, 26, 0.04);
+}
+.lead-field__city-suggestion.highlighted {
+    background: rgba(26, 26, 26, 0.06);
+}
+.lead-field__city-suggestions::-webkit-scrollbar {
+    width: 4px;
+}
+.lead-field__city-suggestions::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+.lead-field__city-suggestions::-webkit-scrollbar-thumb {
+    background: rgba(26, 26, 26, 0.12);
+    border-radius: 2px;
+}
+
+/* Согласие */
+.lead-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 11px;
+    color: rgba(26, 26, 26, 0.5);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    cursor: pointer;
+}
+.lead-consent a {
+    color: #1A1A1A;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.lead-consent__checkbox {
+    margin-top: 2px;
+    accent-color: #1A1A1A;
+}
+
+/* Кнопка */
+.lead-modal__submit {
+    width: 100%;
+    padding: 16px 24px;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background .3s ease, transform .2s ease;
+}
+.lead-modal__submit:hover:not(:disabled) {
+    background: #000000;
+    transform: translateY(-1px);
+}
+.lead-modal__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Ошибки */
+.lead-modal__error {
+    padding: 10px 14px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #991B1B;
+    font-size: 12px;
+    margin-bottom: 14px;
+    border-radius: 2px;
+}
+
+/* Успех */
+.lead-modal__success {
+    text-align: center;
+    padding: 20px 0;
+}
+.lead-modal__success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #ECFDF5;
+    color: #10B981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+.lead-modal__success-title {
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    color: #1A1A1A;
+    margin-bottom: 8px;
+}
+.lead-modal__success-desc {
+    font-size: 13px;
+    color: rgba(26, 26, 26, 0.5);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.lead-modal-open {
+    overflow: hidden;
+}
