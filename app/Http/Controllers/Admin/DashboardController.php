@@ -4,45 +4,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Lead;
-use App\Models\Product;
+use App\Services\Admin\DashboardService;
 use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        private readonly DashboardService $dashboardService
+    ) {}
+
     public function index()
     {
-        // Проверяем через Gate
         Gate::forUser(auth('admin')->user())->authorize('admin');
 
-        $stats = [
-            'total_products' => Product::count(),
-            'active_products' => Product::active()->count(),
-            'total_categories' => Category::count(),
-            'new_leads' => Lead::new()->count(),
-            'active_leads' => Lead::active()->count(),
-            'won_leads' => Lead::won()->count(),
-            'today_leads' => Lead::today()->count(),
-            'this_month_leads' => Lead::thisMonth()->count(),
-        ];
+        $stats = $this->dashboardService->getStats();
+        $recentLeads = $this->dashboardService->getRecentLeads(10);
+        $recentProducts = $this->dashboardService->getRecentProducts(5);
+        $topProducts = $this->dashboardService->getTopProducts(5);
 
-        $recentLeads = Lead::with('product')
-            ->latest()
-            ->take(10)
-            ->get();
-
-        $recentProducts = Product::with('category')
-            ->latest()
-            ->take(5)
-            ->get();
-
-        $topProducts = Product::with('category')
-            ->orderByDesc('orders_count')
-            ->take(5)
-            ->get();
-
-        return view('admin.dashboard', compact(
+        return view('admin.dashboard.dashboard', compact(
             'stats',
             'recentLeads',
             'recentProducts',

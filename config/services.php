@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'yandex' => [
+        'maps_api_key' => env('YANDEX_MAPS_API_KEY'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

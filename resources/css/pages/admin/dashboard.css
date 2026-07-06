@@ -1,0 +1,351 @@
+/* resources/css/admin/dashboard.css */
+
+:root {
+    --admin-accent-r: 26;
+    --admin-accent-g: 26;
+    --admin-accent-b: 26;
+}
+
+/* ===== ДЕКОРАТИВНЫЕ ИЕРОГЛИФЫ ===== */
+.hanzi-decor {
+    position: fixed;
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Noto Serif SC', 'SimSun', serif;
+    font-weight: 900;
+    color: rgb(var(--admin-accent-r), var(--admin-accent-g), var(--admin-accent-b));
+    line-height: 1;
+    z-index: 0;
+    transition: opacity 1.2s ease;
+}
+.hanzi-decor.xl { font-size: 140px; }
+.hanzi-decor.lg { font-size: 100px; }
+.hanzi-decor.md { font-size: 70px; }
+.hanzi-decor.sm { font-size: 45px; }
+.hanzi-decor.xs { font-size: 28px; }
+.hanzi-decor.rotate-10 { transform: rotate(10deg); }
+.hanzi-decor.rotate-n8 { transform: rotate(-8deg); }
+.hanzi-decor { opacity: 0.04 !important; }
+
+@media (max-width: 768px) {
+    .hanzi-decor.xl { font-size: 100px; opacity: 0.03 !important; }
+    .hanzi-decor.lg { font-size: 70px; opacity: 0.025 !important; }
+    .hanzi-decor.md { font-size: 50px; opacity: 0.02 !important; }
+    .hanzi-decor.sm { font-size: 35px; opacity: 0.015 !important; }
+    .hanzi-decor.xs { font-size: 22px; opacity: 0.01 !important; }
+}
+
+/* ===== КАРТОЧКИ СТАТИСТИКИ ===== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(26, 26, 26, 0.04);
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 1024px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .stat-grid { grid-template-columns: 1fr; } }
+
+.stat-card {
+    position: relative;
+    padding: 28px 24px;
+    background: #FFFFFF;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #1A1A1A;
+    overflow: hidden;
+    min-height: 140px;
+    transition: background 0.35s ease;
+}
+
+.stat-card:hover {
+    background: #FAFAFA;
+}
+
+.stat-card .stat-index {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    color: rgba(26, 26, 26, 0.03);
+    line-height: 1;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    transition: color 0.35s ease;
+}
+
+.stat-card:hover .stat-index {
+    color: rgba(26, 26, 26, 0.06);
+}
+
+.stat-card .stat-value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 38px;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    color: #1A1A1A;
+    margin-bottom: 6px;
+}
+
+.stat-card .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.35);
+    margin-top: auto;
+}
+
+/* ===== БЫСТРЫЕ ДЕЙСТВИЯ ===== */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(26, 26, 26, 0.04);
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) { .actions-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .actions-grid { grid-template-columns: 1fr; } }
+
+.action-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: #FFFFFF;
+    text-decoration: none;
+    color: #1A1A1A;
+    transition: background 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card:hover {
+    background: #FAFAFA;
+}
+
+.action-card .action-index {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    color: rgba(26, 26, 26, 0.02);
+    line-height: 1;
+    pointer-events: none;
+    transition: color 0.35s ease;
+}
+
+.action-card:hover .action-index {
+    color: rgba(26, 26, 26, 0.06);
+}
+
+.action-card .action-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: -0.2px;
+    color: #1A1A1A;
+    margin-bottom: 4px;
+}
+
+.action-card .action-desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: rgba(26, 26, 26, 0.4);
+    line-height: 1.4;
+}
+
+/* ===== ТАБЛИЦЫ ===== */
+.table-container {
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 26, 26, 0.06);
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+    background: #FFFFFF;
+}
+
+.table-header .title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1A1A1A;
+}
+
+.table-header .actions a {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.4);
+    text-decoration: none;
+    margin-left: 18px;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+}
+
+.table-header .actions a:hover {
+    color: #1A1A1A;
+    border-bottom-color: #1A1A1A;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.3);
+    text-align: left;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.04);
+    background: #FAFAFA;
+}
+
+td {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.03);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #1A1A1A;
+    font-weight: 500;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(26, 26, 26, 0.01); }
+
+.text-muted {
+    color: rgba(26, 26, 26, 0.4) !important;
+    font-weight: 400 !important;
+}
+
+/* ===== СТАТУСЫ ===== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 0;
+    color: #1A1A1A;
+}
+
+.status-badge .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #1A1A1A;
+}
+
+.status-badge.new .dot { background: #1A1A1A; }
+.status-badge.processing .dot { background: #555555; }
+.status-badge.completed .dot,
+.status-badge.won .dot { background: #1A1A1A; }
+.status-badge.cancelled .dot,
+.status-badge.lost .dot { background: #AAAAAA; }
+
+/* ===== МИНИ-СТАТИСТИКА ===== */
+.mini-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(26, 26, 26, 0.04);
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) { .mini-stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .mini-stat-grid { grid-template-columns: 1fr; } }
+
+.mini-stat {
+    padding: 20px;
+    background: #FFFFFF;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.mini-stat:hover {
+    background: #FAFAFA;
+}
+
+.mini-stat .value {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    color: #1A1A1A;
+}
+
+.mini-stat .label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.35);
+    margin-top: 4px;
+}
+
+/* ===== ПУСТЫЕ СОСТОЯНИЯ ===== */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: rgba(26, 26, 26, 0.15);
+}
+
+.empty-state .empty-icon {
+    font-family: 'Noto Serif SC', 'SimSun', serif;
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    opacity: 0.3;
+}
+
+.empty-state .empty-text {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .hanzi-decor { display: none !important; }
+}

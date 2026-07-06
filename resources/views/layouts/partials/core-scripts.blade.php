@@ -5,10 +5,8 @@
 {{-- Header Hide/Show Script --}}
 @include('layouts.partials.header-script')
 
-{{-- Vite assets (если используете) --}}
-@if(config('app.env') === 'production' || config('app.env') === 'local')
-    @vite(['resources/js/app.js'])
-@endif
+{{-- Vite assets (только JS) --}}
+@vite(['resources/js/app.js'])
 
 {{-- Инициализация глобальных объектов --}}
 <script>

@@ -1,4 +1,3 @@
-// ===== ИНИЦИАЛИЗАЦИЯ AOS =====
 AOS.init({
     duration: 600,
     once: true,
@@ -6,7 +5,6 @@ AOS.init({
     easing: 'ease-out'
 });
 
-// ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ БЕГУЩЕЙ СТРОКИ =====
 const marqueeChars = ['信', '誉', '第', '一', '品', '质', '为', '本', '诚', '信', '合', '作', '共', '赢', '未', '来', '中', '俄', '贸', '易', '直', '接', '进', '口'];
 
 function updateMarqueeColors() {
@@ -37,7 +35,6 @@ function updateMarqueeColors() {
 
 updateMarqueeColors();
 
-// ===== ОБРАТНАЯ БЕГУЩАЯ СТРОКА (СПРАВА НАЛЕВО) =====
 function updateReverseMarqueeColors() {
     const track = document.getElementById('marqueeTrackReverse');
     if (!track) return;
@@ -66,9 +63,7 @@ function updateReverseMarqueeColors() {
 
 updateReverseMarqueeColors();
 
-// ===== ВЕРТИКАЛЬНЫЕ БЕГУЩИЕ СТРОКИ =====
 function updateVerticalMarqueeColors() {
-    // Левая вертикальная строка
     const leftTrack = document.getElementById('marqueeVerticalLeft');
     if (leftTrack) {
         const chars = ['信', '誉', '品', '质', '诚', '信', '合', '作', '共', '赢', '中', '俄', '贸', '易'];
@@ -76,14 +71,12 @@ function updateVerticalMarqueeColors() {
         chars.forEach(char => {
             html += `<span class="marquee-vertical-char">${char}</span>`;
         });
-        // Дублируем для бесконечности
         chars.forEach(char => {
             html += `<span class="marquee-vertical-char">${char}</span>`;
         });
         leftTrack.innerHTML = html;
     }
 
-    // Правая вертикальная строка
     const rightTrack = document.getElementById('marqueeVerticalRight');
     if (rightTrack) {
         const chars = ['福', '祥', '安', '康', '乐', '喜', '寿', '财', '和', '顺', '吉', '庆', '瑞', '宁'];
@@ -91,7 +84,6 @@ function updateVerticalMarqueeColors() {
         chars.forEach(char => {
             html += `<span class="marquee-vertical-char">${char}</span>`;
         });
-        // Дублируем для бесконечности
         chars.forEach(char => {
             html += `<span class="marquee-vertical-char">${char}</span>`;
         });
@@ -101,7 +93,6 @@ function updateVerticalMarqueeColors() {
 
 updateVerticalMarqueeColors();
 
-// ===== ИНИЦИАЛИЗАЦИЯ КАРТЫ =====
 const mapContainer = document.getElementById('map');
 if (mapContainer) {
     const mapObserver = new IntersectionObserver((entries) => {
@@ -126,7 +117,6 @@ if (mapContainer) {
                         })
                     );
 
-                    // Создаем серию полигонов (страны)
                     var polygonSeries = chart.series.push(
                         am5map.MapPolygonSeries.new(root, {
                             geoJSON: am5geodata_worldLow,
@@ -141,7 +131,6 @@ if (mapContainer) {
                         tooltipText: "{name}"
                     });
 
-                    // Подсветка России и Китая
                     polygonSeries.mapPolygons.template.adapters.add("fill", function(fill, target) {
                         if (target.dataItem.get("id") === "RU") {
                             return am5.color(0xeeeeee);
@@ -152,12 +141,10 @@ if (mapContainer) {
                         return fill;
                     });
 
-                    // Добавляем точки (города)
                     var pointSeries = chart.series.push(
                         am5map.MapPointSeries.new(root, {})
                     );
 
-                    // Города Китая
                     var beijing = pointSeries.pushDataItem({
                         geometry: { type: "Point", coordinates: [116.4074, 39.9042] },
                         name: "Пекин",
@@ -176,14 +163,12 @@ if (mapContainer) {
                         type: "china"
                     });
 
-                    // Хаб во Владивостоке
                     var vladivostok = pointSeries.pushDataItem({
                         geometry: { type: "Point", coordinates: [131.8856, 43.1056] },
                         name: "Владивосток (Артём)",
                         type: "hub"
                     });
 
-                    // Города России
                     var moscow = pointSeries.pushDataItem({
                         geometry: { type: "Point", coordinates: [37.6173, 55.7558] },
                         name: "Москва",
@@ -208,7 +193,6 @@ if (mapContainer) {
                         type: "russia"
                     });
 
-                    // Стили для точек с подписями
                     pointSeries.bullets.push(function(root, series, dataItem) {
                         if (!dataItem || !dataItem.dataContext) {
                             return am5.Bullet.new(root, {
@@ -256,12 +240,10 @@ if (mapContainer) {
                         });
                     });
 
-                    // Добавляем линии маршрутов
                     var lineSeries = chart.series.push(
                         am5map.MapLineSeries.new(root, {})
                     );
 
-                    // Линии из Китая во Владивосток (импорт)
                     var chinaCities = [beijing, shanghai, guangzhou];
 
                     chinaCities.forEach(function(city) {
@@ -274,7 +256,6 @@ if (mapContainer) {
                         });
                     });
 
-                    // Линии из Владивостока в города России (доставка)
                     var russiaCities = [moscow, spb, novosibirsk, ekaterinburg];
 
                     russiaCities.forEach(function(city) {
@@ -287,13 +268,11 @@ if (mapContainer) {
                         });
                     });
 
-                    // Анимация появления линий
                     lineSeries.mapLines.template.setAll({
                         animationDuration: 2000,
                         animationEasing: am5.ease.out(am5.ease.cubic)
                     });
 
-                    // ВАЖНО: Устанавливаем зум ПОСЛЕ создания всех слоёв
                     setTimeout(function() {
                         chart.zoomToGeoPoint(
                             { longitude: 90, latitude: 55 },
@@ -311,7 +290,6 @@ if (mapContainer) {
     mapObserver.observe(mapContainer);
 }
 
-// ===== АНИМАЦИЯ СТАТИСТИКИ =====
 (function() {
     const statItems = document.querySelectorAll('.stat-item');
     let animated = false;
@@ -352,7 +330,6 @@ if (mapContainer) {
     if (statItems.length) observer.observe(statItems[0]);
 })();
 
-// ===== КАРУСЕЛЬ НА HERO С ПЛАВНЫМИ ПЕРЕХОДАМИ =====
 (function() {
     const track = document.getElementById('carouselTrack');
     const slides = document.querySelectorAll('.carousel-slide');
@@ -393,7 +370,6 @@ if (mapContainer) {
             }, 50);
         }
 
-        // Обновляем цвета для всех бегущих строк
         document.querySelectorAll('.hanzi-decor, .marquee-char, .marquee-separator, .marquee-vertical-char').forEach(el => {
             el.style.color = `rgb(${r}, ${g}, ${b})`;
         });
@@ -506,7 +482,6 @@ if (mapContainer) {
     });
 })();
 
-// ===== ПЛАВНЫЙ СКРОЛЛ =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         const targetId = this.getAttribute('href');
@@ -523,5 +498,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-
-console.log('✅ Home page initialized');

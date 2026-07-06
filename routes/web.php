@@ -30,6 +30,8 @@ Route::get('/search', SearchController::class)->name('search');
 // Статические страницы
 Route::view('/privacy', 'pages.static.privacy')->name('privacy');
 Route::view('/about', 'pages.static.about')->name('about');
+Route::view('/contacts', 'pages.contacts.contacts')->name('contacts');
+
 
 // Заявки
 Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');

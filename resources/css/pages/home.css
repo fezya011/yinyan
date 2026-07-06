@@ -41,8 +41,8 @@ body {
     color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
     line-height: 1;
     z-index: 0;
-    transition: color 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;,
-opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
 }
 
 .hanzi-decor.xl { font-size: 140px; }
@@ -868,8 +868,8 @@ opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
     opacity: 0.15;
     letter-spacing: 6px;
-    transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;,
-opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
     will-change: color;
 }
 

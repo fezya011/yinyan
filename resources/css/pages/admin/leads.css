@@ -1,0 +1,197 @@
+/* resources/css/admin/leads.css */
+
+/* ===== СТАТУСЫ ===== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: #F5F5F5;
+    color: #1A1A1A;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.status-badge .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-badge.active {
+    border: 2px solid #0f172a;
+    background: #F5F5F5;
+}
+
+/* Статусы заявок */
+.status-badge.new .dot { background: #3B82F6; }
+.status-badge.contacted .dot { background: #8B5CF6; }
+.status-badge.qualified .dot { background: #F59E0B; }
+.status-badge.proposal_sent .dot { background: #EC4899; }
+.status-badge.negotiation .dot { background: #F97316; }
+.status-badge.won .dot { background: #10B981; }
+.status-badge.lost .dot { background: #EF4444; }
+.status-badge.spam .dot { background: #6B7280; }
+
+.status-badge.new { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+.status-badge.contacted { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; }
+.status-badge.qualified { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+.status-badge.proposal_sent { background: rgba(236, 72, 153, 0.1); color: #EC4899; }
+.status-badge.negotiation { background: rgba(249, 115, 22, 0.1); color: #F97316; }
+.status-badge.won { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+.status-badge.lost { background: rgba(239, 68, 68, 0.1); color: #EF4444; }
+.status-badge.spam { background: rgba(107, 114, 128, 0.1); color: #6B7280; }
+
+/* ===== ФИЛЬТРЫ ===== */
+.leads-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.leads-filters .filter-group {
+    flex: 1;
+    min-width: 180px;
+}
+
+.leads-filters .filter-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ===== СТАТИСТИКА ===== */
+.leads-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.leads-stats .stat-item {
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    background: #F5F5F5;
+    color: #1A1A1A;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.leads-stats .stat-item:hover {
+    background: #E5E5E5;
+}
+
+.leads-stats .stat-item.active {
+    background: #1A1A1A;
+    color: #FFFFFF;
+}
+
+.leads-stats .stat-item .count {
+    font-weight: 700;
+    margin-left: 4px;
+}
+
+/* ===== КАРТОЧКА ЗАЯВКИ ===== */
+.lead-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.lead-info-grid .field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lead-info-grid .field .label {
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lead-info-grid .field .value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A1A1A;
+}
+
+.lead-info-grid .field-full {
+    grid-column: 1 / -1;
+}
+
+.lead-message {
+    padding: 12px 16px;
+    background: #FAFAFA;
+    border-radius: 8px;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1A1A1A;
+}
+
+/* ===== ЭКСПОРТ ===== */
+.export-info {
+    background: #FFFFFF;
+    padding: 24px;
+    border: 1px solid rgba(26, 26, 26, 0.06);
+}
+
+.export-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.export-info ul li {
+    padding: 4px 0;
+    font-size: 13px;
+    color: #777;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+    .lead-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .leads-filters {
+        flex-direction: column;
+    }
+
+    .leads-filters .filter-group {
+        min-width: 100%;
+    }
+
+    .leads-filters .filter-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .leads-filters .filter-actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .table-container table th,
+    .table-container table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .table-container table .hide-mobile {
+        display: none;
+    }
+}

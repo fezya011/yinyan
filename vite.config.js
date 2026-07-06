@@ -1,6 +1,7 @@
 // vite.config.js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
@@ -14,6 +15,11 @@ export default defineConfig({
                 'resources/css/pages/catalog.css',
                 'resources/css/pages/product.css',
 
+                'resources/css/pages/admin/layout.css',
+                'resources/css/pages/admin/leads.css',
+                'resources/css/pages/admin/login.css',
+                'resources/css/pages/admin/categories/form.css',
+                'resources/css/pages/admin/categories/index.css',
 
                 // JS для страниц
                 'resources/js/pages/home.js',
@@ -32,6 +38,7 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        tailwindcss(),
     ],
     server: {
         host: '0.0.0.0',

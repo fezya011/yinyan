@@ -7,19 +7,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Category\StoreCategoryRequest;
 use App\Http\Requests\Admin\Category\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\Admin\CategoryService;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        private readonly CategoryService $categoryService
+    ) {}
+
     public function index()
     {
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
-        $categories = Category::withCount('products')
-            ->sorted()
-            ->paginate(20);
+        $categories = $this->categoryService->getAllPaginated(20);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -36,9 +37,7 @@ class CategoryController extends Controller
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
         $data = $request->validated();
-        $data['slug'] = $data['slug'] ?? Str::slug($data['name']);
-
-        $category = Category::create($data);
+        $category = $this->categoryService->create($data);
 
         return redirect()
             ->route('admin.categories.index')
@@ -49,6 +48,8 @@ class CategoryController extends Controller
     {
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
+        $category->loadCount('products');
+
         return view('admin.categories.edit', compact('category'));
     }
 
@@ -57,7 +58,7 @@ class CategoryController extends Controller
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
         $data = $request->validated();
-        $category->update($data);
+        $this->categoryService->update($category, $data);
 
         return redirect()
             ->route('admin.categories.index')
@@ -69,10 +70,12 @@ class CategoryController extends Controller
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
         if ($category->products()->count() > 0) {
-            return back()->with('error', 'Нельзя удалить категорию с товарами');
+            return redirect()
+                ->route('admin.categories.index')
+                ->with('error', 'Нельзя удалить категорию с товарами');
         }
 
-        $category->delete();
+        $this->categoryService->delete($category);
 
         return redirect()
             ->route('admin.categories.index')
@@ -83,10 +86,11 @@ class CategoryController extends Controller
     {
         Gate::forUser(auth('admin')->user())->authorize('manage-categories');
 
-        $category->update(['is_active' => !$category->is_active]);
+        $status = $this->categoryService->toggleStatus($category);
+        $statusText = $status ? 'активирована' : 'деактивирована';
 
-        $status = $category->is_active ? 'активирована' : 'деактивирована';
-
-        return back()->with('success', "Категория {$status}");
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', "Категория {$statusText}");
     }
 }
