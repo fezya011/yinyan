@@ -24,8 +24,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # Укажи версии PHP, которые поддерживает твой проект
-        php: [8.3]
+        php: [8.4]  # 👈 Только PHP 8.4 для Laravel 13
 
     name: PHP ${{ matrix.php }}
 
