@@ -9,7 +9,8 @@ class LeadService
     public function create(array $data): Lead
     {
         // Обработка interested_products
-        if (isset($data['interested_products']) && is_array($data['interested_products'])) {
+        // Используем !empty(), чтобы пустой массив [] тоже превращался в null
+        if (!empty($data['interested_products'])) {
             $data['interested_products'] = array_map('intval', $data['interested_products']);
         } else {
             $data['interested_products'] = null;

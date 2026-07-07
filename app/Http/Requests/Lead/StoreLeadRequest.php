@@ -24,6 +24,7 @@ class StoreLeadRequest extends FormRequest
             'interested_products.*' => ['integer', 'exists:products,id'],
             'product_id'          => ['nullable', 'integer', 'exists:products,id'],
             'g_recaptcha_response' => ['nullable', 'string'], // если подключишь reCAPTCHA
+            'agree'               => ['required', 'accepted'],
         ];
     }
 

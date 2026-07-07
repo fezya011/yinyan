@@ -4,10 +4,15 @@ on:
   push:
     branches:
       - master
+      - main
       - '*.x'
   pull_request:
+    branches:
+      - master
+      - main
+      - '*.x'
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *' # Ежедневно в полночь для проверки актуальности зависимостей
 
 permissions:
   contents: read
@@ -19,29 +24,51 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3, 8.4, 8.5]
+        php: [8.2, 8.3, 8.4]
+        # Если хотите тестировать только на одной версии для скорости, оставьте только актуальную, например 8.3
 
     name: PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, bcmath
           coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --no-suggest
 
       - name: Copy environment file
         run: cp .env.example .env
 
       - name: Generate app key
         run: php artisan key:generate
+
+      - name: Create database directory (if needed for sqlite file)
+        run: touch database/database.sqlite
+        # Примечание: Если вы используете :memory: в phpunit.xml, этот шаг можно пропустить,
+        # но он полезен если миграции требуют реального файла.
+
+      - name: Run migrations
+        # Используем force, так как это CI окружение
+        run: php artisan migrate --force
+
+        # Опционально: Если вы используете seeders для тестов, раскомментируйте следующую строку
+        # run: php artisan db:seed --force
 
       - name: Execute tests
         run: php artisan test
