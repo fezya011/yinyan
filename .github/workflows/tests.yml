@@ -70,5 +70,16 @@ jobs:
           php -v
           php artisan --version
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+            node-version: '20'
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Build assets with Vite
+        run: npm run build
+
       - name: Execute tests
         run: php artisan test  # Убрал --verbose
