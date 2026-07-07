@@ -18,14 +18,6 @@
         </div>
     </div>
 
-    <div class="flex-between">
-        <div class="checkbox-wrap">
-            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-            <label for="remember">Запомнить меня</label>
-        </div>
-        <a href="#" class="forgot-link">Забыли пароль?</a>
-    </div>
-
     <button type="submit" class="btn-submit">
         <i class="fas fa-sign-in-alt"></i>
         Войти

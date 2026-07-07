@@ -1,4 +1,4 @@
-{{-- admin/layouts/partials/sidebar.blade.php --}}
+{{-- resources/views/admin/layouts/partials/sidebar.blade.php --}}
 <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-brand">
         <a href="{{ route('admin.dashboard') }}">
@@ -44,9 +44,10 @@
         </a>
 
         <div class="nav-label">Система</div>
-        <a href="#" class="sidebar-link">
+        <a href="{{ route('admin.settings.notifications') }}" class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
             <span class="icon"><i class="fas fa-gear"></i></span>
             Настройки
+            <span class="badge" style="background: #3b82f6; color: white;">{{ \App\Models\NotificationEmail::active()->count() }}</span>
         </a>
         <form action="{{ route('admin.logout') }}" method="POST" style="margin-top: 12px;">
             @csrf

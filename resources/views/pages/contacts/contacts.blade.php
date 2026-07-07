@@ -17,26 +17,28 @@
         {{-- Бегущая строка --}}
         @include('pages.contacts.partials.marquee')
 
+        {{-- Хлебные крошки --}}
+        @include('pages.catalog.partials.breadcrumbs')
+
         {{-- Hero секция --}}
         @include('pages.contacts.partials.hero')
 
         {{-- Информация --}}
         @include('pages.contacts.partials.info')
 
-        {{-- Карта --}}
-        @include('pages.contacts.partials.map')
-
-        {{-- FAQ --}}
-        @include('pages.contacts.partials.faq')
-
     </div>
 @endsection
 
 @push('scripts')
-    <script>
-        window.YANDEX_API_KEY = '{{ config('services.yandex.maps_api_key') }}';
-    </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU" type="text/javascript"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+        });
+    </script>
     @vite(['resources/js/pages/contacts.js'])
 @endpush

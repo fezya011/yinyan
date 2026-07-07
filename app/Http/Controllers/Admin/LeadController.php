@@ -9,6 +9,8 @@ use App\Models\Lead;
 use App\Services\Admin\LeadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Exports\LeadsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LeadController extends Controller
 {
@@ -73,49 +75,14 @@ class LeadController extends Controller
     {
         Gate::forUser(auth('admin')->user())->authorize('manage-leads');
 
-        $leads = $this->leadService->getLeadsForExport($request);
+        // Получаем параметры фильтрации
+        $status = $request->input('status');
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
 
-        $filename = 'leads_' . date('Y-m-d') . '.csv';
-        $handle = fopen('php://temp', 'w');
-
-        // BOM для Excel
-        fwrite($handle, "\xEF\xBB\xBF");
-
-        fputcsv($handle, [
-            'ID',
-            'Имя',
-            'Телефон',
-            'Email',
-            'Сообщение',
-            'Товар',
-            'Бюджет',
-            'Город',
-            'Статус',
-            'Дата создания'
-        ]);
-
-        foreach ($leads as $lead) {
-            fputcsv($handle, [
-                $lead->id,
-                $lead->name,
-                $lead->phone ?? '',
-                $lead->email ?? '',
-                $lead->message ?? '',
-                $lead->product?->name ?? 'Не указан',
-                $lead->estimated_budget ?? 'Не указан',
-                $lead->delivery_city ?? 'Не указан',
-                Lead::getStatuses()[$lead->status] ?? $lead->status,
-                $lead->created_at->format('d.m.Y H:i'),
-            ]);
-        }
-
-        rewind($handle);
-        $csv = stream_get_contents($handle);
-        fclose($handle);
-
-        return response($csv, 200, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => "attachment; filename={$filename}",
-        ]);
+        return Excel::download(
+            new LeadsExport($status, $dateFrom, $dateTo),
+            'leads_' . date('Y-m-d') . '.xlsx'
+        );
     }
 }

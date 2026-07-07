@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Admin\NotificationSettingsController as AdminNotificationSettingsController;
 use App\Http\Controllers\Web\CatalogController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\ProductController;
@@ -35,6 +36,9 @@ Route::view('/contacts', 'pages.contacts.contacts')->name('contacts');
 
 // Заявки
 Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');
+Route::get('/lead', function () {
+    abort(404);
+});
 Route::get('/cities', [LeadCityController::class, 'index'])->name('cities');
 
 // ===== АДМИНКА =====
@@ -71,6 +75,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('leads/{lead}', [AdminLeadController::class, 'show'])->name('leads.show');
         Route::put('leads/{lead}/status', [AdminLeadController::class, 'updateStatus'])->name('leads.update-status');
         Route::delete('leads/{lead}', [AdminLeadController::class, 'destroy'])->name('leads.destroy');
+
+        // Настройки уведомлений
+        Route::get('settings/notifications', [AdminNotificationSettingsController::class, 'index'])->name('settings.notifications');
+        Route::post('settings/notifications', [AdminNotificationSettingsController::class, 'store'])->name('settings.notifications.store');
+        Route::post('settings/notifications/{notificationEmail}/toggle', [AdminNotificationSettingsController::class, 'toggleStatus'])->name('settings.notifications.toggle');
+        Route::delete('settings/notifications/{notificationEmail}', [AdminNotificationSettingsController::class, 'destroy'])->name('settings.notifications.destroy');
     });
 });
 

@@ -15,7 +15,7 @@
 
             {{-- Навигация --}}
             <nav class="relative flex flex-col gap-1">
-                <a href="#why" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
+                <a href="{{ route('about') }}" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
                     <div class="flex items-center gap-4">
                         <span class="text-[28px] sm:text-[36px] font-light text-black/40 group-hover:text-black transition-colors duration-300">О нас</span>
                         <span class="text-lg font-black opacity-10 group-hover:opacity-25 transition-all duration-300 menu-hanzi"
@@ -37,7 +37,7 @@
 
                 <div class="h-px bg-gradient-to-r from-transparent via-black/[0.04] to-transparent mx-4"></div>
 
-                <a href="#contacts" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
+                <a href="{{ route('contacts') }}" class="mobile-menu-link group relative flex items-center justify-between px-4 py-6 rounded-2xl hover:bg-black/[0.02] transition-all duration-300">
                     <div class="flex items-center gap-4">
                         <span class="text-[28px] sm:text-[36px] font-light text-black/40 group-hover:text-black transition-colors duration-300">Контакты</span>
                         <span class="text-lg font-black opacity-10 group-hover:opacity-25 transition-all duration-300 menu-hanzi"

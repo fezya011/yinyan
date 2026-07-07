@@ -1,6 +1,86 @@
+/* ========================================
+   СТРАНИЦА КОНТАКТОВ - ВЫРАВНИВАНИЕ КАК НА ГЛАВНОЙ
+   ======================================== */
+
+
 .contacts-wrapper {
     background: #FFFFFF;
     overflow-x: hidden;
+}
+
+/* ===== ХЛЕБНЫЕ КРОШКИ (как в каталоге) ===== */
+.breadcrumbs {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.3);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    padding-left: 12px;
+    margin-top: 30px;
+}
+.breadcrumbs a {
+    color: rgba(26,26,26,0.4);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 500;
+}
+.breadcrumbs a:hover {
+    color: #1A1A1A;
+}
+.breadcrumbs .separator {
+    margin: 0 8px;
+    color: rgba(26,26,26,0.12);
+}
+.breadcrumbs .current {
+    color: rgba(26,26,26,0.5);
+}
+
+/* ===== АДАПТИВ ХЛЕБНЫХ КРОШЕК (как в каталоге) ===== */
+@media (max-width: 1024px) {
+    .breadcrumbs {
+        font-size: 10px;
+        letter-spacing: 2px;
+        padding-left: 3px;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        font-size: 10px;
+        letter-spacing: 2px;
+        padding-left: 6px;
+    }
+
+    .breadcrumbs .separator {
+        margin: 0 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumbs {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        padding-left: 6px;
+    }
+
+    .breadcrumbs .separator {
+        margin: 0 4px;
+    }
+}
+
+@media (max-width: 360px) {
+    .breadcrumbs {
+        font-size: 10px;
+        letter-spacing: 1px;
+        padding-left: 6px;
+    }
+
+    .breadcrumbs .separator {
+        margin: 0 3px;
+    }
 }
 
 .section-with-hanzi {
@@ -11,6 +91,7 @@
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* ===== БЕГУЩАЯ СТРОКА ===== */
 .contacts-marquee {
     background: #FFFFFF;
     overflow: hidden;
@@ -19,6 +100,8 @@
     display: flex;
     align-items: center;
     margin-top: 110px;
+    border-top: none !important;
+    border-bottom: none !important;
 }
 
 .contacts-marquee .marquee-track {
@@ -55,13 +138,15 @@
     100% { transform: translateX(-50%); }
 }
 
+/* ===== HERO СЕКЦИЯ ===== */
 .contacts-hero {
-    padding: 60px 0 80px;
+    padding: 30px 0 80px;
     background: #FFFFFF;
     position: relative;
     overflow: hidden;
 }
 
+/* Декоративный фон, как на главной */
 .contacts-hero::after {
     content: '';
     position: absolute;
@@ -77,8 +162,11 @@
 .contacts-hero-content {
     position: relative;
     z-index: 1;
+    max-width: 1200px;
+    padding: 0 72px;
 }
 
+/* Заголовок как на главной */
 .contacts-hero h1 {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
@@ -86,7 +174,7 @@
     letter-spacing: -2px;
     text-transform: uppercase;
     color: #1A1A1A;
-    line-height: 1;
+    line-height: 0.9;
     margin-bottom: 24px;
 }
 
@@ -95,10 +183,11 @@
     font-size: 16px;
     color: rgba(26, 26, 26, 0.5);
     max-width: 500px;
-    line-height: 1.6;
+    line-height: 1.7;
     font-weight: 400;
 }
 
+/* ===== ИЕРОГЛИФЫ (как на главной) ===== */
 .hanzi-bg {
     position: absolute;
     font-family: 'Noto Serif SC', serif;
@@ -108,8 +197,10 @@
     pointer-events: none;
     user-select: none;
     z-index: 0;
+    transition: color 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
+/* ===== СЕТКА КОНТАКТОВ ===== */
 .modern-grid-section {
     background: #FFFFFF;
     position: relative;
@@ -119,6 +210,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     border-top: 1px solid rgba(26, 26, 26, 0.06);
+    padding: 0 72px;
 }
 
 .grid-item {
@@ -129,17 +221,17 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 40px;
+    padding: 40px; /* Как на главной */
     background: #FFFFFF;
     transition: background-color 0.4s ease;
     overflow: hidden;
-    group: hover;
 }
 
 .grid-item:nth-child(even) {
     border-right: none;
 }
 
+/* Линия при наведении, как на главной */
 .grid-item:hover {
     background: rgba(255, 255, 255, 1);
 }
@@ -208,6 +300,7 @@
     font-weight: 400;
 }
 
+/* Хинт при наведении */
 .grid-hover-hint {
     margin-top: 20px;
     display: flex;
@@ -237,6 +330,7 @@
     font-weight: 600;
 }
 
+/* Иероглиф в ячейке, как на главной */
 .grid-hanzi-bg {
     position: absolute;
     right: 20px;
@@ -258,6 +352,7 @@
     transform: translateY(-50%) scale(1.1) rotate(5deg);
 }
 
+/* ===== КАРТА ===== */
 .map-section {
     padding: 80px 0;
     background: #FAFAFA;
@@ -266,6 +361,8 @@
 
 .map-wrapper {
     position: relative;
+    max-width: 1200px;
+    padding: 0 72px; /* Как на главной */
 }
 
 .map-header {
@@ -284,7 +381,6 @@
 .map-address-card {
     margin-top: -60px;
     margin-left: 40px;
-    margin-right: 40px;
     background: #FFFFFF;
     padding: 30px 40px;
     border: 1px solid rgba(26, 26, 26, 0.06);
@@ -311,28 +407,48 @@
     color: #1A1A1A;
 }
 
+/* ===== АДАПТИВ ===== */
 @media (max-width: 1024px) {
+    .contacts-hero {
+        padding: 20px 0 40px;
+    }
+
+    .contacts-hero-content {
+        padding: 0 48px;
+    }
+
     .modern-grid-container {
         grid-template-columns: repeat(2, 1fr);
+        padding: 0 48px;
     }
+
     .grid-item {
         padding: 30px;
         min-height: 180px;
     }
+
+    .map-wrapper {
+        padding: 0 48px;
+    }
+
     .map-address-card {
         margin-left: 20px;
-        margin-right: 20px;
         padding: 20px 30px;
     }
 }
 
 @media (max-width: 768px) {
     .contacts-hero {
-        padding: 60px 0 40px;
+        padding: 20px 0 40px;
+    }
+
+    .contacts-hero-content {
+        padding: 0 20px;
     }
 
     .modern-grid-container {
         grid-template-columns: 1fr;
+        padding: 0 20px;
     }
 
     .grid-item {
@@ -355,6 +471,14 @@
         right: 10px;
     }
 
+    .map-section {
+        padding: 60px 0;
+    }
+
+    .map-wrapper {
+        padding: 0 20px;
+    }
+
     .map-container {
         height: 350px;
     }
@@ -368,6 +492,25 @@
     }
 }
 
+@media (max-width: 480px) {
+    .modern-grid-container {
+        padding: 20px 0 40px;
+    }
+
+    .grid-item {
+        padding: 24px 16px;
+    }
+
+    .grid-value {
+        font-size: 18px;
+    }
+
+    .grid-hanzi-bg {
+        font-size: 40px;
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
     .contacts-marquee .marquee-track,
     .grid-item::before,
@@ -381,6 +524,7 @@
     }
 }
 
+/* ===== КАРТА ===== */
 .leaflet-control-attribution {
     display: none !important;
 }
