@@ -1,5 +1,5 @@
 {{-- pages/home/partials/stats.blade.php --}}
-<div class="bg-white py-13">
+<div class="bg-white py-14" style="background-color: white !important;">
     <div class="grid grid-cols-2 lg:grid-cols-4 stats-grid section-with-hanzi">
         @php
             $stats = [

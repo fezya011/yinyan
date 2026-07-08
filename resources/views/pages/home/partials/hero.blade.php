@@ -43,8 +43,8 @@
         </div>
 
         <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
-            <a href="#contacts" class="btn-primary">Запросить прайс</a>
-            <a href="#products" class="btn-ghost">Каталог</a>
+            <a href="#" data-lead-modal class="btn-primary">Запросить прайс</a>
+            <a href="{{ route('catalog') }}" class="btn-ghost">Каталог</a>
         </div>
 
         {{-- Иероглифы --}}
