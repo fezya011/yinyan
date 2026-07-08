@@ -13,7 +13,7 @@ use App\Http\Controllers\Web\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Lead\LeadController;
 use App\Http\Controllers\Web\Lead\LeadCityController;
-
+use App\Http\Controllers\Web\SitemapController;
 
 
 // Главная
@@ -30,16 +30,16 @@ Route::get('/search', SearchController::class)->name('search');
 
 // Статические страницы
 Route::view('/privacy', 'pages.static.privacy')->name('privacy');
-Route::view('/about', 'pages.static.about')->name('about');
+Route::view('/about', 'pages.about.about')->name('about');
 Route::view('/contacts', 'pages.contacts.contacts')->name('contacts');
-
 
 // Заявки
 Route::post('/lead', [LeadController::class, 'store'])->name('lead.store');
-Route::get('/lead', function () {
-    abort(404);
-});
+Route::get('/lead', function () { abort(404);});
 Route::get('/cities', [LeadCityController::class, 'index'])->name('cities');
+
+// Sitemap
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // ===== АДМИНКА =====
 Route::prefix('admin')->name('admin.')->group(function () {

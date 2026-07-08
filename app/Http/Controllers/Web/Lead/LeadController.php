@@ -7,9 +7,11 @@ use App\Http\Requests\Lead\StoreLeadRequest;
 use App\Services\LeadService;
 use App\Services\LeadNotificationService;
 use Illuminate\Http\JsonResponse;
+use App\Traits\HasRateLimit;
 
 class LeadController extends Controller
 {
+    use HasRateLimit;
     public function __construct(
         private readonly LeadService $leadService,
         private readonly LeadNotificationService $notificationService
@@ -17,6 +19,15 @@ class LeadController extends Controller
 
     public function store(StoreLeadRequest $request): JsonResponse
     {
+        $limitResponse = $this->checkIpLimit($request);
+        if ($limitResponse) return $limitResponse;
+
+        $limitResponse = $this->checkEmailLimit($request);
+        if ($limitResponse) return $limitResponse;
+
+        $limitResponse = $this->checkPhoneLimit($request);
+        if ($limitResponse) return $limitResponse;
+
         $data = $request->validated();
         $lead = $this->leadService->create($data);
 

@@ -1,2 +1,19 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /admin/
+Disallow: /login
+Disallow: /logout
+Disallow: /register
+Disallow: /password/reset
+Disallow: /password/email
+
+Disallow: /lead
+Disallow: /cities
+Disallow: /search
+
+Disallow: /*?*
+
+Disallow: /product/*?*
+
+Sitemap: https://yinyan.ru/sitemap.xml

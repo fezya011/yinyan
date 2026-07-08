@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class Product extends Model
 {
@@ -101,6 +102,25 @@ class Product extends Model
             if ($product->isDirty('name') && empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
             }
+        });
+
+        // ===== НОВЫЕ СОБЫТИЯ ДЛЯ SITEMAP =====
+        static::saved(function ($product) {
+            // При создании или обновлении товара — очищаем кеш Sitemap
+            Cache::forget('sitemap');
+            Cache::forget('sitemap_products');
+        });
+
+        static::deleted(function ($product) {
+            // При удалении товара — очищаем кеш Sitemap
+            Cache::forget('sitemap');
+            Cache::forget('sitemap_products');
+        });
+
+        static::restored(function ($product) {
+            // При восстановлении из SoftDeletes — очищаем кеш Sitemap
+            Cache::forget('sitemap');
+            Cache::forget('sitemap_products');
         });
     }
 
@@ -204,5 +224,55 @@ class Product extends Model
     public function hasCertificates(): bool
     {
         return $this->has_eac || $this->has_honest_sign;
+    }
+
+    /**
+     * Генерация Meta Description для товара
+     */
+    public function getMetaDescription(): string
+    {
+        if ($this->meta_description) {
+            return $this->meta_description;
+        }
+
+        $parts = [];
+
+        // ✅ Начинаем с названия товара и категории (без точки после названия)
+        if ($this->category) {
+            $parts[] = "{$this->name} из категории «{$this->category->name}»";
+        } else {
+            $parts[] = $this->name;
+        }
+
+        // Описание (если есть)
+        if ($this->card_subtitle) {
+            $parts[] = $this->card_subtitle;
+        }
+
+        // Страна происхождения
+        $parts[] = "прямой импорт из Китая";
+
+        // Цена
+        if ($this->wholesale_price) {
+            $parts[] = "цена от " . number_format($this->wholesale_price, 0, '.', ' ') . " ₽ за шт";
+        }
+
+        // Сертификаты
+        $certs = [];
+        if ($this->has_eac) $certs[] = "ЕАС";
+        if ($this->has_honest_sign) $certs[] = "Честный знак";
+        if ($certs) {
+            $parts[] = "сертифицировано (" . implode(", ", $certs) . ")";
+        }
+
+        // Минимальный заказ
+        $parts[] = "минимальный заказ от " . number_format($this->min_order_amount ?? 100000, 0, '.', ' ') . " ₽";
+
+        // Призыв к действию
+        $parts[] = "оптовые поставки по всей России";
+
+        $description = implode(". ", $parts);
+
+        return \Illuminate\Support\Str::limit($description, 160, '...');
     }
 }

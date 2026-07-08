@@ -2,6 +2,7 @@
 @extends('layouts.app')
 
 @section('title', 'Инь Ян – Экспорт и импорт из Китая')
+@section('meta_description', 'Инь Ян — прямой импорт продуктов питания из Китая. Оптовые поставки, собственный склад в Артёме. Работаем с 2013 года. Доставка по всей России.')
 
 @push('styles')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">

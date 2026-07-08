@@ -2,6 +2,7 @@
 @extends('layouts.app')
 
 @section('title', $product->meta_title ?: $product->name . ' – Инь Ян')
+@section('meta_description', $product->getMetaDescription())
 
 @push('styles')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -24,9 +25,6 @@
         @if($relatedProducts && $relatedProducts->count() > 0)
             @include('pages.product.partials.related-products', ['relatedProducts' => $relatedProducts])
         @endif
-
-        {{-- CTA секция --}}
-        @include('pages.product.partials.cta')
     </div>
 @endsection
 

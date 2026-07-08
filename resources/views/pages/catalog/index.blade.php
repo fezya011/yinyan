@@ -2,6 +2,7 @@
 @extends('layouts.app')
 
 @section('title', 'Каталог товаров – Инь Ян Экспорт и импорт из Китая')
+@section('meta_description', 'Каталог товаров из Китая оптом. Продукты питания, лапша, рис, вонтоны. Прямые поставки, минимальный заказ от 100 000 ₽.')
 
 @push('styles')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">

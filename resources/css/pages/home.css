@@ -829,12 +829,15 @@ body {
     overflow: visible !important;
     border-top: none !important;
     border-bottom: none !important;
-    background: #FFFFFF;
+    background: #FFFFFF !important; /* ✅ Добавляем !important */
 }
 
-.stats-grid .border-r {
-    border-color: rgba(26, 26, 26, 0.04) !important;
+/* Убеждаемся, что каждый элемент тоже имеет белый фон */
+.stats-grid .stat-item {
+    background: #FFFFFF !important;
 }
+
+
 
 /* ===== СЕКЦИИ ===== */
 #why {
@@ -1173,6 +1176,7 @@ body {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
 @media (max-width: 768px) {
     .catalog-grid {
         grid-template-columns: 1fr 1fr;
@@ -1180,6 +1184,7 @@ body {
         background: none;
         padding: 0;
     }
+
     .product-card {
         padding: 16px 14px 20px;
         border: 1px solid rgba(26, 26, 26, 0.05);
@@ -1554,5 +1559,60 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .marquee-reverse .marquee-track-reverse {
         animation: none !important;
+    }
+}
+/* ===== АНИМАЦИЯ СТРЕЛОК ===== */
+@keyframes pulse-slow {
+    0%, 100% {
+        opacity: 0.4;
+        transform: translateY(-50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.05);
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Стили для стрелок между блоками */
+.reasons-arrow {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reasons-arrow:hover {
+    transform: scale(1.15) !important;
+}
+
+/* ===== ДЕКОРАТИВНАЯ ЛИНИЯ СНИЗУ ===== */
+.group .absolute.bottom-0 {
+    background: rgb(var(--carousel-accent-r), var(--carousel-accent-g), var(--carousel-accent-b));
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+    .animate-pulse-slow {
+        display: none !important;
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .animate-pulse-slow {
+        animation: none !important;
+        opacity: 0.3 !important;
+    }
+    .group,
+    .group .transition-all {
+        transition: none !important;
+        transform: none !important;
+    }
+    .group:hover .w-14 {
+        transform: none !important;
+    }
+    .group:hover .absolute.bottom-0 {
+        width: 33.333% !important;
     }
 }

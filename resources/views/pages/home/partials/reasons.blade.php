@@ -30,18 +30,28 @@
         @endphp
 
         @foreach($reasons as $index => $reason)
-            <div class="group relative bg-white p-8 lg:p-10 border border-[#1A1A1A]/5 transition-all duration-300 hover:border-[#1A1A1A]/20 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1"
+            <div class="group relative bg-white p-8 lg:p-10 border border-[#1A1A1A]/5 transition-all duration-500 ease-out hover:-translate-y-1"
                  data-aos="fade-up" data-aos-delay="{{ 150 + $index * 100 }}">
-                <div class="flex items-center justify-center w-14 h-14 rounded-full border border-[#1A1A1A]/10 text-[#1A1A1A] font-black text-2xl mb-6 transition-colors duration-300 group-hover:border-[#1A1A1A]/30 group-hover:bg-[#1A1A1A]/5">
+
+                {{-- Номер с плавной анимацией --}}
+                <div class="flex items-center justify-center w-14 h-14 rounded-full border border-[#1A1A1A]/10 text-[#1A1A1A] font-black text-2xl mb-6 transition-all duration-500 ease-out group-hover:border-[#1A1A1A]/30 group-hover:bg-[#1A1A1A]/5 group-hover:scale-110 group-hover:shadow-lg">
                     {{ $reason['num'] }}
                 </div>
-                <div class="font-bold text-[11px] tracking-[3px] uppercase text-[#1A1A1A] mb-3">
+
+                {{-- Заголовок с анимацией --}}
+                <div class="font-bold text-[11px] tracking-[3px] uppercase text-[#1A1A1A] mb-3 transition-all duration-500 ease-out group-hover:tracking-[4px]">
                     {{ $reason['title'] }}
                 </div>
-                <p class="text-[15px] text-[#1A1A1A]/50 leading-relaxed font-light">
+
+                {{-- Описание с анимацией --}}
+                <p class="text-[15px] text-[#1A1A1A]/50 leading-relaxed font-light transition-all duration-500 ease-out group-hover:text-[#1A1A1A]/70">
                     {{ $reason['desc'] }}
                 </p>
+
+                {{-- Декоративная линия снизу --}}
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#1A1A1A] transition-all duration-500 ease-out group-hover:w-1/3 opacity-30 group-hover:opacity-50"></div>
             </div>
         @endforeach
     </div>
+    <span class="hanzi-decor xl rotate-n8" style="bottom: 0%; left: -1%; opacity: 0.2; z-index: 1;" >未</span>
 </section>
