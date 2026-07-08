@@ -10,8 +10,7 @@
             <div class="grid-content">
                 <span class="grid-label">Адрес офиса</span>
                 <div class="grid-value">
-                    г. Артём,<br>
-                    Приморский край
+                    Приморский край, г. Артём,<br> ул. Постникова, д. 2а, кабинет 21<br>
                 </div>
                 <div class="grid-hover-hint">
                     <span class="hint-line"></span>
@@ -24,7 +23,7 @@
             <div class="grid-content">
                 <span class="grid-label">Телефон</span>
                 <a href="tel:+74231234567" class="grid-value">
-                    +7 (423) 123-45-67
+                    +7 (999) 618-28-82
                 </a>
                 <div class="grid-hover-hint">
                     <span class="hint-line"></span>
@@ -38,7 +37,7 @@
             <div class="grid-content">
                 <span class="grid-label">Email</span>
                 <a href="mailto:info@yinyan.ru" class="grid-value break-all">
-                    info@yinyan.ru
+                    eksport.inyan@mail.ru
                 </a>
                 <div class="grid-hover-hint">
                     <span class="hint-line"></span>
