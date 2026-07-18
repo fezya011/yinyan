@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         // ===== Администратор =====
         Admin::create([
             'name' => 'Администратор',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('admin123'),
+            'email' => 'admin.yinyan@gmail.com',
+            'password' => Hash::make('HqEVw4EdCs).2Yb'),
             'is_active' => true,
         ]);
 
@@ -32,13 +32,13 @@ class DatabaseSeeder extends Seeder
         Admin::create([
             'name' => 'Менеджер',
             'email' => 'manager@example.com',
-            'password' => Hash::make('manager123'),
+            'password' => Hash::make('HqEVw4EdCs).2Yb'),
             'is_active' => true,
         ]);
 
         $this->command->info('✅ База данных заполнена!');
-        $this->command->info('📧 Админ: admin@example.com');
-        $this->command->info('🔑 Пароль: admin123');
+        $this->command->info('📧 Админ: admin.yinyan@gmail.com');
+        $this->command->info('🔑 Пароль: HqEVw4EdCs).2Yb');
         $this->command->info('📧 Тестовый пользователь: test@example.com');
         $this->command->info('🔑 Пароль: password123');
     }
